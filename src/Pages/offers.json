@@ -1,0 +1,50 @@
+[
+    {
+        "main": "20% off",
+        "desc": "upto 1000, on orders above 200",
+        "isApplicable": {
+            "arguments": "price, productIDs",
+            "function": "return price>200;"
+        },
+        "apply": {
+            "arguments":"price, productIDs",
+            "function": "return price - Math.min(1000, price*0.2);"
+        }
+    },
+    {
+        "main": "30% off",
+        "desc": "upto 1000, on orders above 100",
+        "isApplicable": {
+            "arguments": "price, productIDs",
+            "function": "return price>100;"
+        },
+        "apply": {
+            "arguments":"price, productIDs",
+            "function": "return price - Math.min(1000, price*0.2);"
+        }
+    },
+    {
+        "main": "20% off",
+        "desc": "upto 2000, on orders above 200",
+        "isApplicable": {
+            "arguments": "price, productIDs",
+            "function": "return price>200;"
+        },
+        "apply": {
+            "arguments":"price, productIDs",
+            "function": "return price - Math.min(2000, price*0.2);"
+        }
+    },
+    {
+        "main": "30% off",
+        "desc": "upto 3000, on orders above 200",
+        "isApplicable": {
+            "arguments": "price, productIDs",
+            "function": "return price>200;"
+        },
+        "apply": {
+            "arguments":"price, productIDs",
+            "function": "return price - Math.min(3000, price*0.3);"
+        }
+    }
+]
