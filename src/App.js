@@ -6,7 +6,7 @@ export default function App(){
         window.history.scrollRestoration = 'manual'
       }, []);
     return (
-        <div className="background app">
+        <div className="surface app">
         <Outlet/>
         </div>
     )

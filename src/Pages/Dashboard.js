@@ -3,13 +3,14 @@ import "./Dashboard.css";
 import Chart from 'chart.js/auto';
 import {Line} from 'react-chartjs-2';
 import { useFetch } from '../useFetch';
-import Loading from '../Loading';
-import Error from '../Error';
+import Loading from './Loading';
+import Error from './Error';
 
 function Dashboard() {
   const [serviceStyle, setServiceStyle] = useState({
     top: "100vh",
     position:"absolute",
+    animation:"slideiny ease-out 400ms"
   });
   const [rightSideStyle, setRightSideStyle] = useState({
     left:"100vw",
@@ -32,19 +33,8 @@ function Dashboard() {
   const stats = data.stats;
   return (
     <div className="DashboardMain">
-      <div className="header" onAnimationEnd={()=>{
-      setServiceStyle({...serviceStyle, animation:"slideiny ease-out 400ms"});
-    }}>
-        <p className="title primary-text">Dashboard </p>
-        <span className="material-symbols-rounded headerIcon primary-text">
-          chat_bubble
-        </span>
-        <span className="material-symbols-rounded headerIcon primary-text">
-          Settings
-        </span>
-      </div>
       <div className="body surface">
-        <Sevices setRightSideStyle={setRightSideStyle} style={serviceStyle} onAnimationEnd={()=>{
+        <Services setRightSideStyle={setRightSideStyle} style={serviceStyle} onAnimationEnd={()=>{
           setServiceStyle({top:"0vh", position:"relative"});
           console.log(services);
         }} services={services} />
@@ -54,7 +44,7 @@ function Dashboard() {
   );
 }
 
-function Sevices({style, onAnimationEnd, setRightSideStyle, services}) {
+export function Services({style, onAnimationEnd, setRightSideStyle, services}) {
   const [serviceList, setServiceList] = useState([]);
   return (
     <div className="leftList" style={style} onAnimationEnd={()=>{
@@ -108,15 +98,18 @@ function RightSide({rightSideStyle, offers, stats}) {
     <div className='graph'>
       {animationDone?<Line data={{labels:[...Array(stats.viewGraph.length).keys()],datasets:[{
         label:"Data1",
-        data:stats.viewGraph
-      }]}}/>:<div>chart</div>}
+        data:stats.viewGraph,
+        backgroundColor:"#75d0dd",
+      borderColor:"#75d0dd"
+      }]}}
+      />:<div>chart</div>}
     </div>
     </div>
     </div>
     <div className="bottom" style={bottomStyle}><p className="secondary-text headline-medium">Offers & coupons</p>
     <div className='offersDiv'>
       {offers.map((offer, index)=>{
-        return index<3?<div key={index} className="secondary-container offer">
+        return index<3?<div key={index} className="secondary-container offerdash">
           <p className='on-secondary-container-text headline-small'>{offer.main}</p>
           <p className='secondary-text'>
             {offer.desc}
