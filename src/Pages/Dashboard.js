@@ -1,9 +1,10 @@
 import {useState} from 'react';
 import "./Dashboard.css";
-import services from "./services.json";
-import offers from "./offers.json";
 import Chart from 'chart.js/auto';
 import {Line} from 'react-chartjs-2';
+import { useFetch } from '../useFetch';
+import Loading from '../Loading';
+import Error from '../Error';
 
 function Dashboard() {
   const [serviceStyle, setServiceStyle] = useState({
@@ -14,6 +15,21 @@ function Dashboard() {
     left:"100vw",
     position: "absolute"
   });
+
+  // const [services, setServices] = useState([]);
+  // const [offers, setOffers] = useState([]);
+  const {loading, data, error} = useFetch("http://localhost:8085/business/dash/data");
+  if(loading){
+    return <Loading/>
+  }
+  if(error){
+    console.log(error);
+    return <Error/>
+  }
+
+  const offers = data.offers;
+  const services = data.services;
+  const stats = data.stats;
   return (
     <div className="DashboardMain">
       <div className="header" onAnimationEnd={()=>{
@@ -31,14 +47,14 @@ function Dashboard() {
         <Sevices setRightSideStyle={setRightSideStyle} style={serviceStyle} onAnimationEnd={()=>{
           setServiceStyle({top:"0vh", position:"relative"});
           console.log(services);
-        }} />
-        <RightSide rightSideStyle={rightSideStyle}/>
+        }} services={services} />
+        <RightSide rightSideStyle={rightSideStyle} offers={offers} stats={stats}/>
       </div>
     </div>
   );
 }
 
-function Sevices({style, onAnimationEnd, setRightSideStyle}) {
+function Sevices({style, onAnimationEnd, setRightSideStyle, services}) {
   const [serviceList, setServiceList] = useState([]);
   return (
     <div className="leftList" style={style} onAnimationEnd={()=>{
@@ -69,7 +85,7 @@ function ListItem({element, style, setRightSideStyle}){
   </div>
 }
 
-function RightSide({rightSideStyle}) {
+function RightSide({rightSideStyle, offers, stats}) {
   const [animationDone, setAnimationDone] = useState(false);
   const [bottomStyle, setBottomStyle] = useState({
     left:"100vw",
@@ -85,14 +101,14 @@ function RightSide({rightSideStyle}) {
     }}><p className="secondary-text headline-medium">Analytics</p>
     <div className="analytics">
     <div className='stats'>
-      <p className='secondary-text headline-small'>Views: 20</p>
-      <p className='secondary-text headline-small'>Average Rating: 4.5</p>
-      <p className='secondary-text headline-small'>Revenue: 3,000</p>
+      <p className='secondary-text headline-small'>Views: {stats.views}</p>
+      <p className='secondary-text headline-small'>Average Rating: {stats.avgRating}</p>
+      <p className='secondary-text headline-small'>Revenue: {stats.revenue}</p>
     </div>
     <div className='graph'>
-      {animationDone?<Line data={{labels:[...Array(5).keys()],datasets:[{
+      {animationDone?<Line data={{labels:[...Array(stats.viewGraph.length).keys()],datasets:[{
         label:"Data1",
-        data:[1,10,7,9,5]
+        data:stats.viewGraph
       }]}}/>:<div>chart</div>}
     </div>
     </div>
