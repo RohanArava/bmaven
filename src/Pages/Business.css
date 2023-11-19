@@ -4,3 +4,14 @@
     display: grid;
     grid-template-rows: 1fr 10fr;
 }
+
+.header{
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    display: grid;
+    grid-template-columns: 15fr 1fr 1fr 1fr 1fr;
+    /* animation: slideiny ease-out 400ms; */
+    z-index: 2;
+}

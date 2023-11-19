@@ -12,6 +12,7 @@ import Notifications from "./Pages/Notifications";
 import User from "./Pages/User";
 import Search from "./Pages/Search";
 import Profile from "./Pages/Profile";
+import { Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route path="u" element={<User/>}>
         <Route path="search" element={<Search />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="*" element={<Navigate to="search"/>}/>
       </Route>
     </Route>
   ), {

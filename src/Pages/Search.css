@@ -1,0 +1,30 @@
+.SearchWrap{
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    padding: 1em;
+}
+
+.results{
+    overflow-y: scroll;
+    height: 90vh;
+}
+
+.searchItem{
+    padding: 1em;
+    border-radius: 10px;
+    margin: 1em;
+    display: grid;
+    grid-template-columns: 3fr 12fr;
+    column-gap: 0.5em;
+}
+
+.df{
+
+    display: flex;
+}
+
+.searchImage{
+    width: 90%;
+    height: 90%;
+    border-radius: 10px;
+}
