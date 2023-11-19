@@ -3,7 +3,7 @@ import Error from "./Error";
 import Loading from "./Loading"
 import "./Search.css"
 import ReactStars from "react-rating-stars-component";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 
 export default function Search() {
     const location = useLocation();
@@ -26,7 +26,12 @@ export default function Search() {
 }
 
 function SearchItem({ item }) {
-    return <div className="searchItem secondary-container">
+    const navigate = useNavigate();
+    return <div onClick={
+        ()=>{
+            navigate(`/u/service/${item.id}`)
+        }
+    } className="searchItem secondary-container">
         <img className="searchImage" src={item.image} alt="img" />
         <div>
             <span className="on-secondary-container-text headline-small">{item.name}</span>

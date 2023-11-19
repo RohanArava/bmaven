@@ -34,8 +34,8 @@ app.get("/business/dash/data", (req, res) => {
         offers, services, stats: {
             views: 20,
             avgRating: 4.5,
-            revenue: 3000,
-            viewGraph: [1,10,7,9,5]
+            revenue: 7000,
+            viewGraph: [6,8.7,8,8.7,8,8.7,8.7,8,8.7,8,8.7,8,7,8.9,8.7,8,8.7,8,8.7,5]
         }
     });
 })
@@ -53,6 +53,15 @@ app.get("/user/search", (req, res)=>{
     const result = fuse.search(query)
     console.log(result)
     res.status(200).send({services: result.filter((item)=>item.score<=0.3).map((item)=>item.item)});
+});
+
+app.get("/service/:id", (req, res)=>{
+    const id = req.params.id;
+    const result = services.filter((item)=>item.id===parseInt(id))
+    if(result.length === 0){
+        res.status(404).send({error: "Not Found"});
+    }
+    res.status(200).send({service: result[0]});
 });
 
 app.listen(8085, (err) => {

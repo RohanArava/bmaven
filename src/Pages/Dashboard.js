@@ -100,7 +100,9 @@ function RightSide({rightSideStyle, offers, stats}) {
         label:"Data1",
         data:stats.viewGraph,
         backgroundColor:"#75d0dd",
-      borderColor:"#75d0dd"
+      borderColor:"#75d0dd",
+      pointRadius:0,
+      // fill:{value: 0}
       }]}}
       />:<div>chart</div>}
     </div>

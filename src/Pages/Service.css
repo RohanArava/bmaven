@@ -1,0 +1,57 @@
+.serviceWrap{
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-rows: 1fr 2fr;
+    row-gap: 2em;
+    padding: 1em;
+}
+
+.serviceUp{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    column-gap: 2em;
+    height: 100%;
+    width: 100%;
+}
+.serviceImage{
+    height: 15em;
+    width: 100%;
+    /* padding: 1em; */
+    border-radius: 40px;
+}
+
+.details{
+    padding: 1em 0;
+}
+
+.contactWrap{
+    display: flex;
+}
+
+.contactIcon{
+    /* padding-top: 5px; */
+    width: fit-content;
+}
+
+.contactInfo{
+    width: fit-content;
+    padding-right: 1em;
+}
+
+.serviceDown{
+    display: grid;
+    grid-template-columns: 2fr 4fr;
+    column-gap: 1em;
+}
+
+.reviewItem{
+    padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+}
+
+.ratings{
+    overflow-y: scroll;
+    height: 100%;
+}
