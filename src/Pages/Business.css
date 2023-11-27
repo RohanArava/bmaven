@@ -11,7 +11,14 @@
     justify-content: center;
     width:100%;
     display: grid;
-    grid-template-columns: 15fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 25fr 1fr 1fr 1fr 1fr;
     /* animation: slideiny ease-out 400ms; */
     z-index: 2;
+}
+
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

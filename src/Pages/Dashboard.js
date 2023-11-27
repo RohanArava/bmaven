@@ -51,7 +51,7 @@ export function Services({style, onAnimationEnd, setRightSideStyle, services}) {
       onAnimationEnd();
       setServiceList(services);
     }}>
-      <p className="secondary-text headline-medium">Services</p>
+      <p className="secondary-text headline-small">Services</p>
       {serviceList.map((element,i) => {
         return <ListItem setRightSideStyle={i===serviceList.length-1?setRightSideStyle:null} style={{top:"100vh",position:"absolute",animation:"slideiny 400ms ease-out"}} element={element} key={i}/>
       })}
@@ -88,12 +88,12 @@ function RightSide({rightSideStyle, offers, stats}) {
         left:"110vw",
         animation:"slideinx ease-out 400ms"
       });
-    }}><p className="secondary-text headline-medium">Analytics</p>
+    }}><p className="secondary-text headline-small">Analytics</p>
     <div className="analytics">
     <div className='stats'>
-      <p className='secondary-text headline-small'>Views: {stats.views}</p>
-      <p className='secondary-text headline-small'>Average Rating: {stats.avgRating}</p>
-      <p className='secondary-text headline-small'>Revenue: {stats.revenue}</p>
+      <p className='secondary-text title-medium'>Views: {stats.views}</p>
+      <p className='secondary-text title-medium'>Average Rating: {stats.avgRating}</p>
+      <p className='secondary-text title-medium'>Revenue: {stats.revenue}</p>
     </div>
     <div className='graph'>
       {animationDone?<Line data={{labels:[...Array(stats.viewGraph.length).keys()],datasets:[{
@@ -108,11 +108,11 @@ function RightSide({rightSideStyle, offers, stats}) {
     </div>
     </div>
     </div>
-    <div className="bottom" style={bottomStyle}><p className="secondary-text headline-medium">Offers & coupons</p>
+    <div className="bottom" style={bottomStyle}><p className="secondary-text headline-small">Offers & coupons</p>
     <div className='offersDiv'>
       {offers.map((offer, index)=>{
         return index<3?<div key={index} className="secondary-container offerdash">
-          <p className='on-secondary-container-text headline-small'>{offer.main}</p>
+          <p className='on-secondary-container-text title-medium'>{offer.main}</p>
           <p className='secondary-text'>
             {offer.desc}
           </p>

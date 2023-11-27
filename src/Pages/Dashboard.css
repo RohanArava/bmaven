@@ -58,6 +58,7 @@
     display: grid;
     grid-template-columns: 2fr 10fr;
     column-gap: 1em;
+    
 }
 
 .bimgdash{

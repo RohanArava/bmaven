@@ -22,22 +22,22 @@ export default function User(){
             }} className="searchSubmit on-secondary-container-text"><span className="material-symbols-rounded">search</span></button>
             </div>
             <div>
-                <span className="material-symbols-rounded headerIcon primary-text">
+                <span className="material-symbols-rounded header-medium primary-text">
                     chat_bubble
                 </span>
             </div>
             <div>
-                <span className="material-symbols-rounded headerIcon primary-text">
+                <span className="material-symbols-rounded header-medium primary-text">
                     info
                 </span>
             </div>
             <div>
-                <span className="material-symbols-rounded headerIcon primary-text">
+                <span className="material-symbols-rounded header-medium primary-text">
                     account_circle
                 </span>
             </div>
             <div>
-                <span className="material-symbols-rounded headerIcon primary-text">
+                <span className="material-symbols-rounded header-medium primary-text">
                     menu
                 </span>
             </div>
