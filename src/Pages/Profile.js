@@ -2,6 +2,8 @@ import { useState } from "react";
 import "./profile.css"
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import { createRef } from "react";
+import { useScreenshot, createFileName } from "use-react-screenshot";
 
 export default function Profile() {
     const [showCollection, setShowCollection] = useState(true);
@@ -41,35 +43,84 @@ function CollectionsItem({ item }) {
         ],
 
     }
-    return <div onMouseEnter={()=>{setAutoPlay(true);console.log(autoPlay)}} onMouseLeave={()=>{setAutoPlay(false);console.log(autoPlay)}} className="clickable collection-item secondary-container">
-        
+    return <div onMouseEnter={() => { setAutoPlay(true); console.log(autoPlay) }} onMouseLeave={() => { setAutoPlay(false); console.log(autoPlay) }} className="clickable collection-item secondary-container">
+
         <div className="leftWrap"><div className="on-secondary-container-text headline-small">{it.name}
 
         </div>
-        <div className="lbWrap">
-            <span className="material-symbols-rounded on-surface-text">favorite</span>
-            <span className="material-symbols-rounded on-surface-text">share</span>
-        </div>
+            <div className="lbWrap">
+                <span className="material-symbols-rounded on-surface-text">favorite</span>
+                <span className="material-symbols-rounded on-surface-text">share</span>
+            </div>
         </div>
         <div className="picWrap">
-        <Carousel selectedItem={0} infiniteLoop={true} interval={1500} autoPlay={autoPlay} showStatus={false} showIndicators={false} showThumbs={false} showArrows={false}>
-            {
-                it.items.map((item, index)=>{
-                    return <div key={index}>
-                        <span className="clct-itm-name">{item.name}</span>
-                        <img className="clct-itm" src={item.image} alt="" />
-                    </div>
-                })
-            }
+            <Carousel selectedItem={0} infiniteLoop={true} interval={1500} autoPlay={autoPlay} showStatus={false} showIndicators={false} showThumbs={false} showArrows={false}>
+                {
+                    it.items.map((item, index) => {
+                        return <div key={index}>
+                            <span className="clct-itm-name">{item.name}</span>
+                            <img className="clct-itm" src={item.image} alt="" />
+                        </div>
+                    })
+                }
             </Carousel>
-            
+
             {/* <img className="clct-itm" src={it.items[1].image} alt="" /> */}
-            </div>
+        </div>
     </div>
 }
 
 function HistoryItem({ item }) {
-    return <div className="history-item">
-        <span className="on-secondary-container-text">{"Name"}</span>
-    </div>
+    const it = {
+        name: "Wedding Cake | 3 Floor | Bride and Groom",
+        serviceName: "Little Finger Pastries",
+        servicePrice: "Rs. 1000",
+        serviceTime: "12/12/2020 10:00 AM",
+        paymentMethod: "UPI",
+        paymentId: "rohan.a21@sbi.upi123",
+        description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
+    };
+    const ref = createRef(null);
+    const [image, takeScreenShot] = useScreenshot({
+        type: "image/jpeg",
+        quality: 1.0
+    });
+    const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+//   const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+    const getImage = () => {takeScreenShot(ref.current).then(download)};
+    return <div className="histWrap">
+        <span onClick={getImage} className="on-surface-text scr material-symbols-rounded">screenshot_region</span>
+        <div className="history-item secondary-container" style={{padding: "1em"}}>
+        <div  ref={ref} className="secondary-container hiw" >
+            <p className="headline-small on-secondary-container-text">{it.serviceName}</p>
+            <table>
+                <tr>
+                    <td><p className="title-medium on-surface-text">Order: </p></td><td><p className="title-medium on-surface-text">{it.name}</p></td>
+                </tr>
+                {/* <tr>
+                <td><p className="title-large on-secondary-container-text">Details: </p></td>
+            </tr> */}
+                <tr>
+                    <td><p className="title-medium on-surface-text">Amount: </p></td><td><p className="title-medium on-surface-text">{it.servicePrice}</p></td>
+                </tr>
+                <tr>
+                    <td><p className="title-medium on-surface-text">Time:</p></td><td><p className="title-medium on-surface-text">{it.serviceTime}</p></td>
+                </tr>
+                <tr>
+                    <td><p className="title-medium on-surface-text">Payment Method: </p></td><td><p className="title-medium on-surface-text">{it.paymentMethod}</p></td>
+                </tr>
+                <tr>
+                    <td><p className="title-medium on-surface-text">Payment Id: </p></td><td><p className="title-medium on-surface-text">{it.paymentId}</p></td>
+                </tr>
+                {it.description && <tr>
+                    <td><p className="title-medium on-surface-text">Description:</p></td><td><p className="title-medium on-surface-text">{it.description}</p></td>
+                </tr>}
+            </table></div>
+        </div></div>
 }

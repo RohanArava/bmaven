@@ -86,6 +86,7 @@
 
 .selection {
     padding: 0 1em;
+    cursor: pointer;
 }
 
 .left {
@@ -137,14 +138,30 @@
     max-height: 14em;
 }
 
+.histWrap{
+    position: relative;
+}
+.hiw{
+    padding: 1em;
+}
 .history-item {
-    width: 1fr;
-    height: 30em;
+    width: 40em;
+    /* height: 30em; */
+    height: fit-content;
     padding: 1em;
     margin: 1em;
     border-radius: 20px;
 }
 
+.scr{
+    position: absolute;
+    top: 1.5em;
+    right: 1.5em;
+}
+
+td{
+    padding: 0.2em 1em;
+}
 .history {
     display: grid;
     /* grid-template-columns: 1fr 1fr 1fr; */
