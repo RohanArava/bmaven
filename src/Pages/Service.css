@@ -63,12 +63,16 @@
 .rating-form{
     display: grid;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
+    width: 100%;
+    grid-template-rows: 1fr 1fr 4fr 1fr;
+    row-gap: 0em;
 }
 
 .rating-form textarea{
-    width: 20em;
-    height: 15em;
+    width: 52em;
+    /* height: 15em; */
+    height: 100%;
     background-color: rgb(36, 38, 35);
     border: none;
     color: #aaa;
@@ -80,6 +84,12 @@
     outline: none;
 }
 
+.rateScreen{
+    width: 100%;
+    padding: 2em 0;
+}
+
+
 .al-sl-rt{
     align-self: flex-end;
     justify-self: flex-end;
@@ -89,6 +99,9 @@
     display: grid;
     justify-content: center;
     align-items: center;
+    z-index: 2;
+    position: absolute;
+
 }
 
 .addtocollform{ 
