@@ -1,9 +1,17 @@
 .SearchWrap{
     display: grid;
-    grid-template-columns: 5fr 4fr;
-    padding: 1em;
+    align-items: end;
+    justify-content: end;
+    padding: 2em 2em 2em 15em;
+    
 }
-
+.Wrap{
+    height: 100%;
+    width: 100%;
+    /* position: relative; */
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+}
 .results{
     overflow-y: scroll;
     height: 90vh;
@@ -23,4 +31,10 @@
     width: 90%;
     height: 90%;
     border-radius: 10px;
+}
+
+.filter{
+
+    /* font-size: larger; */
+    padding: 1em;
 }

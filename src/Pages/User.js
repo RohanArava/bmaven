@@ -9,6 +9,7 @@ export default function User(){
     const navigate = useNavigate();
     return <div className="user">
         <div className="userHeader">
+            <span className="headline-large primary-text pl-8">BizMaven</span>
             <div className="searchbar">
             <input value={searchTerm} onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -31,7 +32,7 @@ export default function User(){
                     info
                 </span>
             </div>
-            <div>
+            <div onClick={()=>{navigate("/u/profile")}}>
                 <span className="material-symbols-rounded header-medium primary-text">
                     account_circle
                 </span>

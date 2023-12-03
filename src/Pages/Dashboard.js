@@ -108,7 +108,7 @@ function RightSide({rightSideStyle, offers, stats}) {
     </div>
     </div>
     </div>
-    <div className="bottom" style={bottomStyle}><p className="secondary-text headline-small">Offers & coupons</p>
+    <div className="bottom-dash" style={bottomStyle}><p className="secondary-text headline-small">Offers & coupons</p>
     <div className='offersDiv'>
       {offers.map((offer, index)=>{
         return index<3?<div key={index} className="secondary-container offerdash">

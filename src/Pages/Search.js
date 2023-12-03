@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useFetch } from "../useFetch"
 import Error from "./Error";
 import Loading from "./Loading"
@@ -7,7 +8,8 @@ import { useLocation, useNavigate} from "react-router-dom";
 
 export default function Search() {
     const location = useLocation();
-    const query_term = new URLSearchParams(location.search).get("q")
+    const query_term = new URLSearchParams(location.search).get("q");
+    const [showFilter, setShowFilter] = useState(false);
     // console.log(query_term)
     const { loading, error, data } = useFetch(query_term&&query_term!==''?`http://localhost:8085/user/search?q=${query_term}`:"http://localhost:8085/user/search/default")
 
@@ -15,13 +17,25 @@ export default function Search() {
 
     if (error) return <Error />
 
-    return <div className="SearchWrap">
+    if(showFilter) return <Filter setShowFilter={setShowFilter}/>
+
+    return <div className="Wrap">
+        
+    <div className="SearchWrap">
         <div className="results">
             {data.services.map((item, index) => {
                 return <SearchItem key={index} item={item} />
             })}
         </div>
         <div></div>
+    </div>
+    <div onClick={()=>{setShowFilter(true)}} className="header-large primary-text filter material-symbols-rounded">filter_alt</div>
+    </div>
+}
+
+function Filter({setShowFilter}){
+    return <div className="filter">
+        <div onClick={()=>{setShowFilter(false)}}><span className="header-large primary-text filter material-symbols-rounded">close</span></div>
     </div>
 }
 
@@ -31,7 +45,7 @@ function SearchItem({ item }) {
         ()=>{
             navigate(`/u/service/${item.id}`)
         }
-    } className="searchItem secondary-container">
+    } className="clickable searchItem secondary-container">
         <img className="searchImage" src={item.image} alt="img" />
         <div>
             <span className="on-secondary-container-text headline-small">{item.name}</span>

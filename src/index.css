@@ -14,9 +14,17 @@ body {
   overflow: hidden;
 }
 
+.pointer{
+  cursor: pointer;
+}
+
+.clickable:hover{
+  box-shadow: 5px 5px 10px 5px #111111;
+  translate: 5px -5px;
+}
 
 
-.poppins,.on-secondary-container-text,.on-surafe-text,.title,.headline-small,.headline-medium,.body-large{
+.poppins,.on-secondary-container-text,.on-surafe-text,.title,.headline-small,.headline-medium,.body-large,.title-large,.title-medium{
   font-family: 'Poppins', monospace !important;
 }
 
