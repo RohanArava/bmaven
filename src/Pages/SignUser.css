@@ -1,0 +1,36 @@
+.container{
+    display: grid;
+    width: 100vw;
+    padding: 10em;
+    /* height: 80vh; */
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons{
+    display: grid;
+    /* align-items: end; */
+    /* justify-content: center; */
+    width: 40em;
+}
+.buttons button{
+    margin: 1em;
+    padding: 0.5em;
+    border: none;
+    border-radius: 10px;
+}
+
+.self-end{
+    align-items: end;
+    justify-content: end;
+    display: flex;
+}
+.self-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formWrap{
+    width: 40em;
+}

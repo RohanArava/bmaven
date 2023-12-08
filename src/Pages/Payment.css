@@ -1,0 +1,16 @@
+.payment{
+    display: grid;
+    row-gap: 1em;
+    width: 100vw;
+    justify-content: center;
+}
+.payment-method{
+    width: 25em;
+    margin: 2em;
+}
+
+.pmeth{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+
+}

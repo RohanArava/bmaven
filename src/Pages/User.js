@@ -22,7 +22,9 @@ export default function User(){
                 navigate(`/u/search?q=${searchTerm}`)
             }} className="searchSubmit on-secondary-container-text"><span className="material-symbols-rounded">search</span></button>
             </div>
-            <div>
+            <div onClick={()=>{
+                navigate("/u/bills")
+            }}>
                 <span className="material-symbols-rounded header-medium primary-text">
                     chat_bubble
                 </span>

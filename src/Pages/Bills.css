@@ -1,0 +1,53 @@
+.bills{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+    width: fit-content;
+    height: fit-content;
+}
+.billWrap{
+    width: 100vw;
+    height: 100vh;
+    padding: 1em;
+    /* display: flex; */
+    justify-content: center;
+    align-items: start;
+    overflow-y: scroll;
+}
+.wrap2{
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+}
+.selection{
+    text-align: center;
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+}
+.billItem{
+    width: 25em;
+    align-self: center;
+    justify-self: center;
+    margin: 1em;
+    border-radius: 10px;
+    padding: 2em;
+    display: grid;
+    /* grid-template-rows: 7fr 1fr;
+     */
+    row-gap: 1em;
+}
+.bill-bottom{
+    align-items: end;
+    justify-content: end;
+    display: flex;
+}
+
+.bill-bottom button{
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 10px;
+}

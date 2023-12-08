@@ -14,6 +14,9 @@ import Search from "./Pages/Search";
 import Profile from "./Pages/Profile";
 import { Navigate } from 'react-router-dom';
 import Service from "./Pages/Service";
+import { Payment } from "./Pages/Payment";
+import  Bills  from "./Pages/Bills";
+import SignUser from "./Pages/SignUser";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,8 +30,12 @@ const router = createBrowserRouter(
         <Route path="search" element={<Search />} />
         <Route path="profile" element={<Profile />} />
         <Route path="service/:id" element={<Service />} />
-        <Route path="*" element={<Navigate to="search"/>}/>
+        <Route path="payment" element={<Payment />} />
+        <Route path="bills" element={<Bills />} />
+        <Route path="sign" element={<SignUser />} />
+        {/* <Route path="*" element={<Navigate to="/u/search"/>}/> */}
       </Route>
+      <Route path="" element={<Navigate to="/u/search"/>}/>
     </Route>
   ), {
   location: "/business/dash"

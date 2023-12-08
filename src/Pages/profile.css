@@ -100,7 +100,7 @@
 
 .collections {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     /* grid-template-rows: 1f; */
 }
 
@@ -164,7 +164,7 @@ td{
 }
 .history {
     display: grid;
-    /* grid-template-columns: 1fr 1fr 1fr; */
+    grid-template-columns: 1fr 1fr;
 }
 
 .clct-itm {
