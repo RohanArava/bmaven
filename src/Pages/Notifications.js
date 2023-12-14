@@ -1,10 +1,10 @@
 import NotificationCard from "./NotificationCard";
 export default function Notifications() {
   var notifications = [
-    ["New Year Offer", "Use code: NY50Off"],
-    ["Year End Sale", "Use code: EOYS30Off"],
-    ["Title 3", "Message 3"],
-    ["Something", "something"],
+    ["Paid Bill", "User rohan_arava paid a bill (Rs. 2500)"],
+    ["Paid Bill", "User harsha_ak2 paid a bill (Rs. 500)"],
+    ["Paid Bill", "User pranesh paid a bill (Rs. 3000)"],
+    ["Bill due", "User allu_arjun has a bill due for Rs. 2500"],
   ];
   const styles = `
   .card {
@@ -13,7 +13,7 @@ export default function Notifications() {
   }
 `;
   return (
-    <div>
+    <div style = {{padding:"2em 20em"}}>
       <style>{styles}</style>
       {notifications.map((notification, index) => (
         <NotificationCard

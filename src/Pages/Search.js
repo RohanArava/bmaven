@@ -29,7 +29,7 @@ export default function Search() {
         </div>
         <div></div>
     </div>
-    <div onClick={()=>{setShowFilter(true)}} className="header-large primary-text filter material-symbols-rounded">filter_alt</div>
+    {/* <div onClick={()=>{setShowFilter(true)}} className="header-large primary-text filter material-symbols-rounded">filter_alt</div> */}
     </div>
 }
 

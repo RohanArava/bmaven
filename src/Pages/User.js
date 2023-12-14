@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import "./User.css";
 import { useState, useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {userLogout} from "../app/store";
 
 export default function User(){
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     return <div className="user">
         <div className="userHeader">
             <span className="headline-large primary-text pl-8">BizMaven</span>
@@ -29,7 +33,9 @@ export default function User(){
                     chat_bubble
                 </span>
             </div>
-            <div>
+            <div onClick={()=>{
+                navigate("/u/about")
+            }}>
                 <span className="material-symbols-rounded header-medium primary-text">
                     info
                 </span>
@@ -39,9 +45,12 @@ export default function User(){
                     account_circle
                 </span>
             </div>
-            <div>
+            <div onClick={()=>{
+                dispatch(userLogout());
+                navigate("/u/sign")
+            }}>
                 <span className="material-symbols-rounded header-medium primary-text">
-                    menu
+                    logout
                 </span>
             </div>
         </div>

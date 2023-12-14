@@ -1,12 +1,18 @@
+import {useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./SignUser.css"
+import {useDispatch} from "react-redux";
+import {userLogin} from "../app/store";
+// import useFetch from "../useFetch"
 function SignUser() {
-    const initialValues = { username: "",email: "", password: "" };
+    const initialValues = { username: "", email: "", password: "" };
+    const dispatch = useDispatch();
     const [signUp, setSignUp] = useState(false);
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
-
+    const [isUser, setIsUser] = useState(true);
+    const navigate = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -20,18 +26,27 @@ function SignUser() {
 
     useEffect(() => {
         console.log(formErrors);
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
+        if (Object.keys(formErrors).length === 0 && isSubmit && isUser) {
             console.log(formValues);
+            fetch("http://localhost:8085/user/sign")
+            .then(data => data.json())
+            .then(data => {dispatch(userLogin(data)); navigate("/u/profile")});
+        }
+        else if(Object.keys(formErrors).length === 0 && isSubmit && !isUser){
+            console.log(formValues);
+            fetch("http://localhost:8085/business/sign")
+            .then(data => data.json())
+            .then(data => {dispatch(userLogin(data)); navigate("/b/dash")});
         }
     }, [formErrors]);
     const validate = (values) => {
         const errors = {};
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-        if(signUp){
-        if (!values.username) {
-            errors.username = "Username is required!";
+        if (signUp) {
+            if (!values.username) {
+                errors.username = "Username is required!";
+            }
         }
-    }
         if (!values.email) {
             errors.email = "Email is required!";
         } else if (!regex.test(values.email)) {
@@ -51,12 +66,12 @@ function SignUser() {
         <div className="container">
 
             <form onSubmit={handleSubmit}>
-                <h1 className="primary-text">{signUp?"Sign up":"Login"}</h1><br />
+                <h1 className="primary-text">{signUp ? "Sign up" : "Login"}{isUser?"":" As Vendor"}</h1><br />
                 <div></div>
                 <div>
                     <table className="formWrap">
 
-                        {signUp && ( <><tr>
+                        {signUp && (<><tr>
                             <td>
                                 <label className="on-surface-text">Username</label></td>
                             <td>
@@ -69,7 +84,7 @@ function SignUser() {
                                 /></td></tr>
 
 
-                        <p>{formErrors.username}</p></>)}
+                            <p>{formErrors.username}</p></>)}
                         <tr>
                             <td>
                                 <label className="on-surface-text">Email</label></td>
@@ -101,8 +116,8 @@ function SignUser() {
                         <div className="self-end">
                             <button className="self-end secondary-container on-secondary-container-text">Submit</button></div>
                         <div className="self-center">
-                            <button type="button" onClick={()=>{setSignUp(!signUp)}} className="self-center secondary-container on-secondary-container-text">{!signUp?"New User? Sign Up":"Already have an account?"}</button>
-                            <button type="button" className="self-center secondary-container on-secondary-container-text">Are you a vendor?</button></div>
+                            <button type="button" onClick={() => { setSignUp(!signUp) }} className="self-center secondary-container on-secondary-container-text">{!signUp ? `New ${isUser?"User":"Vendor"}? Sign Up` : "Already have an account?"}</button>
+                            <button onClick={()=>{setIsUser(!isUser)}} type="button" className="self-center secondary-container on-secondary-container-text">Are you a {isUser?"vendor":"user"}?</button></div>
                     </div> </div>
             </form>
         </div>

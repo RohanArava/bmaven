@@ -127,7 +127,9 @@
     justify-content: center;
 }
 
-
+.addcollform{
+    height: fit-content;
+}
 
 .picWrap {
     position: relative;

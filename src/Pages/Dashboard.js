@@ -97,7 +97,7 @@ function RightSide({rightSideStyle, offers, stats}) {
     </div>
     <div className='graph'>
       {animationDone?<Line data={{labels:[...Array(stats.viewGraph.length).keys()],datasets:[{
-        label:"Data1",
+        label:"Views",
         data:stats.viewGraph,
         backgroundColor:"#75d0dd",
       borderColor:"#75d0dd",

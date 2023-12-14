@@ -7,7 +7,13 @@ function Business(){
     const location = useLocation();
     return (<div className="BusinessMain">
         <div className="header" >
-          <div className="center"><span className="title primary-text">{location.pathname==="/b/dash"?"Dashboard":location.pathname==="/b/edit"?"Edit":"Notifications"} </span></div>
+          <div className="center"><span className="title primary-text">{location.pathname==="/b/dash"?"Dashboard":location.pathname==="/b/edit"?"Edit":location.pathname==="/b/notifications"?"Notifications":location.pathname==="/b/billing"?"Send A Bill":"About Us"} </span></div>
+          <div style={{display:"inline"}} onClick={()=>{
+            navigate("/b/billing");
+        }}>
+        <span className="material-symbols-rounded header-medium primary-text">
+          receipt_long
+        </span></div>
         <div style={{display:"inline"}} onClick={()=>{
             navigate("/b/notifications");
         }}>
@@ -15,7 +21,7 @@ function Business(){
           chat_bubble
         </span></div>
         <div style={{display:"inline"}} onClick={()=>{
-            navigate("/b/notifications");
+            navigate("/b/about");
         }}>
         <span className="material-symbols-rounded header-medium primary-text">
           info

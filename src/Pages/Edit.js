@@ -137,18 +137,6 @@ export default function Edit() {
               <input type="text" className="form-control" id="inputZip" />
             </div>
           </div>
-          <div className="form-group">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="gridCheck"
-              />
-              <label className="secondary-text" for="gridCheck">
-                Check me out
-              </label>
-            </div>
-          </div>
           <div className="d-block">
             <button
               type="submit"

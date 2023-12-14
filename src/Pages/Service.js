@@ -5,6 +5,7 @@ import Error from "./Error";
 import "./Service.css";
 import ReactStars from "react-rating-stars-component";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 export default function Service() {
     const location = useLocation();
     const { loading, error, data } = useFetch(`http://localhost:8085/service/${parseInt(location.pathname.split("/")[3])}`);
@@ -100,6 +101,8 @@ function RateScreen() {
 }
 
 function AddToCollectionScreen({ setShowAddToCollectionScreen, pos }) {
+    const collections = useSelector(state => state.stateReducer.object.userDetails.collections);
+    console.log(collections)
     console.log(pos)
     return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 
@@ -110,8 +113,8 @@ function AddToCollectionScreen({ setShowAddToCollectionScreen, pos }) {
                 <br/>
             <div className="yscroll">
                 {
-                    [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5].map((item, index) => {
-                        return <div className="on-surface-text title-medium">{item}</div>
+                    collections.map((item, index) => {
+                        return <div style={{padding: "1em"}} className="on-surface-text title-medium">{item.name}</div>
                     })
                 }
             </div>

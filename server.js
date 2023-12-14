@@ -39,6 +39,101 @@ app.get("/business/dash/data", (req, res) => {
         }
     });
 })
+app.get("/business/sign", (req, res)=>{
+    res.status(200).send({message: "done"});
+})
+app.get("/user/sign", (req, res)=>{
+    res.status(200).send({
+        userName: "Rohan Arava",
+        userId: "rohan_arava",
+        collections: [
+            {
+                name: "Daenerys's wedding",
+                items: [
+                    { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
+                    { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
+                    { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
+                ],
+        
+            },
+            {
+                name: "Three Eyed Raven",
+                items: [
+                    { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
+                    { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
+                    { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
+                ],
+        
+            },
+            {
+                name: "Drogon's Birthday",
+                items: [
+                    { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
+                    { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
+                    { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
+                    
+                ],
+        
+            },
+            {
+                name: "Sansa's Coronation",
+                items: [
+                    { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
+                    { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
+                    { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
+                ],
+        
+            },
+            {
+                name: "Welcome Back Arya",
+                items: [
+                    { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
+                    { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
+                    { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
+                ],
+        
+            },
+            {
+                name: "Trip to Braavos",
+                items: [
+                    { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
+                    { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
+                    { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
+                    
+                ],
+            },
+        ],
+        history:[
+            {
+                name: "Wedding Cake | 3 Floor | Bride and Groom",
+                serviceName: "Little Finger Pastries",
+                servicePrice: "Rs. 1000",
+                serviceTime: "12/12/2020 10:00 AM",
+                paymentMethod: "UPI",
+                paymentId: "rohan.a21@sbi.upi123",
+                description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
+            },
+            {
+                name: "Shepherd's Pie for 300",
+                serviceName: "Stark Kitchen",
+                servicePrice: "Rs. 25000",
+                serviceTime: "12/12/2020 12:00 PM",
+                paymentMethod: "UPI",
+                paymentId: "rohan.a21@sbi.upi123",
+                description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
+            },
+            {
+                name: "A Tuxedo",
+                serviceName: "Snow Tailors",
+                servicePrice: "Rs. 17000",
+                serviceTime: "11/12/2020 12:00 PM",
+                paymentMethod: "UPI",
+                paymentId: "rohan.a21@sbi.upi123",
+                description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
+            },
+        ]
+    })
+});
 
 app.get("/user/search/default", (req, res)=>{ 
     
