@@ -23,7 +23,13 @@ function SignUser() {
         setFormErrors(validate(formValues));
         setIsSubmit(true);
     };
-
+    async function userLogin(){
+        try {
+            const data = await fetch ()
+        } catch (error) {
+            
+        }
+    }
     useEffect(() => {
         console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit && isUser) {
