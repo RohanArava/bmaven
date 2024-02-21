@@ -1,0 +1,62 @@
+.adminDash{
+    padding: 1em;
+    display: grid;
+    grid-template-columns: 2fr 3fr 3fr;
+    column-gap: 1em;
+}
+
+.dashLeft{
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    row-gap: 1em;
+}
+
+.man_users_btn{
+    width: 90%;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 3.5em;
+    text-align: right;
+}
+
+.dashRight{
+    overflow-y: scroll;
+    height: 90vh;
+}
+
+.report{
+    width: 90%;
+    height: 10em;
+    
+}
+
+.graphDash{
+    height: 50%;
+}
+
+.manage_businesses{
+    padding: 1em;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    column-gap: 1em;
+}
+
+.manage_customers{
+    padding: 1em;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    column-gap: 1em;
+}
+
+
+.business_list{
+    height: 90vh;
+    overflow-y: scroll;
+}
+
+.business_listitem{
+    margin: 0.5em;
+    padding: 1em;
+    border-radius: 25px;
+}
