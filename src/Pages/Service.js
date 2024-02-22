@@ -7,6 +7,8 @@ import "./Service.css";
 import ReactStars from "react-rating-stars-component";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import {useDispatch} from "react-redux";
+import {addCollection} from "../app/store";
 export default function Service({showDown=true, serviceId=undefined}) {
     const location = useLocation();
     const stateObject = useSelector(state=>state.stateReducer.object);
@@ -27,7 +29,7 @@ export default function Service({showDown=true, serviceId=undefined}) {
     // if(showRateScreen) return <RateScreen setShowRateScreen={setShowRateScreen}/>
     // if(showAddToCollectionScreen) return <AddToCollectionScreen setShowAddToCollectionScreen={setShowAddToCollectionScreen}/>
     return <div className="serviceWrap">
-        {showAddToCollectionScreen && <AddToCollectionScreen pos={pos} setShowAddToCollectionScreen={setShowAddToCollectionScreen} />}
+        {showAddToCollectionScreen && <AddToCollectionScreen serviceId={serviceId} pos={pos} setShowAddToCollectionScreen={setShowAddToCollectionScreen} />}
         <div className="serviceUp">
             <img className="serviceImage" alt="img" src={data.service.image} />
             <div className="details">
@@ -139,11 +141,11 @@ function RateScreen({serviceId}) {
     </div>
 }
 
-function AddToCollectionScreen({ setShowAddToCollectionScreen, pos }) {
+function AddToCollectionScreen({ setShowAddToCollectionScreen, pos, serviceId }) {
     const collections = useSelector(state => state.stateReducer.object.userDetails.collections);
     console.log(collections)
     console.log(pos)
-
+    const dispatch = useDispatch();
     return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 
         <div className=" addtocollform" >
@@ -154,7 +156,14 @@ function AddToCollectionScreen({ setShowAddToCollectionScreen, pos }) {
             <div className="yscroll">
                 {
                     collections.map((item, index) => {
-                        return <div style={{padding: "1em"}} className="on-surface-text title-medium">{item.name}</div>
+                        return <div onClick={async()=>{
+                            const body = await (await fetch(
+                                `http://localhost:8085/userutil/addToCollection/${item._id}/${serviceId}`
+                            )).json()
+                            dispatch(addCollection({
+                                collections: body.collections 
+                            })); 
+                        }} style={{padding: "1em"}} className="on-surface-text title-medium">{item.name}</div>
                     })
                 }
             </div>

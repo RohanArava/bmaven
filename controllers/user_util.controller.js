@@ -13,7 +13,7 @@ async function writeReview(req, res) {
         rating: req.body.rating,
     }
     console.log(newRatingObj)
-    const user = await User.findOne({userId: newRatingObj.user});
+    const user = await User.findOne({ userId: newRatingObj.user });
 
     newRatingObj.user = user._id;
     // newRatingObj.service = new ObjectId(newRatingObj.service);
@@ -43,6 +43,20 @@ async function addCollection(req, res) {
         res.json({ success: true, collections });
     } catch (err) {
         console.log(err)
+    }
+}
+
+async function addToCollection(req, res) {
+    try {
+        const collectionId = req.params.collectionId;
+        const serviceId = req.params.serviceId;
+        const collection = await Collection.findById(collectionId);
+        collection.items.push(serviceId);
+        await collection.save();
+        let collections = await Collection.find({ user: collection.user })
+        res.json({success: true, collections})
+    }catch(err){
+        console.log(err);
     }
 }
 
@@ -92,14 +106,14 @@ async function getService(req, res) {
         let num_ratings = reviews.length;
         let rating_sum = 0;
         if (num_ratings > 0) {
-            
+
             reviews.forEach((review) => {
                 rating_sum += review.rating
             })
-            for(let i=0; i<num_ratings; i++){
+            for (let i = 0; i < num_ratings; i++) {
                 const user = await User.findById(reviews[i].user);
                 console.log(user.userId)
-                reviews[i] = {...reviews[i]._doc, user: user.userId};
+                reviews[i] = { ...reviews[i]._doc, user: user.userId };
             }
             // reviews = reviews.map(async(review)=>{
             //     const user = await User.findById(review.user);
@@ -110,12 +124,12 @@ async function getService(req, res) {
 
         let rating = num_ratings === 0 ? 0 : rating_sum / num_ratings;
         let business = await Vendor.findById(service.business);
-        res.json({ service, rating, num_ratings, reviews,business:business.vendorName,  email: business.email });
+        res.json({ service, rating, num_ratings, reviews, business: business.vendorName, email: business.email });
     } catch (err) {
         console.log(err);
     }
 }
-module.exports = { writeReview, addCollection, removeCollection, searchServicebyTerm, searchServiceDefault, getService }
+module.exports = { writeReview, addCollection, removeCollection, searchServicebyTerm, searchServiceDefault, getService, addToCollection }
 // export async function getServices(req, res){
 //     const service_name = req.params.serviceName;
 

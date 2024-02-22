@@ -51,6 +51,7 @@ async function userSignIn(req, res){
         if(user.password === userObj.password){
             console.log("here");
             let collections = await Collection.find({user: user._id});
+            
             let history = await History.find({user: user._id});
             res.json({success: true,msg: "Successfully Logged In", user, collections, history})
         }

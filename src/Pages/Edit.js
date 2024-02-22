@@ -167,7 +167,7 @@ function ListItem({ element }) {
       <img
         alt="business"
         className="bimgdash"
-        src="https://www.posist.com/restaurant-times/wp-content/uploads/2023/07/9-Essential-Bakery-Business-Tips-That-Will-Make-Your-Bakery-a-Success.jpg"
+        src={element.image} 
       ></img>
       <p className="secondary-text">{element.name}</p>
       <div className="enable">

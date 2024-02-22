@@ -17,7 +17,7 @@ const Fuse = require('fuse.js');
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(cors())
-
+app.use(express.static(path.join(__dirname, '/uploads')))
 //multer
 const storage = multer.diskStorage({
     destination: 'uploads/',
@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
   const upload = multer({ storage });
   
   app.post('/api/uploads', upload.single('image'), (req, res) => {
-    const imageUrl = `http://localhost:8085/uploads/${req.file.filename}`;
+    const imageUrl = `http://localhost:8085/${req.file.filename}`;
     res.json({ imageUrl });
   });
   

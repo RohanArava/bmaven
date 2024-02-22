@@ -16,7 +16,7 @@ const service = mongoose.Schema({
     image:{
         type:String,
     }
-})
+});
 
 const Service = mongoose.model("service", service)
 module.exports = {Service}
