@@ -1,6 +1,7 @@
 const {Rating} = require("../models/userrating.model.js") 
 const {User} = require("../models/user.model.js")
 const {Collection} = require("../models/collection.model.js")
+const {Service} = require("../models/venderservices.model.js")
 const mongoose = require("mongoose");
 let ObjectId = mongoose.Schema.Types.ObjectId;
 async function writeReview(req,res){
@@ -50,7 +51,31 @@ async function removeCollection(req, res){
         console.log(err)
     }
 }
-module.exports = {writeReview, addCollection, removeCollection}
+
+async function searchServicebyTerm(req, res){
+    const searchTerm = req.query.q;
+    const re = searchTerm;
+    try{
+        let services = await Service.find({name: {
+            $regex: re
+        }});
+        res.json({success:true, services});
+    }catch(err){
+        console.log(err)
+    }
+}
+async function searchServiceDefault(req, res){
+    const re = "*";
+    try{
+        let services = await Service.find({name: {
+            $regex: re
+        }});
+        res.json({success:true, services});
+    }catch(err){
+        console.log(err)
+    }
+}
+module.exports = {writeReview, addCollection, removeCollection, searchServicebyTerm, searchServiceDefault}
 // export async function getServices(req, res){
 //     const service_name = req.params.serviceName;
 

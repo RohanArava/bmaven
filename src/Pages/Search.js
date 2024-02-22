@@ -11,7 +11,7 @@ export default function Search() {
     const query_term = new URLSearchParams(location.search).get("q");
     const [showFilter, setShowFilter] = useState(false);
     // console.log(query_term)
-    const { loading, error, data } = useFetch(query_term&&query_term!==''?`http://localhost:8085/user/search?q=${query_term}`:"http://localhost:8085/user/search/default")
+    const { loading, error, data } = useFetch(query_term&&query_term!==''?`http://localhost:8085/userutil/search?q=${query_term}`:"http://localhost:8085/userutil/search/default")
 
     if (loading) return <Loading />;
 
