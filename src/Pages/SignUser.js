@@ -38,7 +38,7 @@ function SignUser() {
                         password: formValues.password,
                         userId: formValues.username
                     })
-                }).then((data)=>{data.json()}).then((data)=>{
+                }).then((data)=>data.json()).then((data)=>{
                     console.log(data)
                     dispatch(userLogin({
                         userName: data.user.userId,

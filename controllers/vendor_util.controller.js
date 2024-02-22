@@ -4,17 +4,19 @@ let ObjectId = mongoose.Schema.Types.ObjectId;
 async function addService(req, res){
     const serviceObj = {
         name: req.body.name,
-        desc: req.body.description,
+        desc: req.body.desc,
         business: req.body.businessId,
         image: ""
     }
-    serviceObj.business = new ObjectId(req.body.business);
+    console.log(serviceObj)
+    // serviceObj.business = new ObjectId(req.body.business);
     const newService = new Service(serviceObj);
     try{
         let service = await newService.save();
-        res.status(200).json({service});
+        let services = await Service.find({business: service.business});
+        res.status(200).json({services});
     }catch(err){
-
+        console.log(err)
     }
 }
 
@@ -29,10 +31,11 @@ async function getServices(req, res){
 }
 
 async function deleteService(req, res){
-    const serviceId = req.params.serviceId;
+    const serviceId = req.params.id;
     try{
-        await Service.deleteById(serviceId);
-        res.json({msg: "deleted"})
+        let service = await Service.findByIdAndDelete(serviceId);
+        let services = await Service.find({business: service.business});
+        res.json({msg: "deleted", services})
     }catch(err){
 
     }

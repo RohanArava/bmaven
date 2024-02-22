@@ -3,9 +3,10 @@ import "./Dashboard.css";
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import { useFetch } from '../useFetch';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Loading from './Loading';
 import Error from './Error';
+import { modifyServices } from '../app/store';
 
 function Dashboard() {
   const [serviceStyle, setServiceStyle] = useState({
@@ -21,23 +22,22 @@ function Dashboard() {
   // const [services, setServices] = useState([]);
   // const [offers, setOffers] = useState([]);
   const { loading, data, error } = useFetch("http://localhost:8085/business/dash/data");
-  const { loading: loading2, data: data2, error: error2 } = useFetch(`http://localhost:8085/vendorutil/getServices/${id}`);
-
-  if (loading || loading2) {
+  const services = useSelector(state => state.stateReducer.object.businessDetails.services);
+  if (loading ) {
     return <Loading />
   }
-  if (error || error2) {
-    console.log(error, error2);
+  if (error) {
+    console.log(error);
     return <Error />
   }
 
   const offers = data.offers;
-  const services = data2.services;
+  
   const stats = data.stats;
   return (
     <div className="DashboardMain">
       <div className="body surface">
-        <Services setRightSideStyle={setRightSideStyle} style={serviceStyle} onAnimationEnd={() => {
+        <Services businessId={id} setRightSideStyle={setRightSideStyle} style={serviceStyle} onAnimationEnd={() => {
           setServiceStyle({ top: "0vh", position: "relative" });
           console.log(services);
         }} services={services} />
@@ -47,10 +47,43 @@ function Dashboard() {
   );
 }
 
-export function Services({ style, onAnimationEnd, setRightSideStyle, services }) {
-  const [serviceList, setServiceList] = useState([]);
+function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
+  const [collName, setCollName] = useState("")
+  const [serDesc, setSerDesc] = useState("")
+  const dispatch = useDispatch();
+  console.log(pos)
+  return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 
-  return (
+    <div className="addtocollform" >
+      <div style={{ display: "grid", gridTemplateColumns: "10fr 2fr" }}>
+        <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Collection </span>
+        <span onClick={() => { setShowAddToCollectionScreen(false) }} className="on-surface-text material-symbols-rounded"> close</span></div>
+      <br />
+      <input type="text" value={collName} onChange={(e) => { setCollName(e.target.value) }} placeholder="Enter Service Name"></input>
+      <input type="text" value={serDesc} onChange={(e) => { setSerDesc(e.target.value) }} placeholder="Enter Service Desc"></input>
+      <button onClick={() => {
+        fetch("http://localhost:8085/vendorutil/addService", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            businessId: userId,
+            name: collName,
+            desc: serDesc
+          })
+        }).then((body) => body.json()).then((body) => {
+          setShowAddToCollectionScreen(false);
+          dispatch(modifyServices({services:body.services}))
+        })
+      }}>Add</button>
+    </div>
+  </div></>
+}
+
+export function Services({ style, onAnimationEnd, setRightSideStyle, services, businessId }) {
+  const [serviceList, setServiceList] = useState([]);
+  const [showAddCollection, setShowAddCollection] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  return (<>    {showAddCollection && <AddCollectionScreen userId={businessId} pos={pos} setShowAddToCollectionScreen={setShowAddCollection} />}
     <div className="leftList" style={style} onAnimationEnd={() => {
       onAnimationEnd();
       setServiceList(services);
@@ -61,13 +94,11 @@ export function Services({ style, onAnimationEnd, setRightSideStyle, services })
         }, [style]);
       }
     }}>
-      <p className="secondary-text headline-small">Services <span onClick={()=>{
-        
-      }} className="material-symbols-rounded header-small primary-text">add</span></p>
+      <p className="secondary-text headline-small">Services <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddCollection(!showAddCollection); }} className="material-symbols-rounded header-small primary-text">add</span></p>
       {serviceList.map((element, i) => {
         return <ListItem setRightSideStyle={i === serviceList.length - 1 ? setRightSideStyle : null} style={{ top: "100vh", position: "absolute", animation: "slideiny 400ms ease-out" }} element={element} key={i} />
       })}
-    </div>
+    </div></>
   );
 }
 

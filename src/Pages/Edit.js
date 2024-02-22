@@ -5,13 +5,17 @@ import Toggle from "react-toggle";
 import "react-toggle/style.css";
 import "./Edit.css";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { modifyServices } from '../app/store';
 
 export default function Edit() {
+  const services = useSelector(state => state.stateReducer.object.businessDetails.services);
   const { loading, data, error } = useFetch(
     "http://localhost:8085/business/dash/data"
   );
   const [showAddServiceCoupon, setShowAddServiceCoupon] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
+  const id = useSelector(state => state.stateReducer.object.businessDetails.id)
   if (loading) {
     return <Loading />;
   }
@@ -20,11 +24,11 @@ export default function Edit() {
     return <Error />;
   }
  
-  const services = data.services;
+  // const services = data.services;
   const offers = data.offers;
   return (
     <div className="wrap">
-      {showAddServiceCoupon && <AddServiceCoupon pos={pos} setShowAddServiceCoupon={setShowAddServiceCoupon} />}
+      {showAddServiceCoupon && <AddServiceCoupon userId={id} pos={pos} setShowAddServiceCoupon={setShowAddServiceCoupon} />}
       <div className="services">
         <p className="secondary-text headline-medium">Services &amp; Offers <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddServiceCoupon(!showAddServiceCoupon); }} className="material-symbols-rounded header-medium primary-text" style={{marginLeft:"8em"}}>add</span></p>
         {services.map((element, i) => {
@@ -157,6 +161,7 @@ export default function Edit() {
 }
 
 function ListItem({ element }) {
+  const dispatch = useDispatch()
   return (
     <div className="secondary-container listItem">
       <img
@@ -171,20 +176,46 @@ function ListItem({ element }) {
           <span className="slider round"></span>
         </label> */}
       </div>
-      <span className="material-symbols-rounded primary-text">Delete</span>
+      <span onClick={()=>{
+        fetch(`http://localhost:8085/vendorutil/deleteService/${element._id}`).then((body) => body.json()).then((body) => {
+          console.log(body);
+          dispatch(modifyServices({services:body.services}))
+        })
+      }} className="material-symbols-rounded primary-text">Delete</span>
     </div>
   );
 }
 
 
-function AddServiceCoupon({ setShowAddServiceCoupon, pos }) {
+function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
+  const [collName, setCollName] = useState("")
+  const [serDesc, setSerDesc] = useState("")
+  const dispatch = useDispatch();
+  console.log(pos)
   return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 
-      <div className=" addtocollform" >
-          <div style={{display:"grid", gridTemplateColumns:"10fr 2fr"}}>
-              <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Service or Coupon </span>
-              <span onClick={() => { setShowAddServiceCoupon(false) }} className="on-surface-text material-symbols-rounded"> close</span></div>
-              <br/>
-      </div>
+    <div className="addtocollform" >
+      <div style={{ display: "grid", gridTemplateColumns: "10fr 2fr" }}>
+        <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Collection </span>
+        <span onClick={() => { setShowAddServiceCoupon(false) }} className="on-surface-text material-symbols-rounded"> close</span></div>
+      <br />
+      <input type="text" value={collName} onChange={(e) => { setCollName(e.target.value) }} placeholder="Enter Service Name"></input>
+      <input type="text" value={serDesc} onChange={(e) => { setSerDesc(e.target.value) }} placeholder="Enter Service Desc"></input>
+      <button onClick={() => {
+        fetch("http://localhost:8085/vendorutil/addService", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            businessId: userId,
+            name: collName,
+            desc: serDesc
+          })
+        }).then((body) => body.json()).then((body) => {
+          setShowAddServiceCoupon(false);
+          console.log(body);
+          dispatch(modifyServices({services:body.services}))
+        })
+      }}>Add</button>
+    </div>
   </div></>
 }

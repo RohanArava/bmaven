@@ -75,6 +75,23 @@ const result_reducer = (state = initial_state, action) => {
           }
         }
       };
+    case "MODIFY_SERVICES":
+      return {
+        object: {
+          signedIn: true,
+          isBusiness: true,
+          businessDetails: {
+            ...state.object.businessDetails,
+            services: action.payload.services,
+          },
+          userDetails: {
+            userName: "",
+            userId: "",
+            collections: [],
+            history: []
+          }
+        }
+      };
     case "USER_LOGOUT":
       return {
         object: {
@@ -121,6 +138,13 @@ export const addCollection = (newObj)=>{
   return {
     type: "MODIFY_COLLECTIONS",
     payload: newObj
+  }
+}
+
+export const modifyServices = (newObj)=>{
+  return {
+    type: "MODIFY_SERVICES",
+    payload: newObj 
   }
 }
 
