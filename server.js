@@ -1,6 +1,9 @@
 const express = require("express");
 var cors = require('cors')
 var app = express()
+const morgan = require('morgan')
+const path =  require('path');
+var rfs = require('rotating-file-stream') 
 require("dotenv").config();
 require("./database/connectmongodb").connectMongoDB();
 const authRouter = require("./routes/auth.route").router;
@@ -13,6 +16,17 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(cors())
 
+
+//morgan
+
+// create a rotating write stream
+var accessLogStream = rfs.createStream('access.log', {
+    interval: '30m', // rotate 30 minutes
+    path: path.join(__dirname, 'log')
+  })
+   
+  // setup the logger
+  app.use(morgan('combined', { stream: accessLogStream }))
 const fuseOptions = {
 	// isCaseSensitive: false,
 	includeScore: true,
