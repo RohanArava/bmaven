@@ -4,7 +4,7 @@ const { Collection } = require("../models/collection.model.js")
 const { Service } = require("../models/venderservices.model.js")
 const { Vendor } = require("../models/vendor.model.js")
 const mongoose = require("mongoose");
-let ObjectId = mongoose.Schema.Types.ObjectId;
+// let ObjectId = mongoose.Schema.Types.ObjectId;
 async function writeReview(req, res) {
     const newRatingObj = {
         user: req.body.userId,
@@ -12,16 +12,19 @@ async function writeReview(req, res) {
         review: req.body.review,
         rating: req.body.rating,
     }
-    newRatingObj.user = new ObjectId(newRatingObj.user);
-    newRatingObj.service = new ObjectId(newRatingObj.service);
-    const newRating = new Rating(newRatingObj);
-    console.log(newRating)
-    try {
-        await newRating.save().then((newRating) => {
-            res.status(200).send({ msg: "review added successfully", ...newRating })
-        })
-    } catch (erorr) {
+    console.log(newRatingObj)
+    const user = await User.findOne({userId: newRatingObj.user});
 
+    newRatingObj.user = user._id;
+    // newRatingObj.service = new ObjectId(newRatingObj.service);
+    const newRating = new Rating(newRatingObj);
+    console.log(newRatingObj)
+    try {
+        newRating.save().then((newRating) => {
+            res.status(200).send({ msg: "review added successfully", review: newRating })
+        })
+    } catch (err) {
+        console.log(err);
     }
 }
 
@@ -89,9 +92,20 @@ async function getService(req, res) {
         let num_ratings = reviews.length;
         let rating_sum = 0;
         if (num_ratings > 0) {
-            reviews.foreach((review) => {
+            
+            reviews.forEach((review) => {
                 rating_sum += review.rating
             })
+            for(let i=0; i<num_ratings; i++){
+                const user = await User.findById(reviews[i].user);
+                console.log(user.userId)
+                reviews[i] = {...reviews[i]._doc, user: user.userId};
+            }
+            // reviews = reviews.map(async(review)=>{
+            //     const user = await User.findById(review.user);
+            //     return {...review, user: user.userId}
+            // })
+            console.log(reviews)
         }
 
         let rating = num_ratings === 0 ? 0 : rating_sum / num_ratings;

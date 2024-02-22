@@ -9,10 +9,13 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 export default function Service({showDown=true, serviceId=undefined}) {
     const location = useLocation();
+    const stateObject = useSelector(state=>state.stateReducer.object);
+    // const collections = stateObject.userDetails.collections
     if (!serviceId){
         serviceId = location.pathname.split("/")[3]
     }
     console.log(serviceId) 
+
     const { loading, error, data } = useFetch(`http://localhost:8085/userutil/getService/${serviceId}`);
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [showAddToCollectionScreen, setShowAddToCollectionScreen] = useState(false);
@@ -62,7 +65,7 @@ export default function Service({showDown=true, serviceId=undefined}) {
                 {data.reviews && data.reviews.map((item, index) => {
                     return <ReviewItem key={index} service={data.service.name} business={data.business} review={item}></ReviewItem>
                 })}
-                <RateScreen />
+                <RateScreen serviceId={serviceId} />
             </div>
             <div className="additional">
                 <p className="on-surface-text headline-medium">Additional Information</p>
@@ -94,22 +97,44 @@ export function ReviewItem({ review, service, business }) {
     </div>
 }
 
-function RateScreen() {
+function RateScreen({serviceId}) {
+    const stateObject = useSelector(state=>state.stateReducer.object);
+    const signedIn = stateObject.signedIn;
+    const isUser = !stateObject.isBusiness;
+    const userId = stateObject.userDetails.userId;
+    const [rating, setRating] = useState(5);
+    const [review, setReview] = useState("");
+    if (!signedIn || !isUser || !userId){
+        return <div></div>
+    }
     return <div className="rateScreen">
         {/* <div onClick={()=>{setShowRateScreen(false)}}><span className="header-large primary-text filter material-symbols-rounded">close</span></div> */}
 
         <div className="rating-form">
             <div className="df"><p style={{ marginTop: "10px" }} className="on-surface-text headline-medium">Rate </p></div><ReactStars
-                count={5}
+                count={rating}
                 // isHalf={true}
                 size={32}
                 activeColor="rgb(212, 232, 208)"
-            // edit={false}
-            // className="on-surface-text headline-large primary-text"
-
+                onChange={(val)=>{
+                    console.log(val);
+                    setRating(val);
+                }}
             />
-            <textarea placeholder="Write a Review...." style={{ marginTop: "10px" }}></textarea>
-            <div style={{ marginTop: "10px" }} className="al-sl-rt on-surface-text material-symbols-rounded fill-icon icon contactIcon">send</div>
+            <textarea value={review} onChange={(e)=>{setReview(e.target.value)}} placeholder="Write a Review...." style={{ marginTop: "10px" }}></textarea>
+            <div onClick={async()=>{
+                const body = await fetch("http://localhost:8085/userutil/writeReview",{
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body:JSON.stringify({
+                        serviceId, userId, rating, review
+                    })
+                }).json()
+                alert("Success"); 
+                console.log(body);
+            }} style={{ marginTop: "10px" }} className="al-sl-rt on-surface-text material-symbols-rounded fill-icon icon contactIcon">send</div>
         </div>
     </div>
 }
@@ -118,6 +143,7 @@ function AddToCollectionScreen({ setShowAddToCollectionScreen, pos }) {
     const collections = useSelector(state => state.stateReducer.object.userDetails.collections);
     console.log(collections)
     console.log(pos)
+
     return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 
         <div className=" addtocollform" >
