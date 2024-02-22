@@ -4,8 +4,8 @@ var app = express()
 const multer = require('multer');
 
 const morgan = require('morgan')
-const path =  require('path');
-var rfs = require('rotating-file-stream') 
+const path = require('path');
+var rfs = require('rotating-file-stream')
 require("dotenv").config();
 require("./database/connectmongodb").connectMongoDB();
 const authRouter = require("./routes/auth.route").router;
@@ -14,7 +14,7 @@ const vendorUtilRouter = require("./routes/vendor_util.routes").router;
 var offers = require("./offers.json")
 var services = require("./services.json")
 const Fuse = require('fuse.js');
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
 app.use(express.static(path.join(__dirname, '/uploads')))
@@ -22,18 +22,19 @@ app.use(express.static(path.join(__dirname, '/uploads')))
 const storage = multer.diskStorage({
     destination: 'uploads/',
     filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
+        cb(null, `${Date.now()}-${file.originalname}`);
     },
-  });
-  
-  const upload = multer({ storage });
-  
-  app.post('/api/uploads', upload.single('image'), (req, res) => {
+});
+
+const upload = multer({ storage });
+const apiRouter = express.Router();
+apiRouter.use( upload.single('image'))
+apiRouter.post('/uploads', (req, res) => {
     const imageUrl = `http://localhost:8085/${req.file.filename}`;
     res.json({ imageUrl });
-  });
-  
-  
+});
+app.use("/api", apiRouter);
+
 
 //morgan
 
@@ -41,28 +42,28 @@ const storage = multer.diskStorage({
 var accessLogStream = rfs.createStream('access.log', {
     interval: '30m', // rotate 30 minutes
     path: path.join(__dirname, 'log')
-  })
-   
-  // setup the logger
-  app.use(morgan('combined', { stream: accessLogStream }))
+})
+
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }))
 const fuseOptions = {
-	// isCaseSensitive: false,
-	includeScore: true,
-	shouldSort: true,
-	// includeMatches: false,
-	// findAllMatches: false,
-	// minMatchCharLength: 1,
-	// location: 0,
-	threshold: 0.95,
-	// distance: 100,
-	// useExtendedSearch: false,
-	// ignoreLocation: false,
-	// ignoreFieldNorm: false,
-	// fieldNormWeight: 1,
-	keys: [
-		"name",
+    // isCaseSensitive: false,
+    includeScore: true,
+    shouldSort: true,
+    // includeMatches: false,
+    // findAllMatches: false,
+    // minMatchCharLength: 1,
+    // location: 0,
+    threshold: 0.95,
+    // distance: 100,
+    // useExtendedSearch: false,
+    // ignoreLocation: false,
+    // ignoreFieldNorm: false,
+    // fieldNormWeight: 1,
+    keys: [
+        "name",
         "desc"
-	]
+    ]
 };
 
 
@@ -76,14 +77,14 @@ app.get("/business/dash/data", (req, res) => {
             views: 20,
             avgRating: 4.5,
             revenue: 7000,
-            viewGraph: [6,8.7,8,8.7,8,8.7,8.7,8,8.7,8,8.7,8,7,8.9,8.7,8,8.7,8,8.7,5]
+            viewGraph: [6, 8.7, 8, 8.7, 8, 8.7, 8.7, 8, 8.7, 8, 8.7, 8, 7, 8.9, 8.7, 8, 8.7, 8, 8.7, 5]
         }
     });
 })
-app.get("/business/sign", (req, res)=>{
-    res.status(200).send({message: "done"});
+app.get("/business/sign", (req, res) => {
+    res.status(200).send({ message: "done" });
 })
-app.get("/user/sign", (req, res)=>{
+app.get("/user/sign", (req, res) => {
     res.status(200).send({
         userName: "Rohan Arava",
         userId: "rohan_arava",
@@ -95,7 +96,7 @@ app.get("/user/sign", (req, res)=>{
                     { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
                     { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
                 ],
-        
+
             },
             {
                 name: "Three Eyed Raven",
@@ -104,7 +105,7 @@ app.get("/user/sign", (req, res)=>{
                     { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
                     { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
                 ],
-        
+
             },
             {
                 name: "Drogon's Birthday",
@@ -112,9 +113,9 @@ app.get("/user/sign", (req, res)=>{
                     { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
                     { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
                     { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
-                    
+
                 ],
-        
+
             },
             {
                 name: "Sansa's Coronation",
@@ -123,7 +124,7 @@ app.get("/user/sign", (req, res)=>{
                     { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
                     { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
                 ],
-        
+
             },
             {
                 name: "Welcome Back Arya",
@@ -132,7 +133,7 @@ app.get("/user/sign", (req, res)=>{
                     { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
                     { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
                 ],
-        
+
             },
             {
                 name: "Trip to Braavos",
@@ -140,11 +141,11 @@ app.get("/user/sign", (req, res)=>{
                     { id: 1, name: "Snow Tailors", image: "https://i.pinimg.com/564x/89/66/1c/89661c6535d7d9c49b19b034151afd1f.jpg" },
                     { id: 2, name: "Stark Kitchen", image: "https://i.pinimg.com/474x/ea/24/62/ea2462428d2baa42a96d484c062a0743.jpg" },
                     { id: 1, name: "Little Finger Pastries", image: "https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" },
-                    
+
                 ],
             },
         ],
-        history:[
+        history: [
             {
                 name: "Wedding Cake | 3 Floor | Bride and Groom",
                 serviceName: "Little Finger Pastries",
@@ -176,30 +177,34 @@ app.get("/user/sign", (req, res)=>{
     })
 });
 
-app.get("/user/search/default", (req, res)=>{ 
-    
+app.get("/user/search/default", (req, res) => {
+
     res.status(200).send({
         services
     });
 });
 
-app.get("/user/search", (req, res)=>{
+app.get("/user/search", (req, res) => {
     const query = req.query.q;
     const fuse = new Fuse(services, fuseOptions);
     const result = fuse.search(query)
     console.log(result)
-    res.status(200).send({services: result.filter((item)=>item.score<=0.3).map((item)=>item.item)});
+    res.status(200).send({ services: result.filter((item) => item.score <= 0.3).map((item) => item.item) });
 });
 
-app.get("/service/:id", (req, res)=>{
+app.get("/service/:id", (req, res) => {
     const id = req.params.id;
-    const result = services.filter((item)=>item.id===parseInt(id))
-    if(result.length === 0){
-        res.status(404).send({error: "Not Found"});
+    const result = services.filter((item) => item.id === parseInt(id))
+    if (result.length === 0) {
+        res.status(404).send({ error: "Not Found" });
         return;
     }
-    res.status(200).send({service: result[0]});
+    res.status(200).send({ service: result[0] });
 });
+
+app.use((err, req, res, next)=>{
+    res.json({error: req.errmsg || "Something went wrong"});
+})
 
 app.listen(process.env.PORT, (err) => {
     if (err) console.log("error", err);
