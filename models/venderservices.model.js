@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import Vendor from "./vendor.model";
+const mongoose = require("mongoose")
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const service = mongoose.Schema({
     name:{
@@ -12,7 +11,7 @@ const service = mongoose.Schema({
     },
     business:{
         type:ObjectId,
-        ref: Vendor
+        ref: 'vendor'
     },
     image:{
         type:String,
@@ -20,4 +19,4 @@ const service = mongoose.Schema({
 })
 
 const Service = mongoose.model("service", service)
-export default Service
+module.exports = {Service}

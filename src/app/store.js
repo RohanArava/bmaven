@@ -5,6 +5,7 @@ const initial_state = {
     signedIn: false,
     isBusiness: false,
     businessDetails: {
+      id: "",
       offers: [],
       services: [],
       stats: {}
@@ -38,12 +39,30 @@ const result_reducer = (state = initial_state, action) => {
           }
         }
       };
+    case "MODIFY_COLLECTIONS":
+      console.log("state: ", state)
+      return {
+        object: {
+          signedIn: true,
+          isBusiness: false,
+          businessDetails: { 
+            offers: [],
+            services: [],
+            stats: {}
+          },
+          userDetails: {
+            ...state.object.userDetails,
+            collections: action.payload.collections
+          }
+        }
+      }
     case "BUSINESS_LOGIN":
       return {
         object: {
           signedIn: true,
           isBusiness: true,
           businessDetails: {
+            id: action.payload.id,
             offers: action.payload.offers,
             services: action.payload.services,
             stats: action.payload.stats,
@@ -95,6 +114,13 @@ export const businessLogin = (newObj) =>{
 export const userLogout = () =>{
   return {
     type: "USER_LOGOUT"
+  }
+}
+
+export const addCollection = (newObj)=>{
+  return {
+    type: "MODIFY_COLLECTIONS",
+    payload: newObj
   }
 }
 

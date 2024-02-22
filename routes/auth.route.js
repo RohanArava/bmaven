@@ -1,11 +1,13 @@
-import express  from "express";
-import usersignUp from "../controllers/usersignup.controller.js"
-import vendorsignUp from "../controllers/vendorsignup.controller.js"
+const express = require("express");
+const {userSignUp, userSignIn, isUserIdAvailable} = require("../controllers/userauth.controller.js")
+const {vendorSignUp, vendorSignIn} = require("../controllers/vendorauth.controller.js")
 const router = express.Router()
 //router.get("/user/sign",userSign);
-router.post("/user/signup",usersignUp);
-
+router.post("/user/signup",userSignUp);
+router.post("/user/signin",userSignIn);
+router.get("/user/userIdAvail",isUserIdAvailable);
 //router.get("/business/sign",businessSign);
-router.post("/vendor/signup",vendorsignUp);
+router.post("/vendor/signup",vendorSignUp);
+router.post("/vendor/signin",vendorSignIn);
 
-export default router;
+module.exports = {router}

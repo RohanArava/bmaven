@@ -1,10 +1,9 @@
-import mongoose from "mongoose"
-import Rating from "./userrating.model";
+const mongoose = require("mongoose")
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const reviewReportSchema = mongoose.Schema({
     review: {
         type: ObjectId,
-        ref: Rating
+        ref: 'rating'
     },
     cause:{
         type: String,
@@ -15,4 +14,4 @@ const reviewReportSchema = mongoose.Schema({
     }
 },)
 const ReviewReport = mongoose.model('reviewreport', reviewReportSchema);
-export default ReviewReport
+module.exports = {ReviewReport}

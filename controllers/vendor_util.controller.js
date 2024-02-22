@@ -1,13 +1,12 @@
-import Service from "../models/venderservices.model";
-import mongoose from "mongoose";
-
+const {Service} = require("../models/venderservices.model");
+const mongoose = require("mongoose");
 let ObjectId = mongoose.Schema.Types.ObjectId;
-export async function addService(req, res){
+async function addService(req, res){
     const serviceObj = {
         name: req.body.name,
         desc: req.body.description,
         business: req.body.businessId,
-        image: req.body.image
+        image: ""
     }
     serviceObj.business = new ObjectId(req.body.business);
     const newService = new Service(serviceObj);
@@ -19,7 +18,17 @@ export async function addService(req, res){
     }
 }
 
-export async function deleteService(req, res){
+async function getServices(req, res){
+    try{
+    const services = await Service.find({business: req.params.id});
+    console.log("here: ", services);
+    res.status(200).json({services, success:true});
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function deleteService(req, res){
     const serviceId = req.params.serviceId;
     try{
         await Service.deleteById(serviceId);
@@ -29,3 +38,4 @@ export async function deleteService(req, res){
     }
 }
 
+module.exports = {addService, deleteService, getServices}

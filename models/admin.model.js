@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 
 const adminSchema = mongoose.Schema({
     email:{
@@ -15,4 +15,4 @@ const adminSchema = mongoose.Schema({
 
 const Admin = mongoose.model("admin", adminSchema)
 
-export default Admin
+module.exports = { Admin }

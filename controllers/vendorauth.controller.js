@@ -1,40 +1,44 @@
-import Vendor from "../models/vendor.model.js"
-
-export async function vendorSignUp(req, res){
+const {Vendor} = require("../models/vendor.model.js")
+const {Service} = require("../models/venderservices.model.js")
+async function vendorSignUp(req, res){
     const newVendorObj = {
         email: req.body.email,
         password: req.body.password,
         vendorName: req.body.vendorName
     };
-    let count = await Vendor.count({email: newVendorObj.email});
-    if(count > 0){
+    let vendor = await Vendor.findOne({email: newVendorObj.email});
+    if(vendor){
         res.json({error: "This email already exists"})
         return;
     }
     const newUser = new Vendor(newVendorObj);
     console.log(newUser)
     try {
-        let vendor = await newUser.save()
-        res.status(200).send({vendor});
+        let vendor = await newUser.save();
+        res.status(200).send({vendor, services:[], offers:[]});
     }
     catch(err){
-
+        console.log(err)
     }
 }
 
-export function vendorSignIn(req, res){
+function vendorSignIn(req, res){
     const userObj = {
         email: req.body.email,
         password: req.body.password
     }
-    Vendor.findOne({email: userObj.email}, (err, user) => {
-        if(err) {}
+    Vendor.findOne({email: userObj.email}).then(async (user) => {
         if(!user){
             res.json({error: "Email Not Found"});
             return;
         }
         if(user.password === userObj.password){
-            res.json({msg: "Successfully Logged In", ...user})
+            const services = await Service.find({business: user._id});
+            res.json({success: true, msg: "Successfully Logged In", vendor: user, services, offers:[]})
         }
     })
+}
+
+module.exports = {
+    vendorSignIn, vendorSignUp
 }

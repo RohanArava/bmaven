@@ -1,18 +1,18 @@
-import mongoose from "mongoose"
-import User from "./user.model"
-import Service from "./service.model"
+const mongoose = require("mongoose")
+const User = require("./user.model")
+const Service = require("./service.model")
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const viewSchema = mongoose.Schema({
     user:{
         type:ObjectId,
-        ref: User,
+        ref: 'user',
         required:true,
     },
     service:{
         type:ObjectId,
-        ref: Service,
+        ref: 'service',
         required:true,
     },
 });
 const view = mongoose.model("view",viewSchema)
-export default view
+module.exports = {view}

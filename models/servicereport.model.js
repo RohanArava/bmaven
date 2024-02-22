@@ -1,15 +1,13 @@
-import mongoose from "mongoose"
-import User from "./user.model";
-import Service from "./venderservices.model";
+const mongoose = require("mongoose")
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const serviceReportSchema = mongoose.Schema({
     user:{
         type: ObjectId,
-        ref: User
+        ref: 'user'
     },
     service:{
         type: ObjectId,
-        ref: Service
+        ref: 'service'
     },
     cause:{
         type: String,
@@ -20,4 +18,4 @@ const serviceReportSchema = mongoose.Schema({
     }
 },)
 const ServiceReport = mongoose.model('servicereport', serviceReportSchema);
-export default ServiceReport
+module.exports = {ServiceReport}

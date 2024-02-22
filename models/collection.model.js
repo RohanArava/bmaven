@@ -1,6 +1,4 @@
-import mongoose from "mongoose"
-import Service from "./venderservices.model";
-import User from "./user.model";
+const mongoose = require("mongoose")
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const collectionSchema = mongoose.Schema({
     name: {
@@ -8,16 +6,16 @@ const collectionSchema = mongoose.Schema({
     },
     user:{
       type: ObjectId,
-      ref: User
+      ref: 'user'
     },
     items: [
       {
         id: {
           type: ObjectId,
-          ref: Service
+          ref: 'service'
         }
       },
     ],
   },)
 const Collection = mongoose.model('collection', collectionSchema);
-export default Collection
+module.exports = { Collection }

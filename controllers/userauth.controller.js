@@ -1,14 +1,16 @@
-import  User from "../models/user.model.js";
-
-
-export  async function userSignUp(req,res){
+const {User} = require("../models/user.model.js");
+const {Collection} = require("../models/collection.model.js");
+const {History} = require("../models/history.model.js");
+async function userSignUp(req,res){
     const newUserObj = {
         email: req.body.email,
         password: req.body.password,
         userId: req.body.userId,
     };
-    let count = await User.count({email: newUserObj.email});
-    if(count > 0){
+    console.log(req.body)
+    console.log(newUserObj);
+    let user = await User.findOne({email: newUserObj.email});
+    if(user){
         res.json({error: "This email already exists"})
         return;
     }
@@ -16,42 +18,47 @@ export  async function userSignUp(req,res){
     console.log(newUser)
     try {
         let user = await newUser.save();
-        res.status(200).send({user});
+        res.status(200).send({user, collections:[], history: []});
     }
     catch(err){
-
+        console.log(err)
     }
 }
 
-export async function isUserIdAvailable(req, res){
-    User.count({
-        userId: req.params.userId
-    },(err, count)=>{
-        if(err){
-            return res.json({error: "Something went wrong"})
-        }
-        if(count > 0){
-            res.json({is_available: false})
-        }else{
-            res.json({is_available: true})
-        }
+async function isUserIdAvailable(req, res){
+    let user = await User.findOne({
+        userId: req.query.userId
     });
-
+    console.log(req.query.userId)
+    if(user){
+        res.json({is_available: false})
+    }else{
+        res.json({is_available: true})
+    }
 }
 
-export function userSignIn(req, res){
+async function userSignIn(req, res){
     const userObj = {
         email: req.body.email,
         password: req.body.password
     }
-    User.findOne({email: userObj.email}, (err, user) => {
-        if(err) {}
+    console.log(userObj, req.body)
+    User.findOne({email: userObj.email}).then(async (user) => {
         if(!user){
             res.json({error: "Email Not Found"});
             return;
         }
         if(user.password === userObj.password){
-            res.json({msg: "Successfully Logged In", user})
+            console.log("here");
+            let collections = await Collection.find({user: user._id});
+            let history = await History.find({user: user._id});
+            res.json({success: true,msg: "Successfully Logged In", user, collections, history})
         }
     })
+}
+
+module.exports = {
+    userSignUp,
+    userSignIn, 
+    isUserIdAvailable
 }

@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./SignUser.css"
 import {useDispatch} from "react-redux";
-import {userLogin} from "../app/store";
+import {userLogin, businessLogin} from "../app/store";
 // import useFetch from "../useFetch"
 function SignUser() {
     const initialValues = { username: "", email: "", password: "" };
@@ -28,15 +28,87 @@ function SignUser() {
         console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit && isUser) {
             console.log(formValues);
-            fetch("http://localhost:8085/user/sign")
-            .then(data => data.json())
-            .then(data => {dispatch(userLogin(data)); navigate("/u/profile")});
+            // fetch("http://localhost:8085/user/sign")
+            // .then(data => data.json())
+            // .then(data => {dispatch(userLogin(data)); navigate("/u/profile")});
+            if(signUp){
+                fetch("http://localhost:8085/auth/user/signup", {
+                    method:"POST", headers:{'content-type': "application/json"}, body:JSON.stringify({
+                        email: formValues.email,
+                        password: formValues.password,
+                        userId: formValues.username
+                    })
+                }).then((data)=>{data.json()}).then((data)=>{
+                    console.log(data)
+                    dispatch(userLogin({
+                        userName: data.user.userId,
+                        userId: data.user.userId,
+                        collections: data.collections,
+                        history: data.history
+                    }));
+                    navigate("/u/profile");
+                });
+            } else{
+                fetch("http://localhost:8085/auth/user/signin", {
+                    method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
+                        email: formValues.email,
+                        password: formValues.password,
+                    })
+                }).then((data)=>data.json()).then((data)=>{
+                    console.log(data); 
+                    dispatch(userLogin({
+                        userName: data.user.userId,
+                        userId: data.user.userId,
+                        collections: data.collections,
+                        history: data.history
+                    }));
+                    navigate("/u/profile");
+                });
+            }
         }
         else if(Object.keys(formErrors).length === 0 && isSubmit && !isUser){
             console.log(formValues);
-            fetch("http://localhost:8085/business/sign")
-            .then(data => data.json())
-            .then(data => {dispatch(userLogin(data)); navigate("/b/dash")});
+            // fetch("http://localhost:8085/business/sign")
+            // .then(data => data.json())
+            // .then(data => {dispatch(userLogin(data)); navigate("/b/dash")});
+            if(signUp){
+                fetch("http://localhost:8085/auth/vendor/signup", {
+                    method:"POST", headers:{'content-type': "application/json"}, body:JSON.stringify({
+                        email: formValues.email,
+                        password: formValues.password,
+                        vendorName: formValues.username
+                    })
+                }).then((data)=>data.json()).then((data)=>{
+                    if(data.error){
+                        console.log(data);
+                        return;
+                    }
+                    console.log(data)
+                    dispatch(businessLogin({
+                        id: data.vendor._id,
+                        offers: data.offers,
+                        services: data.services,
+                        stats: {}
+                    }));
+                    navigate("/b/dash");
+                });
+            } else{
+                fetch("http://localhost:8085/auth/vendor/signin", {
+                    method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
+                        email: formValues.email,
+                        password: formValues.password,
+                    })
+                }).then((data)=>data.json()).then((data)=>{
+                    console.log(data); 
+                    dispatch(businessLogin({
+                        id: data.vendor._id,
+                        offers: data.offers,
+                        services: data.services,
+                        stats: {}
+                    }));
+                    navigate("/b/dash");
+                });
+            }
         }
     }, [formErrors]);
     const validate = (values) => {

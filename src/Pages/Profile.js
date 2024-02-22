@@ -4,6 +4,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { createRef } from "react";
 import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {addCollection} from "../app/store";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 import {useNavigate} from "react-router-dom";
 
@@ -21,7 +23,7 @@ export default function Profile() {
     const data = useSelector(state => state.stateReducer.object.userDetails);
     console.log("userDetails", data);
     return <div className="profile">
-        {showAddCollection && <AddCollectionScreen pos={pos} setShowAddToCollectionScreen={setShowAddCollection} />}
+        {showAddCollection && <AddCollectionScreen userId={data.userId} pos={pos} setShowAddToCollectionScreen={setShowAddCollection} />}
         <span className="headline-medium primary-text name">{data.userName}
             <span onClick={() => { navigator.clipboard.writeText("rohan_arava") }} className="title-medium on-surface-text id">@{data.userId}</span></span>
 
@@ -50,6 +52,7 @@ playlist_add
 function CollectionsItem({ item }) {
     // const [imgNum, setImgNum] = useState(0);
     const [autoPlay, setAutoPlay] = useState(false)
+    const dispatch = useDispatch();
     // const it = {
     //     name: "Daenerys's wedding",
     //     items: [
@@ -66,7 +69,19 @@ function CollectionsItem({ item }) {
 
         </div>
             <div className="lbWrap">
-                <span className="material-symbols-rounded on-surface-text">favorite</span>
+                <span onClick={()=>{
+                fetch("http://localhost:8085/userutil/removecoll", {
+                    method:"POST",
+                    headers: {"content-type": "application/json"},
+                    body: JSON.stringify({
+                        collID: it._id
+                    })
+                }).then((body)=>body.json()).then((body)=>{
+                        dispatch(addCollection({
+                            collections: body.collections
+                        }));
+                    })
+            }} className="material-symbols-rounded on-surface-text">delete</span>
                 <span className="material-symbols-rounded on-surface-text">share</span>
             </div>
         </div>
@@ -143,8 +158,10 @@ function HistoryItem({ item }) {
         </div></div>
 }
 
-function AddCollectionScreen({ setShowAddToCollectionScreen, pos }) {
+function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
+    const [collName, setCollName] = useState("")
     console.log(pos)
+    const dispatch = useDispatch();
     return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 
         <div className="addtocollform" >
@@ -152,7 +169,22 @@ function AddCollectionScreen({ setShowAddToCollectionScreen, pos }) {
                 <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Collection </span>
                 <span onClick={() => { setShowAddToCollectionScreen(false) }} className="on-surface-text material-symbols-rounded"> close</span></div>
                 <br/>
-            <input type="text" placeholder="Enter Collection Name"></input>
+            <input type="text" value={collName} onChange={(e)=>{setCollName(e.target.value)}} placeholder="Enter Collection Name"></input>
+            <button onClick={()=>{
+                fetch("http://localhost:8085/userutil/addcoll", {
+                    method:"POST",
+                    headers: {"content-type": "application/json"},
+                    body: JSON.stringify({
+                        userId,
+                        name: collName
+                    })
+                }).then((body)=>body.json()).then((body)=>{
+                        dispatch(addCollection({
+                            collections: body.collections
+                        }));
+                        setShowAddToCollectionScreen(false);
+                    })
+            }}>Add</button>
         </div>
     </div></>
 }

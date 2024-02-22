@@ -1,16 +1,14 @@
-import mongoose from "mongoose"
-import User from "./user.model"
-import Service from "./service.model"
+const mongoose = require("mongoose")
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const ratingSchema = mongoose.Schema({
     user:{
         type:ObjectId,
-        ref: User,
+        ref: 'user',
         required:true,
     },
     service:{
         type:ObjectId,
-        ref: Service,
+        ref: 'service',
         required:true,
     },
     review:{
@@ -22,4 +20,4 @@ const ratingSchema = mongoose.Schema({
     },
 });
 const Rating = mongoose.model("rating",ratingSchema)
-export default Rating
+module.exports = {Rating}

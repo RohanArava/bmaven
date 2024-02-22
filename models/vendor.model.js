@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose")
 
 const vendorSchema = mongoose.Schema({
     email:{
@@ -10,15 +10,13 @@ const vendorSchema = mongoose.Schema({
     password:{
         type:String,
         required:true,
-        unique:true,
     },
     vendorName:{
         type:String,
         required:true,
-        unique:true,
     }, 
 });
 
 const Vendor = mongoose.model("vendor", vendorSchema)
 
-export default Vendor
+module.exports = {Vendor}

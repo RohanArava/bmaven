@@ -1,11 +1,16 @@
 const express = require("express");
 var cors = require('cors')
 var app = express()
-
+require("dotenv").config();
+require("./database/connectmongodb").connectMongoDB();
+const authRouter = require("./routes/auth.route").router;
+const userUtilRouter = require("./routes/user_util.routes").router;
+const vendorUtilRouter = require("./routes/vendor_util.routes").router;
 var offers = require("./offers.json")
 var services = require("./services.json")
 const Fuse = require('fuse.js');
-
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 app.use(cors())
 
 const fuseOptions = {
@@ -28,6 +33,10 @@ const fuseOptions = {
 	]
 };
 
+
+app.use("/auth", authRouter);
+app.use("/userutil", userUtilRouter);
+app.use("/vendorutil", vendorUtilRouter);
 
 app.get("/business/dash/data", (req, res) => {
     res.status(200).send({
@@ -159,8 +168,8 @@ app.get("/service/:id", (req, res)=>{
     res.status(200).send({service: result[0]});
 });
 
-app.listen(8085, (err) => {
+app.listen(process.env.PORT, (err) => {
     if (err) console.log("error", err);
-    else console.log("listening on 8085");
+    else console.log("listening on ", process.env.PORT);
 });
 

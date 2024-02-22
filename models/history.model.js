@@ -1,18 +1,18 @@
-import mongoose from "mongoose"
-import User from "./user.model";
-import Service from "./venderservices.model";
+const mongoose = require("mongoose")
+const User =require("./user.model") ;
+const Service= require("./venderservices.model") ;
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const historySchema = mongoose.Schema({
     user: {
         type: ObjectId,
-        ref: User
+        ref: 'user'
     },
     name:{
         type:String,
     },
     service:{
         type:ObjectId,
-        ref: Service
+        ref: 'service'
     },
     serviceName:{
         type:String,
@@ -35,4 +35,4 @@ const historySchema = mongoose.Schema({
 
 },)
 const History = mongoose.model('history', historySchema);
-export default History;
+module.exports = {History};
