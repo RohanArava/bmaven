@@ -178,6 +178,7 @@ app.get("/service/:id", (req, res)=>{
     const result = services.filter((item)=>item.id===parseInt(id))
     if(result.length === 0){
         res.status(404).send({error: "Not Found"});
+        return;
     }
     res.status(200).send({service: result[0]});
 });

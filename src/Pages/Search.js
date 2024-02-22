@@ -18,7 +18,7 @@ export default function Search() {
     if (error) return <Error />
 
     if(showFilter) return <Filter setShowFilter={setShowFilter}/>
-
+    console.log(data);
     return <div className="Wrap">
         
     <div className="SearchWrap">
@@ -43,7 +43,7 @@ function SearchItem({ item }) {
     const navigate = useNavigate();
     return <div onClick={
         ()=>{
-            navigate(`/u/service/${item.id}`)
+            navigate(`/u/service/${item._id}`)
         }
     } className="clickable searchItem secondary-container">
         <img className="searchImage" src={item.image} alt="img" />

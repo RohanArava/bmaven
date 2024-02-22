@@ -10,9 +10,10 @@ import { useSelector } from "react-redux";
 export default function Service({showDown=true, serviceId=undefined}) {
     const location = useLocation();
     if (!serviceId){
-        serviceId = parseInt(location.pathname.split("/")[3])
+        serviceId = location.pathname.split("/")[3]
     }
-    const { loading, error, data } = useFetch(`http://localhost:8085/service/${serviceId}`);
+    console.log(serviceId) 
+    const { loading, error, data } = useFetch(`http://localhost:8085/userutil/getService/${serviceId}`);
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [showAddToCollectionScreen, setShowAddToCollectionScreen] = useState(false);
     const navigate = useNavigate();
@@ -31,25 +32,25 @@ export default function Service({showDown=true, serviceId=undefined}) {
                 <div className="df"><ReactStars
                     count={5}
                     isHalf={true}
-                    value={data.service.rating}
+                    value={data.rating}
                     size={16}
                     activeColor="rgb(212, 232, 208)"
                     edit={false}
-                /> <span className="on-secondary-container-text">{data.service.num_ratings} ratings</span></div>
-                <p className="on-surface-text body-large primary-text">{data.service.business}</p>
+                /> <span className="on-secondary-container-text">{data.num_ratings} ratings</span></div>
+                <p className="on-surface-text body-large primary-text">{data.business}</p>
                 <p className="on-surface-text body-large primary-text">{data.service.desc}</p>
                 {showDown && <div className="contactWrap">
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">phone </div>
-                    <a target="_blank" href={`tel:${data.service.phno}`} className="contactInfo on-surface-text body-large primary-text" rel="noreferrer">{data.service.phno + " "}</a>
+                    <a target="_blank" href={`tel:${data.phno}`} className="contactInfo on-surface-text body-large primary-text" rel="noreferrer">{data.phno + " "}</a>
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">mail </div>
-                    <a target="_blank" href={`mailto:${data.service.email}`} className="contactInfo on-surface-text body-large primary-text" rel="noreferrer">{data.service.email}</a>
+                    <a target="_blank" href={`mailto:${data.email}`} className="contactInfo on-surface-text body-large primary-text" rel="noreferrer">{data.email}</a>
                     {/* <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">star </div>
             <div onClick={()=>{setShowRateScreen(true)}} className="pointer contactInfo on-surface-text body-large primary-text">Click to Rate </div> */}
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">add </div>
                     <div onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddToCollectionScreen(!showAddToCollectionScreen); }} className="contactInfo pointer on-surface-text body-large primary-text">Add To Collection</div>
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">report </div>
                     <div onClick={() => {navigate("/u/report", {state:{
-                        service_id: data.service.id,
+                        service_id: serviceId,
                         type: "service"
                     }})}} className="contactInfo pointer on-surface-text body-large primary-text">Report</div>
                 </div>}
@@ -58,8 +59,8 @@ export default function Service({showDown=true, serviceId=undefined}) {
         {showDown && <div className="serviceDown">
             <div className="ratings">
                 <span className="on-surface-text headline-medium">Reviews</span>
-                {data.service.reviews.map((item, index) => {
-                    return <ReviewItem key={index} service={data.service.name} business={data.service.business} review={item}></ReviewItem>
+                {data.reviews && data.reviews.map((item, index) => {
+                    return <ReviewItem key={index} service={data.service.name} business={data.business} review={item}></ReviewItem>
                 })}
                 <RateScreen />
             </div>
