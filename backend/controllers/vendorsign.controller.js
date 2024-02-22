@@ -1,14 +1,14 @@
-import  User from "../models/user.model.js";
+import  Vendor from "../models/vendor.model.js";
 
 export default async(req,res)=>{   
     const {email,password} = req.body
     try{
-        const user = await User.findOne({email})
-        console.log(password == user.password)
-        if(!user){
+        const vendor = await Vendor.findOne({email})
+        console.log(password == vendor.password)
+        if(!vendor){
             return res.status(401).json({ error: 'Invalid credentials' });
-        }else if(password == user.password){
-            return res.status(200).send(user)
+        }else if(password == vendor.password){
+            return res.status(200).send(vendor)
         } else{
             return res.status(401).json({ error: 'Invalid credentials' });
         }

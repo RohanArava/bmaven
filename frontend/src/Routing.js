@@ -13,6 +13,8 @@ import User from "./Pages/User";
 import Search from "./Pages/Search";
 import Profile from "./Pages/Profile";
 import { Navigate } from 'react-router-dom';
+import Admin, {AdminDash, ManageBusinesses, ManageCustomers} from "./Pages/Admin";
+import AdminAuth from "./Pages/AdminAuth";
 import Service from "./Pages/Service";
 import { Payment } from "./Pages/Payment";
 import  Bills  from "./Pages/Bills";
@@ -23,6 +25,12 @@ import Landing from "./Pages/Landing";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="a" element={<Admin/>}>
+        <Route path="auth" element={<AdminAuth/>}/>
+        <Route path="dashboard" element={<AdminDash/>}/>
+        <Route path="managecustomers" element={<ManageCustomers/>}/>
+        <Route path="managebusinesses" element={<ManageBusinesses/>}/>
+      </Route>
       <Route path="b" element={<Business />}>
         <Route path="dash" element={<Dashboard />} />
         <Route path="edit" element={<Edit />} />
