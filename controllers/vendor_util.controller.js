@@ -1,6 +1,4 @@
 const {Service} = require("../models/venderservices.model");
-const mongoose = require("mongoose");
-let ObjectId = mongoose.Schema.Types.ObjectId;
 async function addService(req, res){
     const serviceObj = {
         name: req.body.name,

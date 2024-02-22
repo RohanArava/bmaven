@@ -3,7 +3,7 @@ const { User } = require("../models/user.model.js")
 const { Collection } = require("../models/collection.model.js")
 const { Service } = require("../models/venderservices.model.js")
 const { Vendor } = require("../models/vendor.model.js")
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 // let ObjectId = mongoose.Schema.Types.ObjectId;
 async function writeReview(req, res) {
     const newRatingObj = {
