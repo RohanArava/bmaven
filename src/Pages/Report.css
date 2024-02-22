@@ -1,0 +1,19 @@
+.report{
+    padding: 1em;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    
+}
+.report .reviewItem {
+    width: 50vw;
+}
+.report .serviceWrap{
+    height: 50vh;
+}
+
+.report-btn{
+    padding: 1em;
+    border: none;
+    border-radius: 10px;
+}

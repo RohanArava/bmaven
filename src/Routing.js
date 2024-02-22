@@ -3,6 +3,7 @@ import {
   Route,
   createRoutesFromElements
 } from "react-router-dom";
+import Report from "./Pages/Report";
 import Error from "./Pages/Error";
 import App from "./App";
 import Business from "./Pages/Business";
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
         <Route path="bills" element={<Bills />} />
         <Route path="sign" element={<SignUser />} />
         <Route path="about" element={<AboutUs />} />
+        <Route path="report" element={<Report/>}/>
         {/* <Route path="*" element={<Navigate to="/u/search"/>}/> */}
       </Route>
       <Route path="" element={<Landing/>}/>

@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFetch } from "../useFetch";
 import Loading from "./Loading";
 import Error from "./Error";
@@ -6,11 +7,15 @@ import "./Service.css";
 import ReactStars from "react-rating-stars-component";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-export default function Service() {
+export default function Service({showDown=true, serviceId=undefined}) {
     const location = useLocation();
-    const { loading, error, data } = useFetch(`http://localhost:8085/service/${parseInt(location.pathname.split("/")[3])}`);
+    if (!serviceId){
+        serviceId = parseInt(location.pathname.split("/")[3])
+    }
+    const { loading, error, data } = useFetch(`http://localhost:8085/service/${serviceId}`);
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [showAddToCollectionScreen, setShowAddToCollectionScreen] = useState(false);
+    const navigate = useNavigate();
     console.log(data)
     if (loading) return <Loading />
     if (error) return <Error />
@@ -33,7 +38,7 @@ export default function Service() {
                 /> <span className="on-secondary-container-text">{data.service.num_ratings} ratings</span></div>
                 <p className="on-surface-text body-large primary-text">{data.service.business}</p>
                 <p className="on-surface-text body-large primary-text">{data.service.desc}</p>
-                <div className="contactWrap">
+                {showDown && <div className="contactWrap">
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">phone </div>
                     <a target="_blank" href={`tel:${data.service.phno}`} className="contactInfo on-surface-text body-large primary-text" rel="noreferrer">{data.service.phno + " "}</a>
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">mail </div>
@@ -42,14 +47,19 @@ export default function Service() {
             <div onClick={()=>{setShowRateScreen(true)}} className="pointer contactInfo on-surface-text body-large primary-text">Click to Rate </div> */}
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">add </div>
                     <div onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddToCollectionScreen(!showAddToCollectionScreen); }} className="contactInfo pointer on-surface-text body-large primary-text">Add To Collection</div>
-                </div>
+                    <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">report </div>
+                    <div onClick={() => {navigate("/u/report", {state:{
+                        service_id: data.service.id,
+                        type: "service"
+                    }})}} className="contactInfo pointer on-surface-text body-large primary-text">Report</div>
+                </div>}
             </div>
         </div>
-        <div className="serviceDown">
+        {showDown && <div className="serviceDown">
             <div className="ratings">
                 <span className="on-surface-text headline-medium">Reviews</span>
                 {data.service.reviews.map((item, index) => {
-                    return <ReviewItem key={index} review={item}></ReviewItem>
+                    return <ReviewItem key={index} service={data.service.name} business={data.service.business} review={item}></ReviewItem>
                 })}
                 <RateScreen />
             </div>
@@ -61,12 +71,15 @@ export default function Service() {
                     lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid id.</p>
             </div>
 
-        </div>
+        </div>}
     </div>
 }
 
-function ReviewItem({ review }) {
-    return <div className="secondary-container reviewItem">
+export function ReviewItem({ review, service, business }) {
+    const navigate = useNavigate();
+    return <div onClick={()=>{navigate("/u/report", {state:{
+        type:"comment", comment_id:"1", review, service, business
+    }})}} className="secondary-container reviewItem">
         <p className="on-secondary-container-text title-medium">{review.user}</p>
         <div className="df"><ReactStars
             count={5}

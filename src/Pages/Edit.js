@@ -4,11 +4,14 @@ import Error from "./Error";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
 import "./Edit.css";
+import { useState } from "react";
 
 export default function Edit() {
   const { loading, data, error } = useFetch(
     "http://localhost:8085/business/dash/data"
   );
+  const [showAddServiceCoupon, setShowAddServiceCoupon] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
   if (loading) {
     return <Loading />;
   }
@@ -16,13 +19,14 @@ export default function Edit() {
     console.log(error);
     return <Error />;
   }
-
+ 
   const services = data.services;
   const offers = data.offers;
   return (
     <div className="wrap">
+      {showAddServiceCoupon && <AddServiceCoupon pos={pos} setShowAddServiceCoupon={setShowAddServiceCoupon} />}
       <div className="services">
-        <p className="secondary-text headline-medium">Services &amp; Offers</p>
+        <p className="secondary-text headline-medium">Services &amp; Offers <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddServiceCoupon(!showAddServiceCoupon); }} className="material-symbols-rounded header-medium primary-text" style={{marginLeft:"8em"}}>add</span></p>
         {services.map((element, i) => {
           return <ListItem element={element} />;
         })}
@@ -170,4 +174,17 @@ function ListItem({ element }) {
       <span className="material-symbols-rounded primary-text">Delete</span>
     </div>
   );
+}
+
+
+function AddServiceCoupon({ setShowAddServiceCoupon, pos }) {
+  return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
+
+      <div className=" addtocollform" >
+          <div style={{display:"grid", gridTemplateColumns:"10fr 2fr"}}>
+              <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Service or Coupon </span>
+              <span onClick={() => { setShowAddServiceCoupon(false) }} className="on-surface-text material-symbols-rounded"> close</span></div>
+              <br/>
+      </div>
+  </div></>
 }

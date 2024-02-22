@@ -76,15 +76,15 @@ export function AdminDash() {
 
 export function ManageCustomers() {
     const customers = [
-        {id:"customer_id", name:"customer"},
-        {id:"customer_id", name:"customer"},
-        {id:"customer_id", name:"customer"},
-        {id:"customer_id", name:"customer"},
+        { id: "customer_id", name: "customer" },
+        { id: "customer_id", name: "customer" },
+        { id: "customer_id", name: "customer" },
+        { id: "customer_id", name: "customer" },
     ]
     return <div className="manage_customers">
         <div className="business_list">
-            {customers.map((customers, index)=>{
-                return <div className="business_listitem secondary-container on-secondary-container-text">{customers.id}<br/>{customers.name}</div>
+            {customers.map((customers, index) => {
+                return <div className="business_listitem secondary-container on-secondary-container-text">{customers.id}<br />{customers.name}</div>
             })}
         </div>
     </div>
@@ -92,15 +92,15 @@ export function ManageCustomers() {
 
 export function ManageBusinesses() {
     const businesses = [
-        {id:"bsnss01", name: "Bakery"},
-        {id:"bsnss01", name: "Bakery"},
-        {id:"bsnss01", name: "Bakery"},
-        {id:"bsnss01", name: "Bakery"},
+        { id: "bsnss01", name: "Bakery" },
+        { id: "bsnss01", name: "Bakery" },
+        { id: "bsnss01", name: "Bakery" },
+        { id: "bsnss01", name: "Bakery" },
     ]
     return <div className="manage_businesses">
         <div className="business_list">
-            {businesses.map((business, index)=>{
-                return <div className="business_listitem secondary-container on-secondary-container-text">{business.id}<br/>{business.name}</div>
+            {businesses.map((business, index) => {
+                return <div className="business_listitem secondary-container on-secondary-container-text">{business.id}<br />{business.name}</div>
             })}
         </div>
         <div className="business_overview">
