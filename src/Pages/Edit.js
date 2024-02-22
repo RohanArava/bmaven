@@ -192,6 +192,13 @@ function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
   const [serDesc, setSerDesc] = useState("")
   const dispatch = useDispatch();
   console.log(pos)
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const formData = new FormData();
+  formData.append('image', selectedFile);
   return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 
     <div className="addtocollform" >
@@ -201,20 +208,31 @@ function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
       <br />
       <input type="text" value={collName} onChange={(e) => { setCollName(e.target.value) }} placeholder="Enter Service Name"></input>
       <input type="text" value={serDesc} onChange={(e) => { setSerDesc(e.target.value) }} placeholder="Enter Service Desc"></input>
+      <input type="file" onChange={handleFileChange} />
       <button onClick={() => {
+        fetch("http://localhost:8085/api/uploads",{
+          method: 'POST',
+          body: formData,
+        }).then((body)=>body.json()).then((body)=>{
+          const imageUrl = body.imageUrl;
+          console.log("img", body)
         fetch("http://localhost:8085/vendorutil/addService", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
             businessId: userId,
             name: collName,
-            desc: serDesc
+            desc: serDesc,
+            image:imageUrl,
+
           })
         }).then((body) => body.json()).then((body) => {
           setShowAddServiceCoupon(false);
           console.log(body);
           dispatch(modifyServices({services:body.services}))
         })
+        });
+        
       }}>Add</button>
     </div>
   </div></>

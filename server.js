@@ -1,6 +1,8 @@
 const express = require("express");
 var cors = require('cors')
 var app = express()
+const multer = require('multer');
+
 const morgan = require('morgan')
 const path =  require('path');
 var rfs = require('rotating-file-stream') 
@@ -16,6 +18,22 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(cors())
 
+//multer
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  });
+  
+  const upload = multer({ storage });
+  
+  app.post('/api/uploads', upload.single('image'), (req, res) => {
+    const imageUrl = `http://localhost:8085/uploads/${req.file.filename}`;
+    res.json({ imageUrl });
+  });
+  
+  
 
 //morgan
 

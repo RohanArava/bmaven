@@ -6,7 +6,7 @@ async function addService(req, res){
         name: req.body.name,
         desc: req.body.desc,
         business: req.body.businessId,
-        image: ""
+        image: req.body.image,
     }
     console.log(serviceObj)
     // serviceObj.business = new ObjectId(req.body.business);
@@ -19,7 +19,6 @@ async function addService(req, res){
         console.log(err)
     }
 }
-
 async function getServices(req, res){
     try{
     const services = await Service.find({business: req.params.id});
