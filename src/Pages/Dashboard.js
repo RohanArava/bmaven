@@ -91,7 +91,7 @@ export function Services({ style, onAnimationEnd, setRightSideStyle, services, b
         setRightSideStyle({
           left: "110vw",
           animation: "slideinx ease-out 400ms"
-        }, [style]);
+        }, [style]); 
       }
     }}>
       <p className="secondary-text headline-small">Services <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddCollection(!showAddCollection); }} className="material-symbols-rounded header-small primary-text">add</span></p>
@@ -113,7 +113,7 @@ function ListItem({ element, style, setRightSideStyle }) {
       animation: "slideinx ease-out 400ms"
     });
   }}>
-    <img alt="business" className='bimgdash' src="https://www.posist.com/restaurant-times/wp-content/uploads/2023/07/9-Essential-Bakery-Business-Tips-That-Will-Make-Your-Bakery-a-Success.jpg"></img>
+    <img alt="business" className='bimgdash' src={element.image}></img>
     <p className="secondary-text">{element.name}</p>
   </div>
 }

@@ -79,7 +79,8 @@ async function searchServicebyTerm(req, res, next) {
     try {
         let services = await Service.find({
             name: {
-                $regex: re
+                $regex: re,
+                $options: "i"
             }
         });
         res.json({ success: true, services });
