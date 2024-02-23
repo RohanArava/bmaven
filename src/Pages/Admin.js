@@ -54,9 +54,9 @@ export function AdminDash() {
         <div className="analyticsDash">
             <div className='statsDash'>
                 <span className="primary-text headline-medium">Stats</span>
-                <p className='secondary-text title-medium'>Views: {stats.views}</p>
-                <p className='secondary-text title-medium'>Average Rating: {stats.avgRating}</p>
-                <p className='secondary-text title-medium'>Revenue: {stats.revenue}</p>
+                <p className='secondary-text title-medium'>Total Views: {stats.views}</p>
+                <p className='secondary-text title-medium'>Daily Views: {stats.avgRating}</p>
+                <p className='secondary-text title-medium'>Total users: {stats.revenue}</p>
             </div>
             <div className='graphDash'>
                 <Line data={{

@@ -1,7 +1,8 @@
 const {User} = require("../models/user.model.js");
 const {Collection} = require("../models/collection.model.js");
 const {History} = require("../models/history.model.js");
-async function userSignUp(req,res){
+const {Service} = require("../models/venderservices.model.js")
+async function userSignUp(req,res, next){
     const newUserObj = {
         email: req.body.email,
         password: req.body.password,
@@ -22,10 +23,12 @@ async function userSignUp(req,res){
     }
     catch(err){
         console.log(err)
+        next(err)
     }
 }
 
-async function isUserIdAvailable(req, res){
+async function isUserIdAvailable(req, res, next){
+    try{
     let user = await User.findOne({
         userId: req.query.userId
     });
@@ -34,15 +37,18 @@ async function isUserIdAvailable(req, res){
         res.json({is_available: false})
     }else{
         res.json({is_available: true})
+    }}catch(err){
+        next(err)
     }
 }
 
-async function userSignIn(req, res){
+async function userSignIn(req, res, next){
     const userObj = {
         email: req.body.email,
         password: req.body.password
     }
     console.log(userObj, req.body)
+    try{
     User.findOne({email: userObj.email}).then(async (user) => {
         if(!user){
             res.json({error: "Email Not Found"});
@@ -51,11 +57,29 @@ async function userSignIn(req, res){
         if(user.password === userObj.password){
             console.log("here");
             let collections = await Collection.find({user: user._id});
-            
+            for(let i = 0; i < collections.length; i++){
+                let itemIds = collections[i].items;
+                let items = []
+                for (let j=0; j < itemIds.length; j++){
+                    let item = await Service.findById(itemIds[j])
+                    if(item){
+                    let itemObj = {}
+                    itemObj._id = item._id;
+                    itemObj.name = item.name;
+                    itemObj.image = item.image;
+                    items.push({item: itemObj});
+                    console.log(items)
+                    }
+                }
+                collections[i].items_1 = items;
+            }
+            console.log(collections)
             let history = await History.find({user: user._id});
             res.json({success: true,msg: "Successfully Logged In", user, collections, history})
         }
-    })
+    })}catch(err){
+        next(err);
+    }
 }
 
 module.exports = {

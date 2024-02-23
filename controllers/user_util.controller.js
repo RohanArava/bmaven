@@ -5,7 +5,7 @@ const { Service } = require("../models/venderservices.model.js")
 const { Vendor } = require("../models/vendor.model.js")
 // const mongoose = require("mongoose");
 // let ObjectId = mongoose.Schema.Types.ObjectId;
-async function writeReview(req, res) {
+async function writeReview(req, res, next) {
     const newRatingObj = {
         user: req.body.userId,
         service: req.body.serviceId,
@@ -24,11 +24,11 @@ async function writeReview(req, res) {
             res.status(200).send({ msg: "review added successfully", review: newRating })
         })
     } catch (err) {
-        console.log(err);
+        next(err)
     }
 }
 
-async function addCollection(req, res) {
+async function addCollection(req, res, next) {
     const newCollectionObj = {
         user: req.body.userId,
         name: req.body.name,
@@ -43,10 +43,11 @@ async function addCollection(req, res) {
         res.json({ success: true, collections });
     } catch (err) {
         console.log(err)
+        next(err)
     }
 }
 
-async function addToCollection(req, res) {
+async function addToCollection(req, res, next) {
     try {
         const collectionId = req.params.collectionId;
         const serviceId = req.params.serviceId;
@@ -57,20 +58,22 @@ async function addToCollection(req, res) {
         res.json({success: true, collections})
     }catch(err){
         console.log(err);
+        next(err)
     }
 }
 
-async function removeCollection(req, res) {
+async function removeCollection(req, res, next) {
     try {
         let collection = await Collection.findByIdAndDelete(req.body.collID);
         let collections = await Collection.find({ user: collection.user });
         res.json({ success: true, collections });
     } catch (err) {
         console.log(err)
+        next(err)
     }
 }
 
-async function searchServicebyTerm(req, res) {
+async function searchServicebyTerm(req, res, next) {
     const searchTerm = req.query.q;
     const re = searchTerm;
     try {
@@ -82,9 +85,10 @@ async function searchServicebyTerm(req, res) {
         res.json({ success: true, services });
     } catch (err) {
         console.log(err)
+        next(err)
     }
 }
-async function searchServiceDefault(req, res) {
+async function searchServiceDefault(req, res, next) {
     const re = "";
     try {
         let services = await Service.find({
@@ -95,10 +99,11 @@ async function searchServiceDefault(req, res) {
         res.json({ success: true, services });
     } catch (err) {
         console.log(err)
+        next(err)
     }
 }
 
-async function getService(req, res) {
+async function getService(req, res, next) {
     const serviceId = req.params.id;
     try {
         let service = await Service.findById(serviceId);
@@ -127,6 +132,7 @@ async function getService(req, res) {
         res.json({ service, rating, num_ratings, reviews, business: business.vendorName, email: business.email });
     } catch (err) {
         console.log(err);
+        next(err)
     }
 }
 module.exports = { writeReview, addCollection, removeCollection, searchServicebyTerm, searchServiceDefault, getService, addToCollection }

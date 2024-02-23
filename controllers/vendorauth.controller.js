@@ -1,6 +1,6 @@
 const {Vendor} = require("../models/vendor.model.js")
 const {Service} = require("../models/venderservices.model.js")
-async function vendorSignUp(req, res){
+async function vendorSignUp(req, res, next){
     const newVendorObj = {
         email: req.body.email,
         password: req.body.password,
@@ -19,14 +19,16 @@ async function vendorSignUp(req, res){
     }
     catch(err){
         console.log(err)
+        next(err)
     }
 }
 
-function vendorSignIn(req, res){
+function vendorSignIn(req, res, next){
     const userObj = {
         email: req.body.email,
         password: req.body.password
     }
+    try{
     Vendor.findOne({email: userObj.email}).then(async (user) => {
         if(!user){
             res.json({error: "Email Not Found"});
@@ -36,7 +38,9 @@ function vendorSignIn(req, res){
             const services = await Service.find({business: user._id});
             res.json({success: true, msg: "Successfully Logged In", vendor: user, services, offers:[]})
         }
-    })
+    })}catch(err){
+        next(err);
+    }
 }
 
 module.exports = {

@@ -125,7 +125,7 @@ function RateScreen({serviceId}) {
             />
             <textarea value={review} onChange={(e)=>{setReview(e.target.value)}} placeholder="Write a Review...." style={{ marginTop: "10px" }}></textarea>
             <div onClick={async()=>{
-                const body = await fetch("http://localhost:8085/userutil/writeReview",{
+                const body = (await fetch("http://localhost:8085/userutil/writeReview",{
                     method: "POST",
                     headers: {
                         "content-type": "application/json"
@@ -133,7 +133,7 @@ function RateScreen({serviceId}) {
                     body:JSON.stringify({
                         serviceId, userId, rating, review
                     })
-                }).json()
+                })).json()
                 alert("Success"); 
                 console.log(body);
             }} style={{ marginTop: "10px" }} className="al-sl-rt on-surface-text material-symbols-rounded fill-icon icon contactIcon">send</div>

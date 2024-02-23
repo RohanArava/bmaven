@@ -89,9 +89,10 @@ function CollectionsItem({ item }) {
             <Carousel selectedItem={0} infiniteLoop={true} interval={1500} autoPlay={autoPlay} showStatus={false} showIndicators={false} showThumbs={false} showArrows={false}>
                 {
                     it.items && it.items.map((item, index) => {
+                        console.log("item:", item);
                         return <div key={index}>
                             <span className="clct-itm-name">{item.name}</span>
-                            <img className="clct-itm" src={item.image} alt="" />
+                            <img className="clct-itm" src="https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" alt="" />
                         </div>
                     })
                 }

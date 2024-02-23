@@ -203,6 +203,7 @@ app.get("/service/:id", (req, res) => {
 });
 
 app.use((err, req, res, next)=>{
+    console.log("ERROR AT ", Date.now(), ": ", err);
     res.json({error: req.errmsg || "Something went wrong"});
 })
 
