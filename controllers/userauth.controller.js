@@ -9,15 +9,23 @@ async function userSignUp(req,res, next){
         userId: req.body.userId,
     };
     console.log(req.body)
-    console.log(newUserObj);
-    let user = await User.findOne({email: newUserObj.email});
-    if(user){
+    console.log(newUserObj); 
+    try{
+        let userid = await User.findOne({
+            userId: newUserObj.userId
+        });
+        if(userid){
+            res.json({error: "This userId already exists"})
+            return;
+        } 
+
+    let usere = await User.findOne({email: newUserObj.email});
+    if(usere){
         res.json({error: "This email already exists"})
         return;
     }
     const newUser = new User(newUserObj);
     console.log(newUser)
-    try {
         let user = await newUser.save();
         res.status(200).send({user, collections:[], history: []});
     }

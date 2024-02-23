@@ -39,6 +39,10 @@ function SignUser() {
                         userId: formValues.username
                     })
                 }).then((data)=>data.json()).then((data)=>{
+                    if(data.error){
+                        alert(data.error);
+                        return;
+                    }
                     console.log(data)
                     dispatch(userLogin({
                         userName: data.user.userId,
