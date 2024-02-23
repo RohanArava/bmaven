@@ -41,7 +41,7 @@ playlist_add
             </div>)}
 
             {!showCollection && <div className="history">
-                {data.history.map((item, index) => {
+                {[0,0,0,0].map((item, index) => {
                     return <HistoryItem key={index} item={item} />
                 })}
             </div>}
@@ -104,16 +104,16 @@ function CollectionsItem({ item }) {
 }
 
 function HistoryItem({ item }) {
-    // const it = {
-    //     name: "Wedding Cake | 3 Floor | Bride and Groom",
-    //     serviceName: "Little Finger Pastries",
-    //     servicePrice: "Rs. 1000",
-    //     serviceTime: "12/12/2020 10:00 AM",
-    //     paymentMethod: "UPI",
-    //     paymentId: "rohan.a21@sbi.upi123",
-    //     description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
-    // };
-    const it = item;
+    const it = {
+        name: "Wedding Cake | 3 Floor | Bride and Groom",
+        serviceName: "Little Finger Pastries",
+        servicePrice: "Rs. 1000",
+        serviceTime: "12/12/2020 10:00 AM",
+        paymentMethod: "UPI",
+        paymentId: "rohan.a21@sbi.upi123",
+        description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
+    };
+    // const it = item;
     const ref = createRef(null);
     const [image, takeScreenShot] = useScreenshot({
         type: "image/jpeg",

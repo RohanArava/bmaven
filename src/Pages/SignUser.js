@@ -26,7 +26,10 @@ function SignUser() {
 
     useEffect(() => {
         console.log(formErrors);
-        alert(JSON.stringify(formErrors));
+        if(!formErrors){
+            alert(JSON.stringify(formErrors));
+        }
+        
         if (Object.keys(formErrors).length === 0 && isSubmit && isUser) {
             console.log(formValues);
             // fetch("http://localhost:8085/user/sign")
