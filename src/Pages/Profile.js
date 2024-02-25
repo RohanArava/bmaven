@@ -53,6 +53,7 @@ function CollectionsItem({ item }) {
     // const [imgNum, setImgNum] = useState(0);
     const [autoPlay, setAutoPlay] = useState(false)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     // const it = {
     //     name: "Daenerys's wedding",
     //     items: [
@@ -63,7 +64,11 @@ function CollectionsItem({ item }) {
 
     // }
     const it = item;
-    return <div onMouseEnter={() => { setAutoPlay(true); console.log(autoPlay) }} onMouseLeave={() => { setAutoPlay(false); console.log(autoPlay) }} className="clickable collection-item secondary-container">
+    return <div
+     onClick={()=>{
+        navigate(`/collection/${it._id}`)
+     }}
+     onMouseEnter={() => { setAutoPlay(true); console.log(autoPlay) }} onMouseLeave={() => { setAutoPlay(false); console.log(autoPlay) }} className="clickable collection-item secondary-container">
 
         <div className="leftWrap"><div className="on-secondary-container-text headline-small">{it.name}
 
@@ -91,8 +96,8 @@ function CollectionsItem({ item }) {
                     it.items && it.items.map((item, index) => {
                         console.log("item:", item);
                         return <div key={index}>
-                            <span className="clct-itm-name">{item.name}</span>
-                            <img className="clct-itm" src="https://i.pinimg.com/564x/fb/98/f7/fb98f79c1b4180a03d5262c881390a03.jpg" alt="" />
+                            <span className="clct-itm-name">{item.item.name}</span>
+                            <img className="clct-itm" src={item.item.image} alt="" />
                         </div>
                     })
                 }

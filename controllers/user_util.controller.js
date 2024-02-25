@@ -3,6 +3,7 @@ const { User } = require("../models/user.model.js")
 const { Collection } = require("../models/collection.model.js")
 const { Service } = require("../models/venderservices.model.js")
 const { Vendor } = require("../models/vendor.model.js")
+const { Order } = require("../models/order.model.js")
 // const mongoose = require("mongoose");
 // let ObjectId = mongoose.Schema.Types.ObjectId;
 async function writeReview(req, res, next) {
@@ -40,7 +41,21 @@ async function addCollection(req, res, next) {
     try {
         let collection = await newCollection.save();
         let collections = await Collection.find({ user: collection.user })
-        res.json({ success: true, collections });
+        const collections_new = [];
+        for (let i = 0; i < collections.length; i++) {
+            let itemIds = collections[i].items;
+            const items = []
+            for (let j = 0; j < itemIds.length; j++) {
+                let item = await Service.findById(itemIds[j])
+                if (item) {
+                    items.push({ item: { name: item.name, image: item.image } });
+                    // console.log(collections[i].items_1)
+                }
+            }
+            // collections[i].items_1 = items;
+            collections_new.push({ ...collections[i]._doc, items });
+        }
+        res.json({ success: true, collections: collections_new });
     } catch (err) {
         console.log(err)
         next(err)
@@ -55,8 +70,22 @@ async function addToCollection(req, res, next) {
         collection.items.push(serviceId);
         await collection.save();
         let collections = await Collection.find({ user: collection.user })
-        res.json({success: true, collections})
-    }catch(err){
+        const collections_new = [];
+        for (let i = 0; i < collections.length; i++) {
+            let itemIds = collections[i].items;
+            const items = []
+            for (let j = 0; j < itemIds.length; j++) {
+                let item = await Service.findById(itemIds[j])
+                if (item) {
+                    items.push({ item: { name: item.name, image: item.image } });
+                    // console.log(collections[i].items_1)
+                }
+            }
+            // collections[i].items_1 = items;
+            collections_new.push({ ...collections[i]._doc, items });
+        }
+        res.json({ success: true, collections: collections_new })
+    } catch (err) {
         console.log(err);
         next(err)
     }
@@ -66,7 +95,21 @@ async function removeCollection(req, res, next) {
     try {
         let collection = await Collection.findByIdAndDelete(req.body.collID);
         let collections = await Collection.find({ user: collection.user });
-        res.json({ success: true, collections });
+        const collections_new = [];
+        for (let i = 0; i < collections.length; i++) {
+            let itemIds = collections[i].items;
+            const items = []
+            for (let j = 0; j < itemIds.length; j++) {
+                let item = await Service.findById(itemIds[j])
+                if (item) {
+                    items.push({ item: { name: item.name, image: item.image } });
+                    // console.log(collections[i].items_1)
+                }
+            }
+            // collections[i].items_1 = items;
+            collections_new.push({ ...collections[i]._doc, items });
+        }
+        res.json({ success: true, collections: collections_new });
     } catch (err) {
         console.log(err)
         next(err)
@@ -136,7 +179,55 @@ async function getService(req, res, next) {
         next(err)
     }
 }
-module.exports = { writeReview, addCollection, removeCollection, searchServicebyTerm, searchServiceDefault, getService, addToCollection }
+
+async function getCollection(req, res, next) {
+    try {
+        console.log("here")
+        const collection_id = req.params.id;
+        const collection = await Collection.findById(collection_id);
+        let itemIds = collection.items;
+        const items = []
+        for (let j = 0; j < itemIds.length; j++) {
+            let item = await Service.findById(itemIds[j])
+            if (item) {
+                items.push({ item: { name: item.name, image: item.image } });
+                // console.log(collections[i].items_1)
+            }
+        }
+        // collections[i].items_1 = items;
+        const collection_new = { ...collection._doc, items };
+        console.log(collection_new)
+        res.json({ collection: collection_new });
+    } catch (err) {
+        next(err) 
+    }
+}
+
+async function buyService(req, res, next){
+    const userId = req.body.user;
+    const user = await User.find({userId});
+    const items = req.body.items;
+    const order = new Order({user: user._id, items});
+    try{
+        await order.save();
+        const orders = await Order.find({user: user._id});
+        res.send({success:true, orders: orders});
+    }catch(err){
+        next(err);
+    }
+}
+
+module.exports = { 
+    getService,
+    buyService, 
+    writeReview,
+    getCollection,
+    addCollection, 
+    addToCollection, 
+    removeCollection,
+    searchServicebyTerm,
+    searchServiceDefault,
+}
 // export async function getServices(req, res){
 //     const service_name = req.params.serviceName;
 

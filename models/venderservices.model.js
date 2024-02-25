@@ -15,6 +15,12 @@ const service = mongoose.Schema({
     },
     image:{
         type:String,
+    },
+    ppp:{
+        type: Number,
+    },
+    pdesc:{
+        type:String
     }
 });
 

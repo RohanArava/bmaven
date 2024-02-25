@@ -23,6 +23,7 @@ import SignUser from "./Pages/SignUser";
 import EventForm from "./Pages/BillingForm";
 import AboutUs from "./Pages/AboutUs";
 import Landing from "./Pages/Landing";
+import Collection from "./Pages/Collection";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
         <Route path="report" element={<Report/>}/>
         {/* <Route path="*" element={<Navigate to="/u/search"/>}/> */}
       </Route>
+      <Route path="collection/:id" element={<Collection/>}/>
       <Route path="" element={<Landing/>}/>
       <Route path="*" element={<Error message="Not Found"/>}/>
     </Route>

@@ -64,26 +64,24 @@ async function userSignIn(req, res, next){
         }
         if(user.password === userObj.password){
             console.log("here");
-            let collections = await Collection.find({user: user._id});
+            const collections = await Collection.find({user: user._id});
+            const collections_new = [];
             for(let i = 0; i < collections.length; i++){
                 let itemIds = collections[i].items;
-                let items = []
+                const items = []
                 for (let j=0; j < itemIds.length; j++){
                     let item = await Service.findById(itemIds[j])
                     if(item){
-                    let itemObj = {}
-                    itemObj._id = item._id;
-                    itemObj.name = item.name;
-                    itemObj.image = item.image;
-                    items.push({item: itemObj});
-                    console.log(items)
+                    items.push({item: {name:item.name, image:item.image}});
+                    // console.log(collections[i].items_1)
                     }
                 }
-                collections[i].items_1 = items;
+                // collections[i].items_1 = items;
+                collections_new.push({...collections[i]._doc,items});
             }
-            console.log(collections)
+            console.log(collections_new[0].items[0])
             let history = await History.find({user: user._id});
-            res.json({success: true,msg: "Successfully Logged In", user, collections, history})
+            res.json({success: true,msg: "Successfully Logged In", user, collections:collections_new, history})
         }
     })}catch(err){
         next(err);

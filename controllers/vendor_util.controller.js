@@ -5,6 +5,8 @@ async function addService(req, res, next){
         desc: req.body.desc,
         business: req.body.businessId,
         image: req.body.image,
+        ppp: req.body.ppp,
+        pdesc: req.body.pdesc,
     }
     console.log(serviceObj)
     // serviceObj.business = new ObjectId(req.body.business);
@@ -40,4 +42,8 @@ async function deleteService(req, res, next){
     }
 }
 
-module.exports = {addService, deleteService, getServices}
+module.exports = {
+    addService, 
+    getServices,
+    deleteService, 
+}
