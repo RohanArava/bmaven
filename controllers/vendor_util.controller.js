@@ -1,4 +1,5 @@
 const {Service} = require("../models/venderservices.model");
+const {Order} = require("../models/order.model")
 async function addService(req, res, next){
     const serviceObj = {
         name: req.body.name,
@@ -39,6 +40,54 @@ async function deleteService(req, res, next){
         res.json({msg: "deleted", services})
     }catch(err){
         next(err);
+    }
+}
+
+async function getAllOrders(req, res, next){
+    const businessId = req.params.businessId;
+    try{
+        const orders = await Order.find({
+            vendor: businessId,
+        });
+        res.json({success:true,orders})
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function getUnacceptedUpcomingOrders(req, res, next){
+    const business = req.params.businessId;
+    const date = Date.now();
+    const accepted = false;
+    try{
+        const orders = await Order.find({
+            vendor: business,
+            date:{
+                $gt: date
+            }, 
+            accepted
+        });
+        res.json({success:true,orders})
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function getAcceptedUpcomingOrders(req, res, next){
+    const business = req.params.businessId;
+    const date = Date.now();
+    const accepted = true;
+    try{
+        const orders = await Order.find({
+            vendor: business,
+            date:{
+                $gt: date
+            }, 
+            accepted
+        });
+        res.json({success:true,orders})
+    }catch(err){
+        console.log(err);
     }
 }
 

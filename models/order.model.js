@@ -5,21 +5,20 @@ const OrderSchema = mongoose.Schema({
         type: ObjectId,
         ref: "user",
     },
-    items:[
-        {
-            item:{
-                type: ObjectId,
-                ref: "service"
-            },
-            count:{
-                type: Number,
-            },
-            vendor:{
-                type: ObjectId,
-                ref: "vendor"
-            }
-        }
-    ]
+    date: Date, accepted: Boolean,
+
+
+    item: {
+        type: ObjectId,
+        ref: "service"
+    },
+    count: {
+        type: Number,
+    },
+    vendor: {
+        type: ObjectId,
+        ref: "vendor"
+    }
 });
 
 const Order = mongoose.model("order", OrderSchema)

@@ -199,31 +199,35 @@ async function getCollection(req, res, next) {
         console.log(collection_new)
         res.json({ collection: collection_new });
     } catch (err) {
-        next(err) 
+        next(err)
     }
 }
 
-async function buyService(req, res, next){
+async function buyService(req, res, next) {
     const userId = req.body.user;
-    const user = await User.find({userId});
-    const items = req.body.items;
-    const order = new Order({user: user._id, items});
-    try{
+    const user = await User.find({ userId });
+    const item = req.body.item;
+    const vendor = req.body.vendor;
+    const date = req.body.date;
+    const count = req.body.count;
+    const order = new Order({ user: user._id, accepted: false, item, vendor, date, count });
+    try {
         await order.save();
-        const orders = await Order.find({user: user._id});
-        res.send({success:true, orders: orders});
-    }catch(err){
+        const orders = await Order.find({ user: user._id });
+        res.send({ success: true, orders: orders });
+    } catch (err) {
         next(err);
     }
+
 }
 
-module.exports = { 
+module.exports = {
     getService,
-    buyService, 
+    buyService,
     writeReview,
     getCollection,
-    addCollection, 
-    addToCollection, 
+    addCollection,
+    addToCollection,
     removeCollection,
     searchServicebyTerm,
     searchServiceDefault,
