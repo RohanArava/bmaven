@@ -2,6 +2,7 @@ const {User} = require("../models/user.model.js");
 const {Collection} = require("../models/collection.model.js");
 const {History} = require("../models/history.model.js");
 const {Service} = require("../models/venderservices.model.js")
+const {Order} = require("../models/order.model.js");
 async function userSignUp(req,res, next){
     const newUserObj = {
         email: req.body.email,
@@ -27,7 +28,7 @@ async function userSignUp(req,res, next){
     const newUser = new User(newUserObj);
     console.log(newUser)
         let user = await newUser.save();
-        res.status(200).send({user, collections:[], history: []});
+        res.status(200).send({user, collections:[], history: [], orders: []});
     }
     catch(err){
         console.log(err)
@@ -81,7 +82,8 @@ async function userSignIn(req, res, next){
             }
             console.log(collections_new[0].items[0])
             let history = await History.find({user: user._id});
-            res.json({success: true,msg: "Successfully Logged In", user, collections:collections_new, history})
+            let orders = await Order.find({user: user._id});
+            res.json({success: true,msg: "Successfully Logged In", user, collections:collections_new, history, orders})
         }
     })}catch(err){
         next(err);
