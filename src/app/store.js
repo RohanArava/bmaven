@@ -14,7 +14,8 @@ const initial_state = {
       userName: "",
       userId: "",
       collections: [],
-      history: []
+      history: [],
+      orders: []
     }
   }
 }
@@ -35,7 +36,8 @@ const result_reducer = (state = initial_state, action) => {
             userName: action.payload.userName,
             userId: action.payload.userId,
             collections: action.payload.collections,
-            history: action.payload.history
+            history: action.payload.history,
+            orders: action.payload.orders || [],
           }
         }
       };
@@ -53,6 +55,22 @@ const result_reducer = (state = initial_state, action) => {
           userDetails: {
             ...state.object.userDetails,
             collections: action.payload.collections
+          }
+        }
+      }
+    case "MODIFY_ORDERS":
+      return {
+        object: {
+          signedIn: true,
+          isBusiness: false,
+          businessDetails: { 
+            offers: [],
+            services: [],
+            stats: {}
+          },
+          userDetails: {
+            ...state.object.userDetails,
+            orders: action.payload.orders
           }
         }
       }
