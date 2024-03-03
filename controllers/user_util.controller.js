@@ -121,10 +121,16 @@ async function searchServicebyTerm(req, res, next) {
     const re = searchTerm;
     try {
         let services = await Service.find({
-            name: {
-                $regex: re,
-                $options: "i"
-            }
+            $or: [
+                {
+                    name: {
+                        $regex: re,
+                        $options: "i"
+                    }
+                },
+            {
+                desc: {$regex: re, $options: "i"}
+            }]
         });
         res.json({ success: true, services });
     } catch (err) {
@@ -210,7 +216,7 @@ async function buyService(req, res, next) {
     const vendor = req.body.vendor;
     const date = req.body.date;
     const count = req.body.count;
-    const order = new Order({ user: user._id, accepted: false, item, vendor, date, count });
+    const order = new Order({ user: user._id, accepted: false, rejected: false, item, vendor, date, count });
     try {
         await order.save();
         const orders = await Order.find({ user: user._id });

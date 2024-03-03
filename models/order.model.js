@@ -6,8 +6,7 @@ const OrderSchema = mongoose.Schema({
         ref: "user",
     },
     date: Date, accepted: Boolean,
-
-
+    rejected: Boolean,
     item: {
         type: ObjectId,
         ref: "service"
