@@ -80,7 +80,7 @@ async function userSignIn(req, res, next){
                 // collections[i].items_1 = items;
                 collections_new.push({...collections[i]._doc,items});
             }
-            console.log(collections_new[0].item)
+            console.log(collections_new[0].items[0])
             let history = await History.find({user: user._id});
             let orders = await Order.find({user: user._id});
             res.json({success: true,msg: "Successfully Logged In", user, collections:collections_new, history, orders})
