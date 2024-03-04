@@ -97,6 +97,7 @@ async function acceptOrder(req, res, next) {
         const order = await Order.findByIdAndUpdate(order_id, {
             accepted: true
         });
+        res.send({success:true, order: order})
     }catch (err) {
         next(err)
     }
@@ -105,6 +106,7 @@ async function acceptOrder(req, res, next) {
 module.exports = {
     addService,
     getServices,
+    acceptOrder,
     getAllOrders,
     deleteService,
     getAcceptedUpcomingOrders,

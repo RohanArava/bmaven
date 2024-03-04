@@ -69,7 +69,8 @@ function SignUser() {
                         userName: data.user.userId,
                         userId: data.user.userId,
                         collections: data.collections,
-                        history: data.history
+                        history: data.history,
+                        orders: data.orders,
                     }));
                     navigate("/u/profile");
                 });

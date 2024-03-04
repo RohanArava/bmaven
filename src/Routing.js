@@ -24,6 +24,7 @@ import EventForm from "./Pages/BillingForm";
 import AboutUs from "./Pages/AboutUs";
 import Landing from "./Pages/Landing";
 import Collection from "./Pages/Collection";
+import Buy from "./Pages/Buy";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -49,6 +50,7 @@ const router = createBrowserRouter(
         <Route path="sign" element={<SignUser />} />
         <Route path="about" element={<AboutUs />} />
         <Route path="report" element={<Report/>}/>
+        <Route path="buy/:id" element={<Buy/>}/>
         {/* <Route path="*" element={<Navigate to="/u/search"/>}/> */}
       </Route>
       <Route path="collection/:id" element={<Collection/>}/>

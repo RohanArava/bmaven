@@ -211,15 +211,17 @@ async function getCollection(req, res, next) {
 
 async function buyService(req, res, next) {
     const userId = req.body.user;
-    const user = await User.find({ userId });
+    const user = (await User.findOne({ userId }))._id;
     const item = req.body.item;
-    const vendor = req.body.vendor;
+    const vendor = (await Service.findById(item)).business;
+    console.log(user)
     const date = req.body.date;
     const count = req.body.count;
-    const order = new Order({ user: user._id, accepted: false, rejected: false, item, vendor, date, count });
+    const order = new Order({ user, accepted: false, rejected: false, item, vendor, date, count });
     try {
         await order.save();
         const orders = await Order.find({ user: user._id });
+        console.log("success", orders)
         res.send({ success: true, orders: orders });
     } catch (err) {
         next(err);

@@ -193,7 +193,7 @@ function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
   const dispatch = useDispatch();
   console.log(pos)
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const [ppp, setPpp] = useState(0);
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -208,6 +208,7 @@ function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
       <br />
       <input type="text" value={collName} onChange={(e) => { setCollName(e.target.value) }} placeholder="Enter Service Name"></input>
       <input type="text" value={serDesc} onChange={(e) => { setSerDesc(e.target.value) }} placeholder="Enter Service Desc"></input>
+      <input type="number" value={ppp} onChange={(e) => { setPpp(e.target.value) }} placeholder="Enter Price"></input>
       <input type="file" onChange={handleFileChange} />
       <button onClick={() => {
         fetch("http://localhost:8085/api/uploads",{
@@ -224,7 +225,8 @@ function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
             name: collName,
             desc: serDesc,
             image:imageUrl,
-
+            ppp,
+            pdesc:""
           })
         }).then((body) => body.json()).then((body) => {
           setShowAddServiceCoupon(false);
