@@ -41,7 +41,7 @@ playlist_add
             </div>)}
 
             {!showCollection && <div className="history">
-                {[0,0,0,0].map((item, index) => {
+                {data.orders.map((item, index) => {
                     return <HistoryItem key={index} item={item} />
                 })}
             </div>}
@@ -65,9 +65,6 @@ function CollectionsItem({ item }) {
     // }
     const it = item;
     return <div
-     onClick={()=>{
-        navigate(`/collection/${it._id}`)
-     }}
      onMouseEnter={() => { setAutoPlay(true); console.log(autoPlay) }} onMouseLeave={() => { setAutoPlay(false); console.log(autoPlay) }} className="clickable collection-item secondary-container">
 
         <div className="leftWrap"><div className="on-secondary-container-text headline-small">{it.name}
@@ -87,7 +84,9 @@ function CollectionsItem({ item }) {
                         }));
                     })
             }} className="material-symbols-rounded on-surface-text">delete</span>
-                <span className="material-symbols-rounded on-surface-text">share</span>
+                <span onClick={()=>{
+        navigate(`/collection/${it._id}`)
+     }} className="material-symbols-rounded on-surface-text">forward</span>
             </div>
         </div>
         <div className="picWrap">
@@ -109,16 +108,16 @@ function CollectionsItem({ item }) {
 }
 
 function HistoryItem({ item }) {
-    const it = {
-        name: "Wedding Cake | 3 Floor | Bride and Groom",
-        serviceName: "Little Finger Pastries",
-        servicePrice: "Rs. 1000",
-        serviceTime: "12/12/2020 10:00 AM",
-        paymentMethod: "UPI",
-        paymentId: "rohan.a21@sbi.upi123",
-        description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
-    };
-    // const it = item;
+    // const it = {
+    //     name: "Wedding Cake | 3 Floor | Bride and Groom",
+    //     serviceName: "Little Finger Pastries",
+    //     servicePrice: "Rs. 1000",
+    //     serviceTime: "12/12/2020 10:00 AM",
+    //     paymentMethod: "UPI",
+    //     paymentId: "rohan.a21@sbi.upi123",
+    //     description: "Order was delivered at 10:00 AM on 12/12/2020 to a Mr.Snow at St.Sistine's Chapel"
+    // };
+    const it = item;
     const ref = createRef(null);
     const [image, takeScreenShot] = useScreenshot({
         type: "image/jpeg",
