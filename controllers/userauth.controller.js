@@ -74,8 +74,8 @@ async function userSignIn(req, res, next) {
                 for (let j=0; j < itemIds.length; j++){
                     let item = await Service.findById(itemIds[j])
                     if(item){
-                    items.push({item: {name:item.name, image:item.image}});
-                    // console.log(collections[i].items_1)
+                    items.push({item: {name:item.name, image:item.image, id: item._id}});
+                    console.log("item", items)
                     }
                 }
                 // collections[i].items_1 = items;

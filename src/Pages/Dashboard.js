@@ -94,7 +94,9 @@ export function Services({ style, onAnimationEnd, setRightSideStyle, services, b
         }, [style]); 
       }
     }}>
-      <p className="secondary-text headline-small">Services <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddCollection(!showAddCollection); }} className="material-symbols-rounded header-small primary-text">add</span></p>
+      <p className="secondary-text headline-small">Services 
+      {/* <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddCollection(!showAddCollection); }} className="material-symbols-rounded header-small primary-text">add</span> */}
+      </p>
       {serviceList.map((element, i) => {
         return <ListItem setRightSideStyle={i === serviceList.length - 1 ? setRightSideStyle : null} style={{ top: "100vh", position: "absolute", animation: "slideiny 400ms ease-out" }} element={element} key={i} />
       })}

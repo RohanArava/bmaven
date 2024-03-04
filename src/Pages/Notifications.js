@@ -22,9 +22,27 @@ export default function Notifications() {
   }
 `;
   return (
-    <div style = {{padding:"2em 20em"}}>
+    <div style = {{padding:"2em", width: "80vw"}}>
       <style>{styles}</style>
-      {JSON.stringify(data)}
+      <div style = {{padding:"2em", width: "80vw"}}>
+      <style>{styles}</style>
+      {data.orders.map((item, index) => {
+        return <OrderItem key={index} item={item}/>
+      })}
+    </div>
     </div>
   );
+}
+
+
+function OrderItem({item}){
+  return <div style={{
+    padding: "1em", margin:"1em", width:"50vw", borderRadius: "20px"
+  }} className="secondary-container on-secondary-container-text">
+    <p>User: {item.user}</p>
+    <p>Item: {item.item}</p>
+    <p>Count: {item.count}</p>
+    <p>Date: {item.date}</p>
+
+  </div>
 }
