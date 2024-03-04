@@ -49,6 +49,7 @@ function SearchItem({ item }) {
         <img className="searchImage" src={item.image} alt="img" />
         <div>
             <span className="on-secondary-container-text headline-small">{item.name}</span>
+            <p className="on-secondary-container-text on-surface-text"><span>&#8377;</span>{item.ppp}</p>
             <div className="df"><ReactStars
                 count={5}
                 isHalf={true}

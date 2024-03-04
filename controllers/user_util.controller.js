@@ -4,6 +4,7 @@ const { Collection } = require("../models/collection.model.js")
 const { Service } = require("../models/venderservices.model.js")
 const { Vendor } = require("../models/vendor.model.js")
 const { Order } = require("../models/order.model.js")
+const { View } = require("../models/view.model.js")
 // const mongoose = require("mongoose");
 // let ObjectId = mongoose.Schema.Types.ObjectId;
 async function writeReview(req, res, next) {
@@ -131,7 +132,7 @@ async function searchServicebyTerm(req, res, next) {
             {
                 desc: {$regex: re, $options: "i"}
             }]
-        });
+        }).sort({ppp: 1}).exec();
         res.json({ success: true, services });
     } catch (err) {
         console.log(err)
@@ -156,6 +157,8 @@ async function searchServiceDefault(req, res, next) {
 async function getService(req, res, next) {
     const serviceId = req.params.id;
     try {
+        let view = new View({service:serviceId});
+        view.save();
         let service = await Service.findById(serviceId);
         let reviews = await Rating.find({ service: service._id });
         let num_ratings = reviews.length;

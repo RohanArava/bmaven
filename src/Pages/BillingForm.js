@@ -107,6 +107,7 @@ export default function EventForm() {
 
 
 function OrderItem({item}){
+  console.log(item)
   return <div style={{
     padding: "1em", margin:"1em", width:"50vw", borderRadius: "20px"
   }} className="secondary-container on-secondary-container-text">
@@ -114,7 +115,7 @@ function OrderItem({item}){
     <p>Item: {item.item}</p>
     <p>Count: {item.count}</p>
     <p>Date: {item.date}</p>
-    <button>Accept</button>
-    <button>Reject</button>
-  </div>
+    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/acceptOrder/${item._id}`)}}>Accept</button>
+    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/rejectOrder/${item._id}`)}}>Reject</button>
+  </div> 
 }

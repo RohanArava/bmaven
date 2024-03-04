@@ -159,6 +159,13 @@ export const addCollection = (newObj)=>{
   }
 }
 
+export const modifyOrders = (newObj)=>{
+  return {
+    type: "MODIFY_ORDERS",
+    payload: newObj
+  }
+}
+
 export const modifyServices = (newObj)=>{
   return {
     type: "MODIFY_SERVICES",

@@ -28,13 +28,13 @@ export default function Edit() {
   const offers = data.offers;
   return (
     <div className="wrap">
-      {showAddServiceCoupon && <AddServiceCoupon userId={id} pos={pos} setShowAddServiceCoupon={setShowAddServiceCoupon} />}
+      {/* {showAddServiceCoupon && <AddServiceCoupon userId={id} pos={pos} setShowAddServiceCoupon={setShowAddServiceCoupon} />} */}
       <div className="services">
-        <p className="secondary-text headline-medium">Services &amp; Offers <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddServiceCoupon(!showAddServiceCoupon); }} className="material-symbols-rounded header-medium primary-text" style={{marginLeft:"8em"}}>add</span></p>
+        <p className="secondary-text headline-medium">Services <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddServiceCoupon(!showAddServiceCoupon); }} className="material-symbols-rounded header-medium primary-text" style={{marginLeft:"8em"}}>add</span></p>
         {services.map((element, i) => {
           return <ListItem element={element} />;
         })}
-        {offers.map((offer, index) => {
+        {false && offers.map((offer, index) => {
           return index < 3 ? (
             <div key={index} className="secondary-container offer">
               <div>
@@ -62,8 +62,8 @@ export default function Edit() {
           );
         })}
       </div>
-      <div className="editDetails">
-        <form>
+       <div className="editDetails">
+        {/*<form>
           <div className="form-row">
             <div
               className="form-group col-md-6 d-inline-block"
@@ -155,7 +155,9 @@ export default function Edit() {
             </button>
           </div>
         </form>
-      </div>
+       */}
+      <AddServiceCoupon userId={id} pos={pos} setShowAddServiceCoupon={setShowAddServiceCoupon} />
+       </div>
     </div>
   );
 }
@@ -201,12 +203,15 @@ function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
   };
   const formData = new FormData();
   formData.append('image', selectedFile);
-  return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
+  return <><div 
+  // style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }}
 
-    <div className="addtocollform" >
+   className="surface addtocolleditScreen">
+
+    <div className="addtocolleditform" >
       <div style={{ display: "grid", gridTemplateColumns: "10fr 2fr" }}>
-        <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Collection </span>
-        <span onClick={() => { setShowAddServiceCoupon(false) }} className="on-surface-text material-symbols-rounded"> close</span></div>
+        <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Service </span>
+        {/* <span onClick={() => { setShowAddServiceCoupon(false) }} className="on-surface-text material-symbols-rounded"> close</span> */}</div>
       <br />
       <input type="text" value={collName} onChange={(e) => { setCollName(e.target.value) }} placeholder="Enter Service Name"></input>
       <input type="text" value={serDesc} onChange={(e) => { setSerDesc(e.target.value) }} placeholder="Enter Service Desc"></input>

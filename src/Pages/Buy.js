@@ -2,10 +2,12 @@ import { useParams } from "react-router-dom"
 // import {useFetch} from "../useFetch"
 // import Loading from "./Loading"
 // import Error from "./Error"
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {modifyOrders} from "../app/store"
 import { useState } from "react";
 
 export default function Buy(){
+    const dispatch = useDispatch();
     const {id} = useParams();
     const user = useSelector(state=>state.stateReducer.object.userDetails.userId);
     console.log(user);
@@ -25,7 +27,12 @@ export default function Buy(){
                     count,
                     item:id
                 })
-            }).then(data=>data.json()).then(data=>console.log(data))
+            }).then(data=>data.json()).then(data=>{
+                console.log(data)
+                if(data.error) alert(data.error)
+                if(data.success) alert("success")
+                dispatch()
+            })
         }}>Buy</button>
     </div>
 }

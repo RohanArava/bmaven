@@ -84,7 +84,14 @@ async function userSignIn(req, res, next) {
             console.log(collections_new)
             let history = await History.find({user: user._id});
             let orders = await Order.find({user: user._id});
-            res.json({success: true,msg: "Successfully Logged In", user, collections:collections_new, history, orders})
+            let orders_new = []
+            await Promise.all(orders.map(async (order) => {
+                const service = await Service.findById(order.item);
+                orders_new.push({name:service.name, date: order.date, price: service.ppp, count: order.count, status: order.accepted?"Accepted":order.rejected?"Rejected":"Pending"});
+                console.log(orders_new)
+            }));
+            console.log(orders_new);
+            res.json({success: true,msg: "Successfully Logged In", user, collections:collections_new, history, orders:orders_new})
         }
     }).catch(err=>next(err))}catch(err){
         next(err);

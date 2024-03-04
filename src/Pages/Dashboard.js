@@ -18,10 +18,13 @@ function Dashboard() {
     left: "100vw",
     position: "absolute"
   });
+  const [views, setViews] = useState(null);
+  const [stats, setStats] = useState({views:[], rating:[], revenue:0});
   const id = useSelector(state => state.stateReducer.object.businessDetails.id)
   // const [services, setServices] = useState([]);
   // const [offers, setOffers] = useState([]);
-  const { loading, data, error } = useFetch("http://localhost:8085/business/dash/data");
+  console.log(id)
+  const { loading, data, error } = useFetch(`http://localhost:8085/vendorutil/viewsForBusiness/${id}`);
   const services = useSelector(state => state.stateReducer.object.businessDetails.services);
   if (loading ) {
     return <Loading />
@@ -31,13 +34,15 @@ function Dashboard() {
     return <Error />
   }
 
-  const offers = data.offers;
+  console.log(data)
+  const offers = data.offers || [];
+
   
-  const stats = data.stats;
   return (
     <div className="DashboardMain">
       <div className="body surface">
-        <Services businessId={id} setRightSideStyle={setRightSideStyle} style={serviceStyle} onAnimationEnd={() => {
+        <Services setStats={setStats} businessId={id} setRightSideStyle={setRightSideStyle} style={serviceStyle} onAnimationEnd={() => {
+          setStats({views: data.views || [], rating: data.rating || [], revenue: data.revenue||[]});
           setServiceStyle({ top: "0vh", position: "relative" });
           console.log(services);
         }} services={services} />
@@ -79,7 +84,7 @@ function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
   </div></>
 }
 
-export function Services({ style, onAnimationEnd, setRightSideStyle, services, businessId }) {
+export function Services({setStats, style, onAnimationEnd, setRightSideStyle, services, businessId }) {
   const [serviceList, setServiceList] = useState([]);
   const [showAddCollection, setShowAddCollection] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -98,16 +103,24 @@ export function Services({ style, onAnimationEnd, setRightSideStyle, services, b
       {/* <span onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddCollection(!showAddCollection); }} className="material-symbols-rounded header-small primary-text">add</span> */}
       </p>
       {serviceList.map((element, i) => {
-        return <ListItem setRightSideStyle={i === serviceList.length - 1 ? setRightSideStyle : null} style={{ top: "100vh", position: "absolute", animation: "slideiny 400ms ease-out" }} element={element} key={i} />
+        return <ListItem setStats={setStats} setRightSideStyle={i === serviceList.length - 1 ? setRightSideStyle : null} style={{ top: "100vh", position: "absolute", animation: "slideiny 400ms ease-out" }} element={element} key={i} />
       })}
     </div></>
   );
 }
 
-function ListItem({ element, style, setRightSideStyle }) {
+function ListItem({ setStats ,element, style, setRightSideStyle }) {
+  console.log("item", element)
+  const { loading, data, error } = useFetch(`http://localhost:8085/vendorutil/viewsForService/${element._id}`);
+  let stats = {views:[], rating:[], revenue:0};
+  if(loading||error){
 
+  }else{
+    console.log(data)
+    stats = data;
+  }
   const [itemStyle, setItemStyle] = useState(style);
-  return <div style={itemStyle} className='secondary-container listItem' onAnimationStart={() => {
+  return <div onClick={()=>{setStats(stats)}} style={itemStyle} className='secondary-container listItem' onAnimationStart={() => {
     setItemStyle({ animation: "slideiny 400ms ease-out" });
   }} onAnimationEnd={() => {
     if (setRightSideStyle) setRightSideStyle({
@@ -126,6 +139,15 @@ function RightSide({ rightSideStyle, offers, stats }) {
     left: "100vw",
     position: "absolute"
   });
+  let totalViews = 0;
+  let totalRating = 0;
+  stats.views.forEach((view)=>{totalViews+=view.views})
+  stats.rating.forEach((view)=>{totalRating+=view.rating})
+  console.log(stats.rating)
+  if(stats.rating.length === 0){
+    totalRating /= stats.rating.length;
+  }
+
   return <div className="rightList">
     <div className="top" style={rightSideStyle} onAnimationEnd={() => {
       setAnimationDone(true);
@@ -136,18 +158,18 @@ function RightSide({ rightSideStyle, offers, stats }) {
     }}><p className="secondary-text headline-small">Analytics</p>
       <div className="analytics">
         <div className='stats'>
-          <p className='secondary-text title-medium'>Views: {stats.views}</p>
-          <p className='secondary-text title-medium'>Average Rating: {stats.avgRating}</p>
+          <p className='secondary-text title-medium'>Views: {totalViews}</p>
+          <p className='secondary-text title-medium'>Average Rating: {totalRating}</p>
           <p className='secondary-text title-medium'>Revenue: {stats.revenue}</p>
         </div>
         <div className='graph'>
           {animationDone ? <Line data={{
-            labels: [...Array(stats.viewGraph.length).keys()], datasets: [{
+            labels: stats.views.map(view => view._id), datasets: [{
               label: "Views",
-              data: stats.viewGraph,
+              data: stats.views.map(view => view.views),
               backgroundColor: "#75d0dd",
               borderColor: "#75d0dd",
-              pointRadius: 0,
+              pointRadius: 5,
               // fill:{value: 0}
             }]
           }}

@@ -34,6 +34,7 @@ export default function Service({showDown=true, serviceId=undefined}) {
             <img className="serviceImage" alt="img" src={data.service.image} />
             <div className="details">
                 <span className="on-surface-text headline-small primary-text">{data.service.name}</span>
+                <p className="on-surface-text primary-text"><span>&#8377;</span>{data.service.ppp}</p>
                 <div className="df"><ReactStars
                     count={5}
                     isHalf={true}
