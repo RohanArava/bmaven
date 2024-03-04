@@ -7,7 +7,7 @@ function Business(){
     const location = useLocation();
     return (<div className="BusinessMain">
         <div className="header" >
-          <div className="center"><span className="title primary-text">{location.pathname==="/b/dash"?"Dashboard":location.pathname==="/b/edit"?"Edit":location.pathname==="/b/notifications"?"Notifications":location.pathname==="/b/billing"?"Send A Bill":"About Us"} </span></div>
+          <div className="center"><span className="title primary-text">{location.pathname==="/b/dash"?"Dashboard":location.pathname==="/b/edit"?"Edit":location.pathname==="/b/notifications"?"Accepted Orders":location.pathname==="/b/billing"?"Unaccepted Orders":"About Us"} </span></div>
           <div style={{display:"inline"}} onClick={()=>{
             navigate("/b/billing");
         }}>

@@ -170,6 +170,8 @@ function ListItem({ element }) {
         src={element.image} 
       ></img>
       <p className="secondary-text">{element.name}</p>
+      {/* <p className="tertiary-text">{element.ppp}</p> */}
+      
       <div className="enable">
         {/* <label className="switch">
           <Toggle className="toggle" icons={false} defaultChecked={true} />
