@@ -4,6 +4,7 @@ const { Collection } = require("../models/collection.model.js")
 const { Service } = require("../models/venderservices.model.js")
 const { Vendor } = require("../models/vendor.model.js")
 const { Order } = require("../models/order.model.js")
+const { View } = require("../models/view.model.js")
 // const mongoose = require("mongoose");
 // let ObjectId = mongoose.Schema.Types.ObjectId;
 async function writeReview(req, res, next) {
@@ -131,7 +132,7 @@ async function searchServicebyTerm(req, res, next) {
             {
                 desc: {$regex: re, $options: "i"}
             }]
-        });
+        }).sort({ppp: 1}).exec();
         res.json({ success: true, services });
     } catch (err) {
         console.log(err)
@@ -156,6 +157,8 @@ async function searchServiceDefault(req, res, next) {
 async function getService(req, res, next) {
     const serviceId = req.params.id;
     try {
+        let view = new View({service:serviceId});
+        view.save();
         let service = await Service.findById(serviceId);
         let reviews = await Rating.find({ service: service._id });
         let num_ratings = reviews.length;
@@ -196,7 +199,7 @@ async function getCollection(req, res, next) {
         for (let j = 0; j < itemIds.length; j++) {
             let item = await Service.findById(itemIds[j])
             if (item) {
-                items.push({ item: { name: item.name, image: item.image } });
+                items.push({ item: { name: item.name, image: item.image, id: item._id } });
                 // console.log(collections[i].items_1)
             }
         }
@@ -211,15 +214,17 @@ async function getCollection(req, res, next) {
 
 async function buyService(req, res, next) {
     const userId = req.body.user;
-    const user = await User.find({ userId });
+    const user = (await User.findOne({ userId }))._id;
     const item = req.body.item;
-    const vendor = req.body.vendor;
+    const vendor = (await Service.findById(item)).business;
+    console.log(user)
     const date = req.body.date;
     const count = req.body.count;
-    const order = new Order({ user: user._id, accepted: false, rejected: false, item, vendor, date, count });
+    const order = new Order({ user, accepted: false, rejected: false, item, vendor, date, count });
     try {
         await order.save();
         const orders = await Order.find({ user: user._id });
+        console.log("success", orders)
         res.send({ success: true, orders: orders });
     } catch (err) {
         next(err);

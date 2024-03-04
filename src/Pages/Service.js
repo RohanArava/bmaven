@@ -34,6 +34,7 @@ export default function Service({showDown=true, serviceId=undefined}) {
             <img className="serviceImage" alt="img" src={data.service.image} />
             <div className="details">
                 <span className="on-surface-text headline-small primary-text">{data.service.name}</span>
+                <p className="on-surface-text primary-text"><span>&#8377;</span>{data.service.ppp}</p>
                 <div className="df"><ReactStars
                     count={5}
                     isHalf={true}
@@ -53,6 +54,8 @@ export default function Service({showDown=true, serviceId=undefined}) {
             <div onClick={()=>{setShowRateScreen(true)}} className="pointer contactInfo on-surface-text body-large primary-text">Click to Rate </div> */}
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">add </div>
                     <div onClick={(event) => { setPos({ x: event.clientX, y: event.clientY }); setShowAddToCollectionScreen(!showAddToCollectionScreen); }} className="contactInfo pointer on-surface-text body-large primary-text">Add To Collection</div>
+                    <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">shopping_cart </div>
+                    <div onClick={() => {navigate(`/u/buy/${data.service._id}`)}} className="contactInfo pointer on-surface-text body-large primary-text">Buy</div>
                     <div className="on-surface-text material-symbols-rounded fill-icon icon contactIcon">report </div>
                     <div onClick={() => {navigate("/u/report", {state:{
                         service_id: serviceId,

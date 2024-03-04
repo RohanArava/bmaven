@@ -4,6 +4,10 @@
     overflow-y: scroll;
 
 }
+.addtocolleditform input{
+    margin: 2em 1em;
+
+}
 .wrap{
     display: grid;
     width: 100%;

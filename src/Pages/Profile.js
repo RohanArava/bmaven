@@ -145,16 +145,16 @@ function HistoryItem({ item }) {
                 <td><p className="title-large on-secondary-container-text">Details: </p></td>
             </tr> */}
                 <tr>
-                    <td><p className="title-medium on-surface-text">Amount: </p></td><td><p className="title-medium on-surface-text">{it.servicePrice}</p></td>
+                    <td><p className="title-medium on-surface-text">price: </p></td><td><p className="title-medium on-surface-text">{it.price}</p></td>
                 </tr>
                 <tr>
-                    <td><p className="title-medium on-surface-text">Time:</p></td><td><p className="title-medium on-surface-text">{it.serviceTime}</p></td>
+                    <td><p className="title-medium on-surface-text">Date:</p></td><td><p className="title-medium on-surface-text">{it.date}</p></td>
                 </tr>
                 <tr>
-                    <td><p className="title-medium on-surface-text">Payment Method: </p></td><td><p className="title-medium on-surface-text">{it.paymentMethod}</p></td>
+                    <td><p className="title-medium on-surface-text">Count: </p></td><td><p className="title-medium on-surface-text">{it.count}</p></td>
                 </tr>
                 <tr>
-                    <td><p className="title-medium on-surface-text">Payment Id: </p></td><td><p className="title-medium on-surface-text">{it.paymentId}</p></td>
+                    <td><p className="title-medium on-surface-text">Status: </p></td><td><p className="title-medium on-surface-text">{it.status}</p></td>
                 </tr>
                 {it.description && <tr>
                     <td><p className="title-medium on-surface-text">Description:</p></td><td><p className="title-medium on-surface-text">{it.description}</p></td>

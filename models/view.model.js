@@ -1,12 +1,12 @@
 const mongoose = require("mongoose")
 const User = require("./user.model")
-const Service = require("./service.model")
+const Service = require("./venderservices.model")
 let ObjectId = mongoose.Schema.Types.ObjectId;
 const viewSchema = mongoose.Schema({
     user:{
         type:ObjectId,
         ref: 'user',
-        required:true,
+        // required:true,
     },
     service:{
         type:ObjectId,
@@ -14,5 +14,5 @@ const viewSchema = mongoose.Schema({
         required:true,
     },
 });
-const view = mongoose.model("view",viewSchema)
-module.exports = {view}
+const View = mongoose.model("view",viewSchema)
+module.exports = {View}
