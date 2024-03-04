@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import "./SignUser.css"
 import {useDispatch} from "react-redux";
 import {userLogin} from "../app/store";
+import { useLocation } from "react-router-dom";
 // import useFetch from "../useFetch"
 function AdminAuth() {
+    
     const initialValues = { username: "", email: "", password: "" };
     const dispatch = useDispatch();
     // const [signUp, setSignUp] = useState(false);
@@ -27,9 +29,12 @@ function AdminAuth() {
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             console.log(formValues);
-            fetch("http://localhost:8085/user/sign")
-            .then(data => data.json())
-            .then(data => {dispatch(userLogin(data)); navigate("/a/dashboard")});
+            fetch("http://localhost:8085/admin/login",{
+                method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
+                    email: formValues.email,
+                    password: formValues.password,
+                })
+            }).then(()=>navigate("/a/dashboard"));
         }
     }, [formErrors]);
     const validate = (values) => {

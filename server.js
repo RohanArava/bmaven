@@ -9,6 +9,7 @@ var rfs = require('rotating-file-stream')
 require("dotenv").config();
 require("./database/connectmongodb").connectMongoDB();
 const authRouter = require("./routes/auth.route").router;
+const adminRouter = require("./routes/admin.router").router;
 const userUtilRouter = require("./routes/user_util.routes").router;
 const vendorUtilRouter = require("./routes/vendor_util.routes").router;
 var offers = require("./offers.json")
@@ -70,7 +71,7 @@ const fuseOptions = {
 app.use("/auth", authRouter);
 app.use("/userutil", userUtilRouter);
 app.use("/vendorutil", vendorUtilRouter);
-
+app.use("/admin",adminRouter)
 app.get("/business/dash/data", (req, res) => {
     res.status(200).send({
         offers, services, stats: {

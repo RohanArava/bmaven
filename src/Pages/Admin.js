@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
+import {useFetch} from "../useFetch"
+import Loading from "./Loading"
+import Error from "./Error"
 import "./Admin.css"
+import { useEffect, useState } from "react";
 export default function Admin() {
 
     const location = useLocation();
@@ -21,7 +25,9 @@ export default function Admin() {
     </>
 }
 
+
 export function AdminDash() {
+    
     const navigate = useNavigate();
     const reports = [
         { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
@@ -75,6 +81,10 @@ export function AdminDash() {
 }
 
 export function ManageCustomers() {
+    // const [data, setData] = useState(null)
+    const {loading, data, error} = useFetch("http://localhost:8085/admin/getusers")
+    if(loading) return <Loading/>
+    if(error) return <Error/>
     const customers = [
         { id: "customer_id", name: "customer" },
         { id: "customer_id", name: "customer" },
@@ -83,14 +93,25 @@ export function ManageCustomers() {
     ]
     return <div className="manage_customers">
         <div className="business_list">
-            {customers.map((customers, index) => {
-                return <div className="business_listitem secondary-container on-secondary-container-text">{customers.id}<br />{customers.name}</div>
+            {data.users.map((customers, index) => {
+                return <div className="business_listitem secondary-container on-secondary-container-text">{customers.userId}<br />{customers.email}<button onClick={()=>{
+                    fetch("http://localhost:8085/admin/removeuser",{
+                        method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
+                            id:customers._id
+                        })
+                    }).then(()=> window.location.reload())
+                }}>delete</button></div>
             })}
         </div>
     </div>
 }
 
 export function ManageBusinesses() {
+    
+    const {loading, data, error} = useFetch("http://localhost:8085/admin/getvendors")
+    if(loading) return <Loading/>
+    if(error) return <Error/>
+    console.log(data.vendors)
     const businesses = [
         { id: "bsnss01", name: "Bakery" },
         { id: "bsnss01", name: "Bakery" },
@@ -99,8 +120,12 @@ export function ManageBusinesses() {
     ]
     return <div className="manage_businesses">
         <div className="business_list">
-            {businesses.map((business, index) => {
-                return <div className="business_listitem secondary-container on-secondary-container-text">{business.id}<br />{business.name}</div>
+            {data.vendors.map((business, index) => {
+                return <div className="business_listitem secondary-container on-secondary-container-text">{business.vendorName}<br />{business.email}<button onClick={()=>{fetch("http://localhost:8085/admin/removevendor",{
+                    method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
+                        id:business._id
+                    })
+                }).then(()=> window.location.reload())}}>delete</button></div>
             })}
         </div>
         <div className="business_overview">
