@@ -58,37 +58,35 @@ async function userSignIn(req, res, next) {
         password: req.body.password
     }
     console.log(userObj, req.body)
-    try {
-        User.findOne({ email: userObj.email }).then(async (user) => {
-            if (!user) {
-                res.json({ error: "Email Not Found" });
-                return;
-            }
-            if (user.password === userObj.password) {
-                console.log("here");
-                const collections = await Collection.find({ user: user._id });
-                const collections_new = [];
-                for (let i = 0; i < collections.length; i++) {
-                    let itemIds = collections[i].items;
-                    const items = []
-                    for (let j = 0; j < itemIds.length; j++) {
-                        let item = await Service.findById(itemIds[j])
-                        if (item) {
-                            items.push({ item: { name: item.name, image: item.image } });
-                            // console.log(collections[i].items_1)
-                        }
+    try{
+    User.findOne({email: userObj.email}).then(async (user) => {
+        if(!user){
+            res.json({error: "Email Not Found"});
+            return;
+        }
+        if(user.password === userObj.password){
+            console.log("here");
+            const collections = await Collection.find({user: user._id});
+            const collections_new = [];
+            for(let i = 0; i < collections.length; i++){
+                let itemIds = collections[i].items;
+                const items = []
+                for (let j=0; j < itemIds.length; j++){
+                    let item = await Service.findById(itemIds[j])
+                    if(item){
+                    items.push({item: {name:item.name, image:item.image}});
+                    // console.log(collections[i].items_1)
                     }
-                    // collections[i].items_1 = items;
-                    collections_new.push({ ...collections[i]._doc, items });
                 }
-                console.log(collections_new.length > 0 && collections_new[0].items[0])
-                let history = await History.find({ user: user._id });
-                let orders = await Order.find({ user: user._id });
-                console.log(orders)
-                res.json({ success: true, msg: "Successfully Logged In", user, collections: collections_new, history, orders })
+                // collections[i].items_1 = items;
+                collections_new.push({...collections[i]._doc,items});
             }
-        }).catch(err => next(err));
-    } catch (err) {
+            console.log(collections_new[0].items[0])
+            let history = await History.find({user: user._id});
+            let orders = await Order.find({user: user._id});
+            res.json({success: true,msg: "Successfully Logged In", user, collections:collections_new, history, orders})
+        }
+    })}catch(err){
         next(err);
     }
 }
