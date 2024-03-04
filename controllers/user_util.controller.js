@@ -5,6 +5,7 @@ const { Service } = require("../models/venderservices.model.js")
 const { Vendor } = require("../models/vendor.model.js")
 const { Order } = require("../models/order.model.js")
 const { View } = require("../models/view.model.js")
+const { ServiceReport } = require("../models/servicereport.model.js")
 // const mongoose = require("mongoose");
 // let ObjectId = mongoose.Schema.Types.ObjectId;
 async function writeReview(req, res, next) {
@@ -25,6 +26,26 @@ async function writeReview(req, res, next) {
         newRating.save().then((newRating) => {
             res.status(200).send({ msg: "review added successfully", review: newRating })
         })
+    } catch (err) {
+        next(err)
+    }
+}
+
+async function reportService(req, res, next) {
+    const newReportObject = {
+        user: req.body.userId,
+        service: req.body.serviceId,
+        cause: req.body.cause,
+        additional_info: req.body.additional
+    }
+    console.log("report", newReportObject)
+    try {
+        const user = await User.findOne({ userId: newReportObject.user });
+
+        newReportObject.user = user._id;
+        const newReport = new ServiceReport(newReportObject);
+        await newReport.save();
+        res.status(200).json({ success: true });
     } catch (err) {
         next(err)
     }
@@ -129,10 +150,10 @@ async function searchServicebyTerm(req, res, next) {
                         $options: "i"
                     }
                 },
-            {
-                desc: {$regex: re, $options: "i"}
-            }]
-        }).sort({ppp: 1}).exec();
+                {
+                    desc: { $regex: re, $options: "i" }
+                }]
+        }).sort({ ppp: 1 }).exec();
         res.json({ success: true, services });
     } catch (err) {
         console.log(err)
@@ -157,7 +178,7 @@ async function searchServiceDefault(req, res, next) {
 async function getService(req, res, next) {
     const serviceId = req.params.id;
     try {
-        let view = new View({service:serviceId});
+        let view = new View({ service: serviceId });
         view.save();
         let service = await Service.findById(serviceId);
         let reviews = await Rating.find({ service: service._id });
@@ -170,8 +191,9 @@ async function getService(req, res, next) {
             })
             for (let i = 0; i < num_ratings; i++) {
                 const user = await User.findById(reviews[i].user);
-                console.log(user.userId)
-                reviews[i] = { ...reviews[i]._doc, user: user.userId };
+
+                console.log(user)
+                reviews[i] = { ...reviews[i]._doc, user: user ? user.userId : "[deleted]" };
             }
             // reviews = reviews.map(async(review)=>{
             //     const user = await User.findById(review.user);
@@ -236,6 +258,7 @@ module.exports = {
     getService,
     buyService,
     writeReview,
+    reportService,
     getCollection,
     addCollection,
     addToCollection,

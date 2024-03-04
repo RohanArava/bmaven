@@ -65,6 +65,7 @@ function SignUser() {
                     })
                 }).then((data)=>data.json()).then((data)=>{
                     console.log(data); 
+                    if(!data.user) return alert("Couldn't sign you in!")
                     dispatch(userLogin({
                         userName: data.user.userId,
                         userId: data.user.userId,

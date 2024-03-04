@@ -174,7 +174,7 @@ function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
                 <span style={{ marginTop: "10px" }} className="on-surface-text title-large">Add Collection </span>
                 <span onClick={() => { setShowAddToCollectionScreen(false) }} className="on-surface-text material-symbols-rounded"> close</span></div>
                 <br/>
-            <input type="text" value={collName} onChange={(e)=>{setCollName(e.target.value)}} placeholder="Enter Collection Name"></input>
+            <input type="text" value={collName} onChange={(e)=>{setCollName(e.target.value)}} placeholder="Enter Collection Name"></input><br/><br/>
             <button onClick={()=>{
                 fetch("http://localhost:8085/userutil/addcoll", {
                     method:"POST",

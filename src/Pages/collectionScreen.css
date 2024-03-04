@@ -1,0 +1,14 @@
+.collectionScreenItem .serviceWrap{
+    height: 20em;
+    width: 70vw;
+    overflow-y: hidden;
+    border-radius: 20px;
+    box-shadow: black 5px 5px 20px;
+    margin: 1em;
+    
+}
+.collectionScreenItem{
+    padding: 1em;
+    overflow-y: scroll;
+    height: 100vh;
+}
