@@ -112,13 +112,18 @@ function SignUser() {
                     })
                 }).then((data)=>data.json()).then((data)=>{
                     console.log(data); 
+                    if(data.error!==null){
+                        console.log("Error in user authentication.");
+                        alert(data.error);
+                        return
+                    }
                     dispatch(businessLogin({
                         id: data.vendor._id,
                         offers: data.offers,
                         services: data.services,
                         stats: {}
                     }));
-                    navigate("/b/dash");
+                    navigate("/b/dash");   
                 });
             }
         }
