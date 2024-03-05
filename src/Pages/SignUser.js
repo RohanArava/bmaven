@@ -112,7 +112,7 @@ function SignUser() {
                     })
                 }).then((data)=>data.json()).then((data)=>{
                     console.log(data); 
-                    if(data.error!==null){
+                    if(data.error){
                         console.log("Error in user authentication.");
                         alert(data.error);
                         return
