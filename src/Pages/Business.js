@@ -1,10 +1,13 @@
 import {Outlet} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {userLogout} from "../app/store";
 import './Business.css'
 function Business(){
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
     return (<div className="BusinessMain">
         <div className="header" >
           <div className="center"><span className="title primary-text">{location.pathname==="/b/dash"?"Dashboard":location.pathname==="/b/edit"?"Edit":location.pathname==="/b/notifications"?"Accepted Orders":location.pathname==="/b/billing"?"Unaccepted Orders":"About Us"} </span></div>
@@ -17,7 +20,7 @@ function Business(){
         <div style={{display:"inline"}} onClick={()=>{
             navigate("/b/notifications");
         }}>
-        <span className="material-symbols-rounded header-medium primary-text">
+        <span className="material-symbols-rounded header-medium primary-text"> 
           chat_bubble
         </span></div>
         <div style={{display:"inline"}} onClick={()=>{
@@ -39,6 +42,14 @@ function Business(){
         <span className="material-symbols-rounded header-medium primary-text">
           Home
         </span></div>
+        <div onClick={()=>{
+                dispatch(userLogout());
+                navigate("/u/sign")
+            }}>
+                <span className="material-symbols-rounded header-medium primary-text">
+                    logout
+                </span>
+            </div>
       </div>
       
         <Outlet/>

@@ -29,19 +29,25 @@ export default function Admin() {
 export function AdminDash() {
     
     const navigate = useNavigate();
-    const reports = [
-        { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
-        { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
-        { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
-        { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
-        { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
-    ]
-    const stats = {
-        views: 20,
-        avgRating: 4.5,
-        revenue: 7000,
-        viewGraph: [6, 8.7, 8, 8.7, 8, 8.7, 8.7, 8, 8.7, 8, 8.7, 8, 7, 8.9, 8.7, 8, 8.7, 8, 8.7, 5]
-    }
+    const {loading, data, error} = useFetch("http://localhost:8085/admin/getReports");
+    if(loading) return <Loading/>
+    if(error) return <Error/>
+    console.log(data)
+    const reports = data.reports;
+    // [
+    //     { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
+    //     { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
+    //     { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
+    //     { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
+    //     { reported_by: "user_id", report_type: "type", description: "ftew eufyff iwbfuyw wufeyebfu wshfb7ys uweg7t", cause: "inappropriate" },
+    // ]
+    const stats = data.stats;
+    // {
+    //     views: 20,
+    //     avgRating: 4.5,
+    //     revenue: 7000,
+    //     viewGraph: [6, 8.7, 8, 8.7, 8, 8.7, 8.7, 8, 8.7, 8, 8.7, 8, 7, 8.9, 8.7, 8, 8.7, 8, 8.7, 5]
+    // }
     return <div className="adminDash">
         <div className="dashLeft">
             <div onClick={() => navigate("/a/managecustomers")} className="tertiary-container man_users_btn on-tertiary-container-text">
@@ -54,27 +60,30 @@ export function AdminDash() {
         <div className="dashRight">
             <span className="primary-text headline-medium">Reports</span>
             <div className="reports">{reports.map((report, idx) => {
-                return <div className="report on-surface-text" key={idx}>{report.description}<br />by: {report.reported_by}</div>
+                return <div className="report on-surface-text" key={idx}>{report.additional_info}<br />by: {report.user} <br/>on: {report.service}
+                <br/>cause: {report.cause==="0"?"Offensive Content": report.cause==="1"?"Explicit Content":report.cause==="3"?"Mention of Sensitive topics":"Other"}</div>
             })}</div>
         </div>
         <div className="analyticsDash">
             <div className='statsDash'>
                 <span className="primary-text headline-medium">Stats</span>
                 <p className='secondary-text title-medium'>Total Views: {stats.views}</p>
-                <p className='secondary-text title-medium'>Daily Views: {stats.avgRating}</p>
-                <p className='secondary-text title-medium'>Total users: {stats.revenue}</p>
+                <p className='secondary-text title-medium'>Total businesses: {stats.vendors}</p>
+                <p className='secondary-text title-medium'>Total users: {stats.users}</p>
             </div>
             <div className='graphDash'>
-                <Line data={{
-                    labels: [...Array(stats.viewGraph.length).keys()], datasets: [{
-                        label: "Views",
-                        data: stats.viewGraph,
-                        backgroundColor: "#75d0dd",
-                        borderColor: "#75d0dd",
-                        pointRadius: 0,
-                    }]
-                }}
-                />
+            <Line data={{
+            labels: stats.viewGraph.map(view => view._id), datasets: [{
+              label: "Views",
+              data: stats.viewGraph.map(view => view.views),
+              backgroundColor: "#75d0dd",
+              borderColor: "#75d0dd",
+              pointRadius: 5,
+              // fill:{value: 0}
+            }]
+          }}
+          />
+                
             </div>
         </div>
     </div>

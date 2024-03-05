@@ -7,7 +7,7 @@
     margin: 0;
     /* box-shadow: 0px 0px 10px black; */
     display: grid;
-    grid-template-columns: 2fr 8fr 0.5fr 0.5fr 0.5fr 0.5fr;
+    grid-template-columns: 2fr 8fr 0.5fr 0.5fr 0.5fr;
     align-items: center;
     /* padding: 1em; */
 }

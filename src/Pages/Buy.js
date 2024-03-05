@@ -13,9 +13,9 @@ export default function Buy(){
     console.log(user);
     const [date, setDate] = useState(null);
     const [count, setCount] = useState(0);
-    return <div className="on-surface-text">
-        Count : <input value={count} onChange={(e)=>setCount(e.target.value)} type="number"></input>
-        Date: <input value={date} onChange={(e)=>setDate(e.target.value)}  type="date"></input>
+    return <div style={{padding:"1em"}} className="on-surface-text">
+        Count : <input value={count} onChange={(e)=>setCount(e.target.value)} type="number"></input><br/><br/>
+        Date: <input value={date} onChange={(e)=>setDate(e.target.value)}  type="date"></input><br/><br/>
         {/* Additional Information : <textarea ></textarea>  */}
         <button onClick={()=>{
             

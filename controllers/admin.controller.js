@@ -1,8 +1,8 @@
 const { Admin } = require("../models/admin.model")
 const { User } = require("../models/user.model")
 const { Vendor } = require("../models/vendor.model")
-
-
+const {ServiceReport} = require("../models/servicereport.model")
+const {View} = require("../models/view.model")
 async function createadmin(req,res){
     const credentials ={
         
@@ -49,6 +49,17 @@ async function adminlogin(req,res){
     }   
 }
 
+async function getReports(req, res, next){
+    const reports = await ServiceReport.find()
+    const users = (await User.find()).length
+    const vendors = (await Vendor.find()).length
+    const views = (await View.find()).length
+    const viewGraph = await View.aggregate([
+        {$group: {_id: {$dayOfYear : "$_id"}, views: {$sum: 1}}}
+    ]);
+    res.json({reports, stats:{users, vendors, views, viewGraph}});
+}
+
 async function removeuser(req,res){
     let userid = req.body.id
     console.log(userid)
@@ -69,6 +80,6 @@ module.exports={
     vendorremove,
     createadmin,    
     getUsers,
-    getVendors
-
+    getVendors,
+    getReports,
 }
