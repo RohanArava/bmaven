@@ -22,7 +22,7 @@ export default function Notifications() {
   }
 `;
   return (
-    <div style = {{padding:"2em", width: "80vw"}}>
+    <div style = {{padding:"2em", width: "80vw", height: "90vh", overflowY: "scroll"}}>
       <style>{styles}</style>
       <div style = {{padding:"2em", width: "80vw"}}>
       <style>{styles}</style>

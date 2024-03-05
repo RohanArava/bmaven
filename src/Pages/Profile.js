@@ -165,7 +165,7 @@ function HistoryItem({ item }) {
 
 function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
     const [collName, setCollName] = useState("")
-    console.log(pos)
+    console.log(pos) 
     const dispatch = useDispatch();
     return <><div style={{ top: `${pos.y + 10}px`, left: `${pos.x + 10}px` }} className="surface addtocollScreen">
 

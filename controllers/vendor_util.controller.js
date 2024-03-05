@@ -68,7 +68,8 @@ async function getUnacceptedUpcomingOrders(req, res, next) {
             date: {
                 $gt: date
             },
-            accepted
+            accepted,
+            rejected: false
         });
         res.json({ success: true, orders })
     } catch (err) {

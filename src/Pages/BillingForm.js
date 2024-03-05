@@ -77,6 +77,7 @@ import { useFetch } from "../useFetch";
 import Loading from "./Loading";
 import Error from "./Error";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 export default function EventForm() {
   var notifications = [
     ["Paid Bill", "User rohan_arava paid a bill (Rs. 2500)"],
@@ -85,7 +86,8 @@ export default function EventForm() {
     ["Bill due", "User allu_arjun has a bill due for Rs. 2500"],
   ];
   const businessId = useSelector(state=>state.stateReducer.object.businessDetails.id);
-  const {loading, data, error} = useFetch(`http://localhost:8085/vendorutil/upcomingUnaccepted/${businessId}`);
+  const [count, setCount] = useState(0);
+  const {loading, data, error} = useFetch(`http://localhost:8085/vendorutil/upcomingUnaccepted/${businessId}`, [count]);
   if(loading) return <Loading/>
   if(error) return <Error/>
   console.log(data)
@@ -99,23 +101,23 @@ export default function EventForm() {
     <div style = {{padding:"2em", width: "80vw"}}>
       <style>{styles}</style>
       {data.orders.map((item, index) => {
-        return <OrderItem key={index} item={item}/>
+        return <OrderItem key={index} item={item} count={count} setCount={setCount}/>
       })}
     </div>
   );
 }
 
 
-function OrderItem({item}){
+function OrderItem({item, count, setCount}){
   console.log(item)
   return <div style={{
-    padding: "1em", margin:"1em", width:"50vw", borderRadius: "20px"
+    padding: "1em", margin:"1em", width:"50vw", borderRadius: "20px", height: "90vh", overflowY: "scroll"
   }} className="secondary-container on-secondary-container-text">
     <p>User: {item.user}</p>
     <p>Item: {item.item}</p>
     <p>Count: {item.count}</p>
     <p>Date: {item.date}</p>
-    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/acceptOrder/${item._id}`)}}>Accept</button>
-    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/rejectOrder/${item._id}`)}}>Reject</button>
+    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/acceptOrder/${item._id}`).then(()=>setCount(count+1))}}>Accept</button>
+    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/rejectOrder/${item._id}`).then(()=>setCount(count+1))}}>Reject</button>
   </div> 
 }

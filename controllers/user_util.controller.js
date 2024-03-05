@@ -239,15 +239,21 @@ async function buyService(req, res, next) {
     const user = (await User.findOne({ userId }))._id;
     const item = req.body.item;
     const vendor = (await Service.findById(item)).business;
-    console.log(user)
+    console.log(user) 
     const date = req.body.date;
     const count = req.body.count;
     const order = new Order({ user, accepted: false, rejected: false, item, vendor, date, count });
     try {
         await order.save();
         const orders = await Order.find({ user: user._id });
-        console.log("success", orders)
-        res.send({ success: true, orders: orders });
+        let orders_new = []
+            await Promise.all(orders.map(async (order) => {
+                const service = await Service.findById(order.item);
+                orders_new.push({name:service.name, date: order.date, price: service.ppp, count: order.count, status: order.accepted?"Accepted":order.rejected?"Rejected":"Pending"});
+                console.log(orders_new)
+            }));
+        console.log("success", orders_new)
+        res.send({ success: true, orders: orders_new });
     } catch (err) {
         next(err);
     }

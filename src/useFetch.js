@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-export function useFetch(uri){
+export function useFetch(uri, deps=[]){
     const [data, setData] = useState();
     const [error, setError] = useState();
     const [loading, setLoading] = useState(true);
@@ -14,7 +14,7 @@ export function useFetch(uri){
         .then(setData)
         .then(()=>setLoading(false))
         .catch(e=>{setError(e);setLoading(false)});
-    }, [uri]);
+    }, deps);
 
     return {
         loading,

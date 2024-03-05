@@ -31,7 +31,7 @@ export default function Buy(){
                 console.log(data)
                 if(data.error) alert(data.error)
                 if(data.success) alert("success")
-                dispatch(modifyOrders(data.orders))
+                dispatch(modifyOrders({orders: data.orders}))
             })
         }}>Buy</button>
     </div>
