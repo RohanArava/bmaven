@@ -7,7 +7,7 @@ const morgan = require('morgan')
 const path = require('path');
 var rfs = require('rotating-file-stream')
 require("dotenv").config();
-require("./database/connectmongodb").connectMongoDB();
+const connectMongo = require("./database/connectmongodb").connectMongoDB;
 const authRouter = require("./routes/auth.route").router;
 const adminRouter = require("./routes/admin.router").router;
 const userUtilRouter = require("./routes/user_util.routes").router;
@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 const apiRouter = require("./routes/api.route").router;
-apiRouter.use( upload.single('image'))
+apiRouter.use(upload.single('image'))
 apiRouter.post('/uploads', (req, res) => {
     const imageUrl = `http://localhost:8085/${req.file.filename}`;
     res.json({ imageUrl });
@@ -71,7 +71,7 @@ const fuseOptions = {
 app.use("/auth", authRouter);
 app.use("/userutil", userUtilRouter);
 app.use("/vendorutil", vendorUtilRouter);
-app.use("/admin",adminRouter)
+app.use("/admin", adminRouter)
 app.get("/business/dash/data", (req, res) => {
     res.status(200).send({
         offers, services, stats: {
@@ -203,13 +203,13 @@ app.get("/service/:id", (req, res) => {
     res.status(200).send({ service: result[0] });
 });
 
-app.use((err, req, res, next)=>{
+app.use((err, req, res, next) => {
     console.log("ERROR AT ", Date.now(), ": ", err);
-    res.json({error: req.errmsg || "Something went wrong"});
+    res.json({ error: req.errmsg || "Something went wrong" });
 })
-
-app.listen(5085, (err) => {
+connectMongo();
+const listner = app.listen(process.env.SERVER_PORT, (err) => {
     if (err) console.log("error", err);
-    else console.log("listening on ", 5085);
+    else console.log("listening on ", process.env.SERVER_PORT);
 });
-
+module.exports = {listner};
