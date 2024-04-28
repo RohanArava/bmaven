@@ -1,0 +1,7 @@
+FROM node
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 5085 8085
+CMD ["npm", "start"]

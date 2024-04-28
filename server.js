@@ -208,8 +208,8 @@ app.use((err, req, res, next)=>{
     res.json({error: req.errmsg || "Something went wrong"});
 })
 
-app.listen(process.env.PORT, (err) => {
+app.listen(5085, (err) => {
     if (err) console.log("error", err);
-    else console.log("listening on ", process.env.PORT);
+    else console.log("listening on ", 5085);
 });
 

@@ -35,10 +35,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently --kill-others \"node server.js\" \"react-scripts start\"",
+    "dev": "concurrently --kill-others \"nodemon server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "react": "react-scripts start",
     "server": "node server.js",
     "server-dev": "nodemon server.js"
   },
@@ -61,6 +63,7 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.0.1"
   }
 }
