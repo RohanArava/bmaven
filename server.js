@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-const apiRouter = express.Router();
+const apiRouter = require("./routes/api.route").router;
 apiRouter.use( upload.single('image'))
 apiRouter.post('/uploads', (req, res) => {
     const imageUrl = `http://localhost:8085/${req.file.filename}`;
