@@ -1,14 +1,14 @@
 const mongoose = require("mongoose")
-const {MongoMemoryServer} = require('mongodb-memory-server');
+// const {MongoMemoryServer} = require('mongodb-memory-server');
 async  function connectMongoDB() {
     try {
         let MongoURI = process.env.MONGO_URI
+        let dbName = 'bmaven_wbd'
         if(process.env.NODE_ENV === 'test'){
-            const mongoMemServer = await MongoMemoryServer.create();
-            MongoURI = mongoMemServer.getUri();
+            dbName = 'test_wbd'
         }
         await mongoose.connect(MongoURI, {
-            dbName: 'bmaven_wbd', useNewUrlParser: true, useUnifiedTopology: true
+            dbName, useNewUrlParser: true, useUnifiedTopology: true
           })
     } catch (error) {
         console.log("Error connecting mongo db",error.message)

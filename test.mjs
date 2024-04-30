@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { listner } from "./server.js"
 import { after, before } from 'mocha';
 import fetch from 'node-fetch';
+import { User } from './models/user.model.js';
 describe("Tests", () => {
     it("should have NODE_ENV==test", () => {
         assert.strictEqual(process.env.NODE_ENV, "test");
@@ -38,6 +39,7 @@ describe("Tests", () => {
 
 
     after(() => {
+        User.deleteMany({});
         console.log("Closing server");
         listner.close();
     })
