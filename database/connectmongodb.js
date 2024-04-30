@@ -8,7 +8,7 @@ async  function connectMongoDB() {
             MongoURI = mongoMemServer.getUri();
         }
         await mongoose.connect(MongoURI, {
-            dbName: 'bmaven_wbd',
+            dbName: 'bmaven_wbd', useNewUrlParser: true, useUnifiedTopology: true
           })
     } catch (error) {
         console.log("Error connecting mongo db",error.message)

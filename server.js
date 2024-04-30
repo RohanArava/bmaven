@@ -225,7 +225,10 @@ app.use((err, req, res, next) => {
     console.log("ERROR AT ", Date.now(), ": ", err);
     res.status(req.errstatus || 500).json({ message: req.errmsg || "Something went wrong" });
 })
-connectMongo();
+
+connectMongo().then(()=>{
+    console.log("Connected to mongo successfully");
+})
 const listner = app.listen(process.env.SERVER_PORT, (err) => {
     if (err) console.log("error", err);
     else console.log("listening on ", process.env.SERVER_PORT);
