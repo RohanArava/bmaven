@@ -1,0 +1,731 @@
+paths:
+  /rest/users:
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: "*The unique identifier for the user*"
+                        email:
+                          type: string
+                          description: "*The email address of the user*"
+                        userId:
+                          type: string
+                          description: "*The user ID*"
+        '500':
+          description: Internal Server Error
+  /rest/user/{id}:
+    get:
+      summary: Get a user by ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the user to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The user object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: "*The unique identifier for the user*"
+                      email:
+                        type: string
+                        description: "*The email address of the user*"
+                      userId:
+                        type: string
+                        description: "*The user ID*"
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+  /rest/collections:
+    get:
+      summary: Get all collections
+      responses:
+        '200':
+          description: A list of collections
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: "*The unique identifier for the collection*"
+                        name:
+                          type: string
+                          description: "*The name of the collection*"
+        '500':
+          description: Internal Server Error
+  /rest/collection/{collectionId}:
+    get:
+      summary: Get a collection by ID
+      parameters:
+        - in: path
+          name: collectionId
+          description: ID of the collection to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The collection object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: "*The unique identifier for the collection*"
+                      name:
+                        type: string
+                        description: "*The name of the collection*"
+        '404':
+          description: Collection not found
+        '500':
+          description: Internal Server Error
+  /rest/user/collections/{userId}:
+    get:
+      summary: Get collections by user ID
+      parameters:
+        - in: path
+          name: userId
+          description: ID of the user whose collections to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of collections for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: "*The unique identifier for the collection*"
+                        name:
+                          type: string
+                          description: "*The name of the collection*"
+        '404':
+          description: Couldn't find collections for the user
+        '500':
+          description: Internal Server Error
+  /rest/user/orders/{userId}:
+    get:
+      summary: Get user orders by user ID
+      parameters:
+        - in: path
+          name: userId
+          description: ID of the user whose orders to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of orders for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: "*The unique identifier for the order*"
+                        item:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: "*The unique identifier for the item in the order*"
+                            name:
+                              type: string
+                              description: "*The name of the item in the order*"
+                        count:
+                          type: number
+                          description: "*The count of the item in the order*"
+        '404':
+          description: Order not found for the user
+        '500':
+          description: Internal Server Error
+  # /rest/notifications/from/{fromId}:
+  #   get:
+  #     summary: Get notifications by sender ID
+  #     parameters:
+  #       - in: path
+  #         name: fromId
+  #         description: ID of the sender whose notifications to retrieve
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       '200':
+  #         description: A list of notifications sent by the sender
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 notifications:
+  #                   type: array
+  #                   items:
+  #                     type: object
+  #                     properties:
+  #                       from_type:
+  #                         type: string
+  #                         description: "The type of sender (from)"
+  #                       to_type:
+  #                         type: string
+  #                         description: "The type of recipient (to)"
+  #                       from:
+  #                         type: string
+  #                         description: "The ID of the sender"
+  #                       to:
+  #                         type: string
+  #                         description: "The ID of the recipient"
+  #                       description:
+  #                         type: string
+  #                         description: "The description of the notification"
+  #                       title:
+  #                         type: string
+  #                         description: "The title of the notification"
+  #       '404':
+  #         description: Notifications not found for the sender
+  #       '500':
+  #         description: Internal Server Error
+  /rest/orders:
+    get:
+      summary: Get all orders
+      responses:
+        '200':
+          description: A list of orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: "*The unique identifier for the order*"
+                        item:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: "*The unique identifier for the item in the order*"
+                            name:
+                              type: string
+                              description: "*The name of the item in the order*"
+        '500':
+          description: Internal Server Error
+  /rest/order/{orderId}:
+    get:
+      summary: Get an order by ID
+      parameters:
+        - in: path
+          name: orderId
+          description: ID of the order to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The order object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: "*The unique identifier for the order*"
+                      item:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                            description: "*The unique identifier for the item in the order*"
+                          name:
+                            type: string
+                            description: "*The name of the item in the order*"
+        '404':
+          description: Order not found
+        '500':
+          description: Internal Server Error
+  /rest/vendors:
+    get:
+      summary: Get all vendors
+      responses:
+        '200':
+          description: A list of vendors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vendors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: "*The unique identifier for the vendor*"
+                        email:
+                          type: string
+                          description: "*The email address of the vendor*"
+                        vendorName:
+                          type: string
+                          description: "*The name of the vendor*"
+        '500':
+          description: Internal Server Error
+
+  /rest/vendor/orders/{vendorId}:
+    get:
+      summary: Get orders by vendor ID
+      parameters:
+        - in: path
+          name: vendorId
+          description: ID of the vendor whose orders to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of orders for the vendor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: "*The unique identifier for the order*"
+                        item:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: "*The unique identifier for the item in the order*"
+                            name:
+                              type: string
+                              description: "*The name of the item in the order*"
+                        count:
+                          type: number
+                          description: "*The count of the item in the order*"
+        '404':
+          description: Order not found for the vendor
+        '500':
+          description: Internal Server Error
+  /rest/vendor/services/{vendorId}:
+    get:
+      summary: Get services by vendor ID
+      parameters:
+        - in: path
+          name: vendorId
+          description: ID of the vendor whose services to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of services for the vendor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  services:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Service'
+        '404':
+          description: Services not found for the vendor
+        '500':
+          description: Internal Server Error
+
+  /rest/vendor/{vendorId}:
+    get:
+      summary: Get vendor by ID
+      parameters:
+        - in: path
+          name: vendorId
+          description: ID of the vendor to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The vendor object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        '404':
+          description: Vendor not found
+        '500':
+          description: Internal Server Error
+  /rest/services:
+    get:
+      summary: Get all services
+      responses:
+        '200':
+          description: A list of services
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  services:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Service'
+        '500':
+          description: Internal Server Error
+
+  /rest/service/{serviceId}:
+    get:
+      summary: Get service by ID
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of the service to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The service object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '404':
+          description: Service not found
+        '500':
+          description: Internal Server Error
+
+  /rest/service/orders/{serviceId}:
+    get:
+      summary: Get orders by service ID
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of the service whose orders to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of orders for the service
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found for the service
+        '500':
+          description: Internal Server Error
+  /rest/reviews:
+    get:
+      summary: Get all reviews
+      responses:
+        '200':
+          description: A list of reviews
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviews:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rating'
+        '500':
+          description: Internal Server Error
+
+  /rest/review/{reviewId}:
+    get:
+      summary: Get review by ID
+      parameters:
+        - in: path
+          name: reviewId
+          description: ID of the review to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The review object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+        '404':
+          description: Review not found
+        '500':
+          description: Internal Server Error
+  /rest/reviews/from/{fromId}:
+    get:
+      summary: Get reviews by sender ID
+      parameters:
+        - in: path
+          name: fromId
+          description: ID of the sender whose reviews to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of reviews sent by the sender
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviews:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rating'
+        '404':
+          description: Reviews not found for the sender
+        '500':
+          description: Internal Server Error
+
+  /rest/reviews/to/{toId}:
+    get:
+      summary: Get reviews by recipient ID
+      parameters:
+        - in: path
+          name: toId
+          description: ID of the recipient whose reviews to retrieve (e.g., service ID)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of reviews received by the recipient
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviews:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rating'
+        '404':
+          description: Reviews not found for the recipient
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    Vendor:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for the vendor
+        email:
+          type: string
+          description: The email address of the vendor
+        password:
+          type: string
+          description: The password of the vendor
+        vendorName:
+          type: string
+          description: The name of the vendor
+      required:
+        - email
+        - password
+        - vendorName
+
+    Service:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for the service
+        name:
+          type: string
+          description: The name of the service
+        desc:
+          type: string
+          description: Description of the service
+        business:
+          type: string
+          description: ID of the vendor associated with the service
+        image:
+          type: string
+          description: URL of the service image
+        ppp:
+          type: number
+          description: Price per person for the service
+        pdesc:
+          type: string
+          description: Description of the pricing
+      required:
+        - name
+        - desc
+        - business
+
+    Rating:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for the rating
+        user:
+          type: string
+          description: ID of the user who rated the service
+        service:
+          type: string
+          description: ID of the service being rated
+        review:
+          type: string
+          description: Review text
+        rating:
+          type: number
+          description: Numeric rating given by the user
+      required:
+        - user
+        - service
+        - rating
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for the user
+        email:
+          type: string
+          description: The email address of the user
+        password:
+          type: string
+          description: The password of the user
+        userId:
+          type: string
+          description: The user ID
+      required:
+        - email
+        - password
+        - userId
+
+    Collection:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for the collection
+        name:
+          type: string
+          description: The name of the collection
+        user:
+          type: string
+          description: ID of the user who owns the collection
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of an item in the collection
+      required:
+        - name
+        - user
+
+    Order:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for the order
+        user:
+          type: string
+          description: ID of the user who placed the order
+        date:
+          type: string
+          format: date
+          description: The date of the order
+        accepted:
+          type: boolean
+          description: Whether the order was accepted
+        rejected:
+          type: boolean
+          description: Whether the order was rejected
+        item:
+          type: string
+          description: ID of the item in the order
+        count:
+          type: number
+          description: The quantity of the item in the order
+        vendor:
+          type: string
+          description: ID of the vendor associated with the order
+      required:
+        - user
+        - date
+        - item
+        - count
+        - vendor

@@ -23,6 +23,6 @@ const service = mongoose.Schema({
         type:String
     }
 });
-
+service.index({name:"text", desc: "text"}, {weights: {name:3, desc:1}})
 const Service = mongoose.model("service", service)
 module.exports = {Service}

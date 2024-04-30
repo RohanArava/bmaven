@@ -2,6 +2,8 @@ const express = require("express");
 var cors = require('cors')
 var app = express()
 const multer = require('multer');
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
 
 const morgan = require('morgan')
 const path = require('path');
@@ -34,8 +36,24 @@ apiRouter.post('/uploads', (req, res) => {
     const imageUrl = `http://localhost:8085/${req.file.filename}`;
     res.json({ imageUrl });
 });
-app.use("/api", apiRouter);
+app.use("/rest", apiRouter);
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Library Application',
+            version: '1.0.0'
+        },
+        servers: [{
+            url: `http://localhost:${process.env.SERVER_PORT}/`
+        }
 
+        ]
+    },
+    apis: ['./routes/api.route.js', './swagger.yaml']
+}
+const swaggerspec = swaggerJSDoc(options)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerspec))
 
 //morgan
 
@@ -205,7 +223,7 @@ app.get("/service/:id", (req, res) => {
 
 app.use((err, req, res, next) => {
     console.log("ERROR AT ", Date.now(), ": ", err);
-    res.json({ error: req.errmsg || "Something went wrong" });
+    res.status(req.errstatus || 500).json({ message: req.errmsg || "Something went wrong" });
 })
 connectMongo();
 const listner = app.listen(process.env.SERVER_PORT, (err) => {
