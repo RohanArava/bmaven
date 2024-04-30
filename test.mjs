@@ -38,8 +38,8 @@ describe("Tests", () => {
 
 
 
-    after(() => {
-        User.deleteMany({});
+    after(async () => {
+        await User.deleteMany({});
         console.log("Closing server");
         listner.close();
     })
