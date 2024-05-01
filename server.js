@@ -32,9 +32,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 const apiRouter = require("./routes/api.route").router;
-apiRouter.use(upload.single('image'))
-app.post('/api/uploads', (req, res) => {
-    const imageUrl = `${req.file.filename}`;
+app.post('/api/uploads', upload.single('image'),(req, res) => {
+    const imageUrl = req.file.filename;
     res.json({ imageUrl });
 });
 app.use("/rest", apiRouter);
