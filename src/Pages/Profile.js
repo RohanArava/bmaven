@@ -72,7 +72,7 @@ function CollectionsItem({ item }) {
         </div>
             <div className="lbWrap">
                 <span onClick={()=>{
-                fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/removecoll`, {
+                fetch(`https://bmaven.onrender.com/userutil/removecoll`, {
                     method:"POST",
                     headers: {"content-type": "application/json"},
                     body: JSON.stringify({
@@ -176,7 +176,7 @@ function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
                 <br/>
             <input type="text" value={collName} onChange={(e)=>{setCollName(e.target.value)}} placeholder="Enter Collection Name"></input><br/><br/>
             <button onClick={()=>{
-                fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/addcoll`, {
+                fetch(`https://bmaven.onrender.com/userutil/addcoll`, {
                     method:"POST",
                     headers: {"content-type": "application/json"},
                     body: JSON.stringify({

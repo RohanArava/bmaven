@@ -29,7 +29,7 @@ export default function Admin() {
 export function AdminDash() {
     
     const navigate = useNavigate();
-    const {loading, data, error} = useFetch(`${process.env.REACT_APP_SERVER_URL}/admin/getReports`);
+    const {loading, data, error} = useFetch(`https://bmaven.onrender.com/admin/getReports`);
     if(loading) return <Loading/>
     if(error) return <Error/>
     console.log(data)
@@ -91,7 +91,7 @@ export function AdminDash() {
 
 export function ManageCustomers() {
     // const [data, setData] = useState(null)
-    const {loading, data, error} = useFetch(`${process.env.REACT_APP_SERVER_URL}/admin/getusers`)
+    const {loading, data, error} = useFetch(`https://bmaven.onrender.com/admin/getusers`)
     if(loading) return <Loading/>
     if(error) return <Error/>
     const customers = [
@@ -104,7 +104,7 @@ export function ManageCustomers() {
         <div className="business_list">
             {data.users.map((customers, index) => {
                 return <div className="business_listitem secondary-container on-secondary-container-text">{customers.userId}<br />{customers.email}<button onClick={()=>{
-                    fetch(`${process.env.REACT_APP_SERVER_URL}/admin/removeuser`,{
+                    fetch(`https://bmaven.onrender.com/admin/removeuser`,{
                         method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
                             id:customers._id
                         })

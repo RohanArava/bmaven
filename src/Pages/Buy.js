@@ -19,7 +19,7 @@ export default function Buy(){
         {/* Additional Information : <textarea ></textarea>  */}
         <button onClick={()=>{
             
-            fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/buyService`, {
+            fetch(`https://bmaven.onrender.com/userutil/buyService`, {
                 method: "POST", headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     user,

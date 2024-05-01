@@ -24,7 +24,7 @@ function Dashboard() {
   // const [services, setServices] = useState([]);
   // const [offers, setOffers] = useState([]);
   console.log(id)
-  const { loading, data, error } = useFetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/viewsForBusiness/${id}`);
+  const { loading, data, error } = useFetch(`https://bmaven.onrender.com/vendorutil/viewsForBusiness/${id}`);
   const services = useSelector(state => state.stateReducer.object.businessDetails.services);
   if (loading ) {
     return <Loading />
@@ -67,7 +67,7 @@ function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
       <input type="text" value={collName} onChange={(e) => { setCollName(e.target.value) }} placeholder="Enter Service Name"></input>
       <input type="text" value={serDesc} onChange={(e) => { setSerDesc(e.target.value) }} placeholder="Enter Service Desc"></input>
       <button onClick={() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/addService`, {
+        fetch(`https://bmaven.onrender.com/vendorutil/addService`, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
@@ -111,7 +111,7 @@ export function Services({setStats, style, onAnimationEnd, setRightSideStyle, se
 
 function ListItem({ setStats ,element, style, setRightSideStyle }) {
   console.log("item", element)
-  const { loading, data, error } = useFetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/viewsForService/${element._id}`);
+  const { loading, data, error } = useFetch(`https://bmaven.onrender.com/vendorutil/viewsForService/${element._id}`);
   let stats = {views:[], rating:[], revenue:0};
   if(loading||error){
 
@@ -128,7 +128,7 @@ function ListItem({ setStats ,element, style, setRightSideStyle }) {
       animation: "slideinx ease-out 400ms"
     });
   }}>
-    <img alt="business" className='bimgdash' src={process.env.REACT_APP_SERVER_URL + "/" + element.image}></img>
+    <img alt="business" className='bimgdash' src={"https://bmaven.onrender.com" + "/" + element.image}></img>
     <p className="secondary-text">{element.name}</p>
   </div>
 }

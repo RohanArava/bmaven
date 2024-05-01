@@ -87,7 +87,7 @@ export default function EventForm() {
   ];
   const businessId = useSelector(state=>state.stateReducer.object.businessDetails.id);
   const [count, setCount] = useState(0);
-  const {loading, data, error} = useFetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/upcomingUnaccepted/${businessId}`, [count]);
+  const {loading, data, error} = useFetch(`https://bmaven.onrender.com/vendorutil/upcomingUnaccepted/${businessId}`, [count]);
   if(loading) return <Loading/>
   if(error) return <Error/>
   console.log(data)
@@ -117,7 +117,7 @@ function OrderItem({item, count, setCount}){
     <p>Item: {item.item}</p>
     <p>Count: {item.count}</p>
     <p>Date: {item.date}</p>
-    <button onClick={()=>{fetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/acceptOrder/${item._id}`).then(()=>setCount(count+1))}}>Accept</button>
-    <button onClick={()=>{fetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/rejectOrder/${item._id}`).then(()=>setCount(count+1))}}>Reject</button>
+    <button onClick={()=>{fetch(`https://bmaven.onrender.com/vendorutil/acceptOrder/${item._id}`).then(()=>setCount(count+1))}}>Accept</button>
+    <button onClick={()=>{fetch(`https://bmaven.onrender.com/vendorutil/rejectOrder/${item._id}`).then(()=>setCount(count+1))}}>Reject</button>
   </div> 
 }

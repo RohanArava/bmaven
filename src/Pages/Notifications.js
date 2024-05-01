@@ -11,7 +11,7 @@ export default function Notifications() {
     ["Bill due", "User allu_arjun has a bill due for Rs. 2500"],
   ];
   const businessId = useSelector(state=>state.stateReducer.object.businessDetails.id);
-  const {loading, data, error} = useFetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/upcomingAccepted/${businessId}`);
+  const {loading, data, error} = useFetch(`https://bmaven.onrender.com/vendorutil/upcomingAccepted/${businessId}`);
   if(loading) return <Loading/>
   if(error) return <Error/>
   console.log(data)

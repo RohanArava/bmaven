@@ -32,11 +32,11 @@ function SignUser() {
         
         if (Object.keys(formErrors).length === 0 && isSubmit && isUser) {
             console.log(formValues);
-            // fetch("${process.env.REACT_APP_SERVER_URL}/user/sign")
+            // fetch("https://bmaven.onrender.com/user/sign")
             // .then(data => data.json())
             // .then(data => {dispatch(userLogin(data)); navigate("/u/profile")});
             if(signUp){
-                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/user/signup`, {
+                fetch(`https://bmaven.onrender.com/auth/user/signup`, {
                     method:"POST", headers:{'content-type': "application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,
@@ -58,7 +58,7 @@ function SignUser() {
                     navigate("/u/profile");
                 });
             } else{
-                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/user/signin`, {
+                fetch(`https://bmaven.onrender.com/auth/user/signin`, {
                     method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,
@@ -79,11 +79,11 @@ function SignUser() {
         }
         else if(Object.keys(formErrors).length === 0 && isSubmit && !isUser){
             console.log(formValues);
-            // fetch("${process.env.REACT_APP_SERVER_URL}/business/sign")
+            // fetch("https://bmaven.onrender.com/business/sign")
             // .then(data => data.json())
             // .then(data => {dispatch(userLogin(data)); navigate("/b/dash")});
             if(signUp){
-                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/vendor/signup`, {
+                fetch(`https://bmaven.onrender.com/auth/vendor/signup`, {
                     method:"POST", headers:{'content-type': "application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,
@@ -105,7 +105,7 @@ function SignUser() {
                     navigate("/b/dash");
                 });
             } else{
-                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/vendor/signin`, {
+                fetch(`https://bmaven.onrender.com/auth/vendor/signin`, {
                     method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,

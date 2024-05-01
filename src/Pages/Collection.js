@@ -9,7 +9,7 @@ import "./collectionScreen.css"
 export default function Collection(){
     const navigate = useNavigate()
     const {id} = useParams();
-    const {loading, data, error} = useFetch(`${process.env.REACT_APP_SERVER_URL}/userutil/getCollection/${id}`);
+    const {loading, data, error} = useFetch(`https://bmaven.onrender.com/userutil/getCollection/${id}`);
     console.log(`/userutil/getCollection/${id}`)
     if(loading) return <Loading />;
     if(error) {console.log(error);return <Error/>};

@@ -11,7 +11,7 @@ export default function Search() {
     const query_term = new URLSearchParams(location.search).get("q");
     const [showFilter, setShowFilter] = useState(false);
     // console.log(query_term)
-    const { loading, error, data } = useFetch(query_term&&query_term!==''?`${process.env.REACT_APP_SERVER_URL}/rest/search?term=${query_term}`:`${process.env.REACT_APP_SERVER_URL}/userutil/search/default`, [query_term])
+    const { loading, error, data } = useFetch(query_term&&query_term!==''?`https://bmaven.onrender.com/rest/search?term=${query_term}`:`https://bmaven.onrender.com/userutil/search/default`, [query_term])
 
     if (loading) return <Loading />;
 
@@ -46,7 +46,7 @@ function SearchItem({ item }) {
             navigate(`/u/service/${item._id}`)
         }
     } className="clickable searchItem secondary-container">
-        <img className="searchImage" src={process.env.REACT_APP_SERVER_URL + "/" + item.image} alt="img" />
+        <img className="searchImage" src={"https://bmaven.onrender.com" + "/" + item.image} alt="img" />
         <div>
             <span className="on-secondary-container-text headline-small">{item.name}</span>
             <p className="on-secondary-container-text on-surface-text"><span>&#8377;</span>{item.ppp}</p>

@@ -54,7 +54,7 @@ export default function Report(){
                     additional: addInf
                 }
                 console.log(report)
-                fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/reportService`, {
+                fetch(`https://bmaven.onrender.com/userutil/reportService`, {
                     method: "POST", headers: {'content-Type': 'application/json'},
                     body:JSON.stringify(report)
                 }).then(body=>body.json()).then(body=>{
