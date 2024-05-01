@@ -10,7 +10,19 @@ const { Order } = require("../models/order.model.js")
 const { View } = require("../models/view.model.js")
 const { ServiceReport } = require("../models/servicereport.model.js")
 const { Notification } = require("../models/notification.model.js")
-
+const { createClient } = require("redis");
+let redisClient = undefined;
+createClient({
+    password: 'J5PEL3zxZPAfecNWmtraeathLuLKqwqo',
+    socket: {
+        host: 'redis-13798.c17.us-east-1-4.ec2.redns.redis-cloud.com',
+        port: 13798
+    }
+}).on('error', err => console.log('Redis Client Error', err))
+    .connect().then((client) => {
+        console.log("Redis client connected")
+        redisClient = client
+    });
 router.get('/users', async (req, res, next) => {
     try {
         let users = await User.find({}, { _id: 1, email: 1, userId: 1 });
@@ -19,6 +31,7 @@ router.get('/users', async (req, res, next) => {
         res.status(500).send({ message: "Internal Server Error" });
     }
 });
+
 router.get('/user/collections/:userId', async (req, res, next) => {
     try {
         let collections = await Collection.find({ user: req.params.userId }, { _id: 1, name: 1 });
@@ -46,7 +59,7 @@ router.get('/user/orders/:userId', async (req, res, next) => {
 });
 router.get('/user/:id', async (req, res, next) => {
     try {
-        let user = await User.findById(req.params.id, {password:0});
+        let user = await User.findById(req.params.id, { password: 0 });
         if (user) {
             res.status(200).send({ user });
         } else {
@@ -201,7 +214,7 @@ router.get('/service/orders/:serviceId', async (req, res, next) => {
 });
 router.get('/reviews', async (req, res, next) => {
     try {
-        let reviews = Rating.find({}, { _id: 1, service: 1 });
+        let reviews = await Rating.find({}, { _id: 1, service: 1 });
         res.status(200).send({ reviews });
     } catch (err) {
         res.errmsg = "Internal Server Error";
@@ -247,12 +260,34 @@ router.get('/reviews/to/:toId', async (req, res, next) => {
         next(err);
     }
 });
-router.get("/search", async (req, res, next)=>{
-    try{
+router.get("/search", async (req, res, next) => {
+    try {
         let term = req.query.term || "";
-        let services = await Service.find({$text:{$search: term}}).sort({ score : { $meta : 'textScore' } });
-        res.status(200).send({services:services||[]})
-    }catch(err){
+        console.log(term)
+        if (term !== "") {
+            let resJSON = await redisClient.get(term);
+            if (resJSON) {
+                console.log("in redis:", resJSON)
+                let services = JSON.parse(resJSON)
+                if (services.length === 0) {
+                    console.log("length 0")
+                    services = await Service.find({ $text: { $search: term } }).sort({ score: { $meta: 'textScore' } });
+                    if (services.length !== 0)
+                        await redisClient.set(term, JSON.stringify(services));
+                    res.status(200).send({ services: services || [] })
+                    return;
+                }
+                res.status(200).send({ services: services || [] });
+                return;
+            } else {
+                console.log("Not found in redis:", term, ":", resJSON)
+            }
+        }
+        let services = await Service.find({ $text: { $search: term } }).sort({ score: { $meta: 'textScore' } });
+        if (services.length !== 0)
+            await redisClient.set(term, JSON.stringify(services));
+        res.status(200).send({ services: services || [] })
+    } catch (err) {
         res.errmsg = "Internal Server Error";
         next(err);
     }
@@ -281,7 +316,7 @@ router.post('/user', async (req, res, next) => {
         }
         const newUser = new User(newUserObj);
         let user = await newUser.save();
-        res.status(200).send({ user});
+        res.status(200).send({ user });
     } catch (err) {
         res.errmsg = "Internal Server Error";
         next(err);

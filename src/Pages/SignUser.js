@@ -32,11 +32,11 @@ function SignUser() {
         
         if (Object.keys(formErrors).length === 0 && isSubmit && isUser) {
             console.log(formValues);
-            // fetch("http://localhost:8085/user/sign")
+            // fetch("${process.env.REACT_APP_SERVER_URL}/user/sign")
             // .then(data => data.json())
             // .then(data => {dispatch(userLogin(data)); navigate("/u/profile")});
             if(signUp){
-                fetch("http://localhost:8085/auth/user/signup", {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/user/signup`, {
                     method:"POST", headers:{'content-type': "application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,
@@ -58,7 +58,7 @@ function SignUser() {
                     navigate("/u/profile");
                 });
             } else{
-                fetch("http://localhost:8085/auth/user/signin", {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/user/signin`, {
                     method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,
@@ -79,11 +79,11 @@ function SignUser() {
         }
         else if(Object.keys(formErrors).length === 0 && isSubmit && !isUser){
             console.log(formValues);
-            // fetch("http://localhost:8085/business/sign")
+            // fetch("${process.env.REACT_APP_SERVER_URL}/business/sign")
             // .then(data => data.json())
             // .then(data => {dispatch(userLogin(data)); navigate("/b/dash")});
             if(signUp){
-                fetch("http://localhost:8085/auth/vendor/signup", {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/vendor/signup`, {
                     method:"POST", headers:{'content-type': "application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,
@@ -105,7 +105,7 @@ function SignUser() {
                     navigate("/b/dash");
                 });
             } else{
-                fetch("http://localhost:8085/auth/vendor/signin", {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/auth/vendor/signin`, {
                     method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
                         email: formValues.email,
                         password: formValues.password,

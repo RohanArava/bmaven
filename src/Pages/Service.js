@@ -18,7 +18,7 @@ export default function Service({showDown=true, serviceId=undefined}) {
     }
     console.log(serviceId) 
 
-    const { loading, error, data } = useFetch(`http://localhost:8085/userutil/getService/${serviceId}`);
+    const { loading, error, data } = useFetch(`${process.env.REACT_APP_SERVER_URL}/userutil/getService/${serviceId}`);
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [showAddToCollectionScreen, setShowAddToCollectionScreen] = useState(false);
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function Service({showDown=true, serviceId=undefined}) {
     return <div className="serviceWrap">
         {showAddToCollectionScreen && <AddToCollectionScreen serviceId={serviceId} pos={pos} setShowAddToCollectionScreen={setShowAddToCollectionScreen} />}
         <div className="serviceUp">
-            <img className="serviceImage" alt="img" src={data.service.image} />
+            <img className="serviceImage" alt="img" src={process.env.REACT_APP_SERVER_URL + "/" + data.service.image} />
             <div className="details">
                 <span className="on-surface-text headline-small primary-text">{data.service.name}</span>
                 <p className="on-surface-text primary-text"><span>&#8377;</span>{data.service.ppp}</p>
@@ -128,7 +128,7 @@ function RateScreen({serviceId}) {
             />
             <textarea value={review} onChange={(e)=>{setReview(e.target.value)}} placeholder="Write a Review...." style={{ marginTop: "10px" }}></textarea>
             <div onClick={async()=>{
-                const body = (await fetch("http://localhost:8085/userutil/writeReview",{
+                const body = (await fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/writeReview`,{
                     method: "POST",
                     headers: {
                         "content-type": "application/json"
@@ -161,7 +161,7 @@ function AddToCollectionScreen({ setShowAddToCollectionScreen, pos, serviceId })
                     collections.map((item, index) => {
                         return <div onClick={async()=>{
                             const body = await (await fetch(
-                                `http://localhost:8085/userutil/addToCollection/${item._id}/${serviceId}`
+                                `${process.env.REACT_APP_SERVER_URL}/userutil/addToCollection/${item._id}/${serviceId}`
                             )).json()
                             dispatch(addCollection({
                                 collections: body.collections 

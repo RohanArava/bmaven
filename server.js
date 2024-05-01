@@ -17,6 +17,7 @@ const vendorUtilRouter = require("./routes/vendor_util.routes").router;
 var offers = require("./offers.json")
 var services = require("./services.json")
 const Fuse = require('fuse.js');
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
@@ -33,7 +34,7 @@ const upload = multer({ storage });
 const apiRouter = require("./routes/api.route").router;
 apiRouter.use(upload.single('image'))
 apiRouter.post('/uploads', (req, res) => {
-    const imageUrl = `http://localhost:8085/${req.file.filename}`;
+    const imageUrl = `${req.file.filename}`;
     res.json({ imageUrl });
 });
 app.use("/rest", apiRouter);
@@ -45,7 +46,7 @@ const options = {
             version: '1.0.0'
         },
         servers: [{
-            url: `http://localhost:${process.env.SERVER_PORT}/`
+            url: `${process.env.REACT_APP_SERVER_URL}`
         }
 
         ]
@@ -103,6 +104,7 @@ app.get("/business/dash/data", (req, res) => {
 app.get("/business/sign", (req, res) => {
     res.status(200).send({ message: "done" });
 })
+
 app.get("/user/sign", (req, res) => {
     res.status(200).send({
         userName: "Rohan Arava",
@@ -226,11 +228,11 @@ app.use((err, req, res, next) => {
     res.status(req.errstatus || 500).json({ message: req.errmsg || "Something went wrong" });
 })
 
-connectMongo().then(()=>{
+connectMongo().then(() => {
     console.log("Connected to mongo successfully");
 })
 const listner = app.listen(process.env.SERVER_PORT, (err) => {
     if (err) console.log("error", err);
     else console.log("listening on ", process.env.SERVER_PORT);
 });
-module.exports = {listner};
+module.exports = { listner };

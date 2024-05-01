@@ -19,7 +19,7 @@ export default function Buy(){
         {/* Additional Information : <textarea ></textarea>  */}
         <button onClick={()=>{
             
-            fetch("http://localhost:8085/userutil/buyService", {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/buyService`, {
                 method: "POST", headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     user,

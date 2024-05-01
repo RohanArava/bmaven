@@ -11,7 +11,7 @@ import { modifyServices } from '../app/store';
 export default function Edit() {
   const services = useSelector(state => state.stateReducer.object.businessDetails.services);
   const { loading, data, error } = useFetch(
-    "http://localhost:8085/business/dash/data"
+    `${process.env.REACT_APP_SERVER_URL}/business/dash/data`
   );
   const [showAddServiceCoupon, setShowAddServiceCoupon] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -169,7 +169,7 @@ function ListItem({ element }) {
       <img
         alt="business"
         className="bimgdash"
-        src={element.image} 
+        src={process.env.REACT_APP_SERVER_URL + "/" + element.image} 
       ></img>
       <p className="secondary-text">{element.name}</p>
       {/* <p className="tertiary-text">{element.ppp}</p> */}
@@ -181,7 +181,7 @@ function ListItem({ element }) {
         </label> */}
       </div>
       <span onClick={()=>{
-        fetch(`http://localhost:8085/vendorutil/deleteService/${element._id}`).then((body) => body.json()).then((body) => {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/deleteService/${element._id}`).then((body) => body.json()).then((body) => {
           console.log(body);
           dispatch(modifyServices({services:body.services}))
         })
@@ -218,13 +218,13 @@ function AddServiceCoupon({ setShowAddServiceCoupon, pos , userId}) {
       <input type="number" value={ppp} onChange={(e) => { setPpp(e.target.value) }} placeholder="Enter Price"></input>
       <input type="file" onChange={handleFileChange} />
       <button onClick={() => {
-        fetch("http://localhost:8085/api/uploads",{
+        fetch(`${process.env.REACT_APP_SERVER_URL}/api/uploads`,{
           method: 'POST',
           body: formData,
         }).then((body)=>body.json()).then((body)=>{
           const imageUrl = body.imageUrl;
           console.log("img", body)
-        fetch("http://localhost:8085/vendorutil/addService", {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/addService`, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({

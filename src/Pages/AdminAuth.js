@@ -29,7 +29,7 @@ function AdminAuth() {
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             console.log(formValues);
-            fetch("http://localhost:8085/admin/login",{
+            fetch(`${process.env.REACT_APP_SERVER_URL}/admin/login`,{
                 method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({
                     email: formValues.email,
                     password: formValues.password,

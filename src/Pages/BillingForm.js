@@ -87,7 +87,7 @@ export default function EventForm() {
   ];
   const businessId = useSelector(state=>state.stateReducer.object.businessDetails.id);
   const [count, setCount] = useState(0);
-  const {loading, data, error} = useFetch(`http://localhost:8085/vendorutil/upcomingUnaccepted/${businessId}`, [count]);
+  const {loading, data, error} = useFetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/upcomingUnaccepted/${businessId}`, [count]);
   if(loading) return <Loading/>
   if(error) return <Error/>
   console.log(data)
@@ -111,13 +111,13 @@ export default function EventForm() {
 function OrderItem({item, count, setCount}){
   console.log(item)
   return <div style={{
-    padding: "1em", margin:"1em", width:"50vw", borderRadius: "20px", height: "90vh", overflowY: "scroll"
+    padding: "1em", maxHeight: "40%",margin:"1em", width:"50vw", borderRadius: "20px", height: "90vh", overflowY: "scroll"
   }} className="secondary-container on-secondary-container-text">
     <p>User: {item.user}</p>
     <p>Item: {item.item}</p>
     <p>Count: {item.count}</p>
     <p>Date: {item.date}</p>
-    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/acceptOrder/${item._id}`).then(()=>setCount(count+1))}}>Accept</button>
-    <button onClick={()=>{fetch(`http://localhost:8085/vendorutil/rejectOrder/${item._id}`).then(()=>setCount(count+1))}}>Reject</button>
+    <button onClick={()=>{fetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/acceptOrder/${item._id}`).then(()=>setCount(count+1))}}>Accept</button>
+    <button onClick={()=>{fetch(`${process.env.REACT_APP_SERVER_URL}/vendorutil/rejectOrder/${item._id}`).then(()=>setCount(count+1))}}>Reject</button>
   </div> 
 }

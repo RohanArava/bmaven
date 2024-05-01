@@ -72,7 +72,7 @@ function CollectionsItem({ item }) {
         </div>
             <div className="lbWrap">
                 <span onClick={()=>{
-                fetch("http://localhost:8085/userutil/removecoll", {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/removecoll`, {
                     method:"POST",
                     headers: {"content-type": "application/json"},
                     body: JSON.stringify({
@@ -96,7 +96,7 @@ function CollectionsItem({ item }) {
                         console.log("item:", item);
                         return <div key={index}>
                             <span className="clct-itm-name">{item.item.name}</span>
-                            <img className="clct-itm" src={item.item.image} alt="" />
+                            <img className="clct-itm" src={process.env.REACT_APP_SERVER_URL + "/" + item.item.image} alt="" />
                         </div>
                     })
                 }
@@ -176,7 +176,7 @@ function AddCollectionScreen({ setShowAddToCollectionScreen, pos, userId }) {
                 <br/>
             <input type="text" value={collName} onChange={(e)=>{setCollName(e.target.value)}} placeholder="Enter Collection Name"></input><br/><br/>
             <button onClick={()=>{
-                fetch("http://localhost:8085/userutil/addcoll", {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/userutil/addcoll`, {
                     method:"POST",
                     headers: {"content-type": "application/json"},
                     body: JSON.stringify({
