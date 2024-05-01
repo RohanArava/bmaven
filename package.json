@@ -48,7 +48,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "start-local": "cross-env NODE_ENV='prod' concurrently --kill-others \"node server.js\" \"react-scripts start\"",
+    "start-local": "cross-env  NODE_ENV='prod' concurrently --kill-others \"node server.js\" \"react-scripts start\"",
     "dev": "cross-env NODE_ENV='dev' concurrently --kill-others \"nodemon server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "cross-env NODE_ENV='test' mocha --exit --timeout 10000",
