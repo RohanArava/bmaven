@@ -47,7 +47,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "cross-env REACT_APP_SERVER_URL='https://bmaven.onrender.com' node server.js",
     "start-local": "cross-env  NODE_ENV='prod' concurrently --kill-others \"node server.js\" \"react-scripts start\"",
     "dev": "cross-env NODE_ENV='dev' concurrently --kill-others \"nodemon server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
