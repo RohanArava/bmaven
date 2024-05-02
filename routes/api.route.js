@@ -322,27 +322,392 @@ router.post('/user', async (req, res, next) => {
         next(err);
     }
 });
-router.post('user/collection/service/:collectionId/:serviceId', async (req, res, next) => { });
-router.post('/user/collection/:userId', async (req, res, next) => { });
-router.post('/notification', async (req, res, next) => { });
-router.post('/order', async (req, res, next) => { });
-router.post('/review', async (req, res, next) => { });
-router.post('/vendor', async (req, res, next) => { });
-router.post('/vendor/service/:vendorId', async (req, res, next) => { });
-router.post('review', async (req, res, next) => { });
+
+router.post('/user/collection/service/:collectionId/:serviceId', async (req, res, next) => {
+    try {
+      const { collectionId, serviceId } = req.params;
+  
+      // Find the collection document by _id
+      const collection = await Collection.findById(collectionId);
+  
+      // If the collection doesn't exist, return a 404 error
+      if (!collection) {
+        return res.status(404).json({ message: 'Collection not found' });
+      }
+  
+      // Find the service document by _id
+      const service = await Service.findById(serviceId);
+  
+      // If the service doesn't exist, return a 404 error
+      if (!service) {
+        return res.status(404).json({ message: 'Service not found' });
+      }
+  
+      // Check if the service is already in the collection
+      const serviceExists = collection.items.some(item => item.id.equals(serviceId));
+  
+      if (serviceExists) {
+        return res.status(400).json({ message: 'Service already exists in the collection' });
+      }
+  
+      // Add the service to the collection
+      collection.items.push({ service });
+  
+      // Save the updated collection document
+      await collection.save();
+  
+      // Send a success response
+      res.status(200).json({ message: 'Service added to the collection successfully' });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+  router.post('/user/collection/:userId', async (req, res, next) => {
+    try {
+      const userId = req.params.userId;
+      const { name } = req.body;
+  
+      // Find the user document by _id
+      const user = await User.findById(userId);
+  
+      // If the user doesn't exist, return a 404 error
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Create a new collection document
+      const newCollection = new Collection({
+        name,
+        user: userId,
+        items: [],
+      });
+  
+      // Save the new collection document
+      await newCollection.save();
+  
+      // Send a success response
+      res.status(201).json({ message: 'Collection created successfully', collection: newCollection });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+  router.post('/notification', async (req, res, next) => {
+    try {
+      const { from_type, to_type, from, to, description, title } = req.body;
+  
+      // Create a new notification document
+      const newNotification = new Notification({
+        from_type,
+        to_type,
+        from,
+        to,
+        description,
+        title,
+      });
+  
+      // Save the new notification document
+      await newNotification.save();
+  
+      // Send a success response
+      res.status(201).json({ message: 'Notification created successfully', notification: newNotification });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+ 
+  router.post('/order', async (req, res, next) => {
+    try {
+      const { userId, serviceId, vendorId, count } = req.body;
+  
+      // Find the user document by _id
+      const user = await User.findById(userId);
+  
+      // If the user doesn't exist, return a 404 error
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Find the service document by _id
+      const service = await Service.findById(serviceId);
+  
+      // If the service doesn't exist, return a 404 error
+      if (!service) {
+        return res.status(404).json({ message: 'Service not found' });
+      }
+  
+      // Find the vendor document by _id
+      const vendor = await Vendor.findById(vendorId);
+  
+      // If the vendor doesn't exist, return a 404 error
+      if (!vendor) {
+        return res.status(404).json({ message: 'Vendor not found' });
+      }
+  
+      // Create a new order document
+      const newOrder = new Order({
+        user: userId,
+        date: Date.now(),
+        accepted: false,
+        rejected: false,
+        item: serviceId,
+        count,
+        vendor: vendorId,
+      });
+  
+      // Save the new order document
+      await newOrder.save();
+  
+      // Send a success response
+      res.status(201).json({ message: 'Order created successfully', order: newOrder });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+
+  
+  router.post('/review', async (req, res, next) => {
+    try {
+      const { userId, serviceId, review, rating } = req.body;
+  
+      // Find the user document by _id
+      const user = await User.findById(userId);
+  
+      // If the user doesn't exist, return a 404 error
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Find the service document by _id
+      const service = await Service.findById(serviceId);
+  
+      // If the service doesn't exist, return a 404 error
+      if (!service) {
+        return res.status(404).json({ message: 'Service not found' });
+      }
+  
+      // Create a new rating document
+      const newRating = new Rating({
+        user: userId,
+        service: serviceId,
+        review,
+        rating,
+      });
+  
+      // Save the new rating document
+      await newRating.save();
+  
+      // Send a success response
+      res.status(201).json({ message: 'Rating created successfully', rating: newRating });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+  router.post('/vendor', async (req, res, next) => {
+    try {
+      // Extract vendor data from request body
+      const { email, password, vendorName } = req.body;
+  
+      // Validate data (optional)
+      // You can add checks here to ensure required fields are present and in the expected format
+  
+      // Create a new vendor instance
+      const newVendor = new Vendor({ email, password, vendorName });
+  
+      // Save the vendor to the database
+      const savedVendor = await newVendor.save();
+  
+      // Respond with success message and potentially the saved vendor data (without password)
+      res.status(201).json({ message: 'Vendor created successfully!', vendor: { email, vendorName } }); // Omit password
+    } catch (err) {
+      console.error(err);
+      // Handle errors appropriately (e.g., validation errors, conflicts)
+      res.status(500).json({ message: 'Error creating vendor' });
+    }
+  });
+  router.post('/vendor/service/:vendorId', async (req, res, next) => {
+    try {
+      // Extract vendor ID and service data from request
+      const vendorId = req.params.vendorId;
+      const { name, desc, image, ppp, pdesc } = req.body;
+  
+      // Validate data (optional)
+      // You can add checks here to ensure required fields are present and in the expected format
+  
+      // Create a new service instance
+      const newService = new Service({
+        name,
+        desc,
+        business: vendorId, // Set the vendor reference using the vendorId param
+        image,
+        ppp,
+        pdesc,
+      });
+  
+      // Save the service to the database
+      const savedService = await newService.save();
+  
+      // Respond with success message and potentially the saved service data
+      res.status(201).json({ message: 'Service created successfully!', service: savedService });
+    } catch (err) {
+      console.error(err);
+      // Handle errors appropriately (e.g., validation errors, conflicts)
+      res.status(500).json({ message: 'Error creating service' });
+    }
+  });
+  router.post('/review', async (req, res, next) => {
+    try {
+      // Extract user ID, service ID, and review data from request body
+      const { userId, serviceId, review, rating } = req.body;
+  
+      // Validate data (optional)
+      // You can add checks here to ensure required fields are present and in the expected format
+  
+      // Create a new rating instance
+      const newRating = new Rating({
+        user: userId,
+        service: serviceId,
+        review,
+        rating,
+      });
+  
+      // Save the rating to the database
+      const savedRating = await newRating.save();
+  
+      // Respond with success message and potentially the saved rating data
+      res.status(201).json({ message: 'Review submitted successfully!', rating: savedRating });
+    } catch (err) {
+      console.error(err);
+      // Handle errors appropriately (e.g., validation errors, conflicts)
+      res.status(500).json({ message: 'Error submitting review' });
+    }
+  });
 
 
-router.put('/user', async (req, res, next) => { });
-router.put('/vendor', async (req, res, next) => { });
-router.put('/service/:serviceId', async (req, res, next) => { });
+
+router.delete('/user/:userId', async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+
+    // Find the user document by userId
+    const user = await User.findOne({ userId });
+
+    // If the user doesn't exist, return a 404 error
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Remove the user document from the database
+    await user.remove();
+
+    // Send a success response
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    // Handle any errors that occurred
+    next(error);
+  }
+});
+router.delete('/user/:userId/collection/:userId/:collectionId', async (req, res, next) => {
+    
+ });
+router.delete('/user/collection/service/:userId/:collectionId/:serviceId', async (req, res, next) => {
+ });
+router.delete('/vendor/:vendorId', async (req, res, next) => {
+    try {
+      const vendorId = req.params.vendorId;
+  
+      // Find the vendor document by _id
+      const vendor = await Vendor.findById(vendorId);
+  
+      // If the vendor doesn't exist, return a 404 error
+      if (!vendor) {
+        return res.status(404).json({ message: 'Vendor not found' });
+      }
+  
+      // Remove the vendor document from the database
+      await vendor.remove();
+  
+      // Send a success response
+      res.status(200).json({ message: 'Vendor deleted successfully' });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+
+  router.delete('/service/:serviceId', async (req, res, next) => {
+    try {
+      const serviceId = req.params.serviceId;
+  
+      // Find the service document by _id
+      const service = await Service.findById(serviceId);
+  
+      // If the service doesn't exist, return a 404 error
+      if (!service) {
+        return res.status(404).json({ message: 'Service not found' });
+      }
+  
+      // Remove the service document from the database
+      await service.remove();
+  
+      // Send a success response
+      res.status(200).json({ message: 'Service deleted successfully' });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+
+  router.delete('/order/:orderId', async (req, res, next) => {
+    try {
+      const orderId = req.params.orderId;
+  
+      // Find the order document by _id
+      const order = await Order.findById(orderId);
+  
+      // If the order doesn't exist, return a 404 error
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      // Remove the order document from the database
+      await order.remove();
+  
+      // Send a success response
+      res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (error) {
+      // Handle any errors that occurred
+      next(error);
+    }
+  });
+// router.delete('/review/:reviewId', async (req, res, next) => { });
 
 
-router.delete('/user/:userId', async (req, res, next) => { });
-router.delete('/user/:userId/collection/:userId/:collectionId', async (req, res, next) => { });
-router.delete('/user/collection/service/:userId/:collectionId/:serviceId', async (req, res, next) => { });
-router.delete('/vendor/:vendorId', async (req, res, next) => { });
-router.delete('/service/:serviceId', async (req, res, next) => { });
-router.delete('/order/:orderId', async (req, res, next) => { });
-router.delete('/review/:reviewId', async (req, res, next) => { });
+// router.post('user/collection/service/:collectionId/:serviceId', async (req, res, next) => { });
+// router.post('/user/collection/:userId', async (req, res, next) => { });
+// router.post('/notification', async (req, res, next) => { });
+// router.post('/order', async (req, res, next) => { });
+// router.post('/review', async (req, res, next) => { });
+// router.post('/vendor', async (req, res, next) => { });
+// router.post('/vendor/service/:vendorId', async (req, res, next) => { });
+// router.post('review', async (req, res, next) => { });
+
+
+// router.put('/user', async (req, res, next) => { });
+// router.put('/vendor', async (req, res, next) => { });
+// router.put('/service/:serviceId', async (req, res, next) => { });
+
+
+// router.delete('/user/:userId', async (req, res, next) => { });
+// router.delete('/user/:userId/collection/:userId/:collectionId', async (req, res, next) => { });
+// router.delete('/user/collection/service/:userId/:collectionId/:serviceId', async (req, res, next) => { });
+// router.delete('/vendor/:vendorId', async (req, res, next) => { });
+// router.delete('/service/:serviceId', async (req, res, next) => { });
+// router.delete('/order/:orderId', async (req, res, next) => { });
+// router.delete('/review/:reviewId', async (req, res, next) => { });
 
 module.exports = { router }
