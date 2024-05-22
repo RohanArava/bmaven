@@ -7,7 +7,7 @@ How to Run
  - create a .env file and paste the following contents into it:
 ``` 
 PORT = 8085
-MONGO_URI = mongodb+srv://Rohan:Qwerty@bizmaven.nfyphpy.mongodb.net/?retryWrites=true&w=majority&appName=BizMaven 
+MONGO_URI = database_url
 ```
  - run npm run server-dev
  - in another terminal run: 
